@@ -2,46 +2,45 @@
 
 [中文](README.md) | [English](README.en.md)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/cxro/astro-whono/ci.yml?style=flat&label=CI&labelColor=2E3440&color=A3BE8C&logo=githubactions&logoColor=ECEFF4)](https://github.com/cxro/astro-whono/actions/workflows/ci.yml)  [![Node](https://img.shields.io/badge/Node-%3E%3D22.12.0-81A1C1?style=flat&labelColor=2E3440&logo=nodedotjs&logoColor=ECEFF4)](https://github.com/cxro/astro-whono#%E7%8E%AF%E5%A2%83%E8%A6%81%E6%B1%82)  [![Astro](https://img.shields.io/github/package-json/dependency-version/cxro/astro-whono/astro?branch=main&style=flat&label=Astro&labelColor=2E3440&color=BC52EE&logo=astro&logoColor=ECEFF4)](https://docs.astro.build/)  [![License](https://img.shields.io/badge/License-MIT-4C566A?style=flat&labelColor=2E3440&logo=opensourceinitiative&logoColor=ECEFF4)](LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/cxro/astro-whono/ci.yml?style=flat&label=CI&labelColor=2E3440&color=A3BE8C&logo=githubactions&logoColor=ECEFF4)](https://github.com/cxro/astro-whono/actions/workflows/ci.yml)  [![Node](https://img.shields.io/badge/Node-%3E%3D22.12.0-81A1C1?style=flat&labelColor=2E3440&logo=nodedotjs&logoColor=ECEFF4)](README.en.md#requirements)  [![Astro](https://img.shields.io/github/package-json/dependency-version/cxro/astro-whono/astro?branch=main&style=flat&label=Astro&labelColor=2E3440&color=BC52EE&logo=astro&logoColor=ECEFF4)](https://docs.astro.build/)  [![License](https://img.shields.io/badge/License-MIT-4C566A?style=flat&labelColor=2E3440&logo=opensourceinitiative&logoColor=ECEFF4)](LICENSE)
 
-**✨ astro-whono 支持本地后台可视化预览写作**
+**✨ astro-whono supports visual writing and live preview in the local admin console**
 
-一个极简双栏的 Astro 主题，用于个人写作与轻量内容发布。
+A minimal two-column Astro theme for personal writing and lightweight publishing.
+
+## Links
+
+- Live demo: <https://astro.whono.me>
+- Repository: <https://github.com/cxro/astro-whono>
 
 
-## 链接
-
-- 在线演示：<https://astro.whono.me>
-- 仓库地址：<https://github.com/cxro/astro-whono>
-
-
-## 预览
+## Preview
 
 <p align="center">
-  <img src="public/preview-light.png" width="49%" alt="浅色预览" />
-  <img src="public/preview-dark.png" width="49%" alt="深色预览" />
+  <img src="public/preview-light.png" width="49%" alt="Light preview" />
+  <img src="public/preview-dark.png" width="49%" alt="Dark preview" />
 </p>
 
 
-## 特性
+## Features
 
-- 双栏布局（侧栏导航 + 内容区）
-- 移动端适配
-- 内容集合：随笔 / 絮语 / 小记 / 关于（归档为目录视图）
-- 内置本地 Admin Console（/admin）：开发环境下管理站点配置、内容与图片资源
-- 絮语草稿生成器：/bits 页面一键生成 Markdown（复制/下载），支持多图与自动读取尺寸
-- RSS：默认归档订阅 + 分栏订阅
-- 浅色 / 深色模式 + 阅读模式
-
-
-## 开始使用
-
-### 环境要求
-
-- Node.js 22.12+（建议使用 `.nvmrc`）
+- Two-column layout (sidebar navigation + content area)
+- Responsive design for mobile devices
+- Content collections: essay / bits / memo / about (archive is generated from essay)
+- Built-in local Admin Console (`/admin`): manage site settings, content, and image assets in development
+- Bits draft generator on `/bits/`: one-click Markdown output (copy/download), with multi-image support and automatic image dimension detection
+- RSS: default archive feed + section feeds
+- Light / dark theme + reading mode
 
 
-### 快速开始
+## Getting Started
+
+### Requirements
+
+- Node.js 22.12+ (`.nvmrc` recommended)
+
+
+### Quick Start
 
 ```bash
 npm install
@@ -49,161 +48,161 @@ npm run dev
 ```
 
 <details>
-  <summary>Windows（PowerShell）提示</summary>
+  <summary>Windows (PowerShell) note</summary>
 
-如遇执行策略拦截 `npm.ps1`，可用：
+If execution policy blocks `npm.ps1`, use one of the following:
 
 - `cmd /c npm run ...`
-- 或改用 Git Bash / WSL
+- Or use Git Bash / WSL
 </details>
 
 
-### 常用命令
+### Common Commands
 
-  - `npm run dev`：启动本地开发服务
-  - `npm run build`：生成静态站点
-  - `npm run preview`：预览构建产物
-  - `npm run new:bit`：创建一条 bits 草稿
+  - `npm run dev`: start the local dev server
+  - `npm run build`: generate the static site
+  - `npm run preview`: preview the production build
+  - `npm run new:bit`: create a bits draft
 
 <details>
-  <summary>维护者校验</summary>
+  <summary>Maintainer checks</summary>
 
-以下命令用于维护主题本身，普通写作与部署通常不需要执行。
+These commands are for maintaining the theme itself. Regular writing and deployment usually do not require them.
 
 ```bash
-# 基础回归：Astro check、Vitest、build
+# Baseline verification: Astro check, Vitest, build
 npm run verify
 
-# Markdown 渲染契约：改动渲染链路、文章样式或代码块工具栏时执行
+# Markdown rendering contract: run after changing rendering, article styles, or the code block toolbar
 npm run build
 npm run check:markdown-smoke
 
-# 发布前产物检查：需已确定正式域名
-SITE_URL=https://你的域名 npm run build
-SITE_URL=https://你的域名 npm run check:prod-artifacts
+# Release artifact check: requires the final production domain
+SITE_URL=https://your-domain npm run build
+SITE_URL=https://your-domain npm run check:prod-artifacts
 
-# Admin 边界检查：仅改动 /admin/** 或 /api/admin/** 时执行
+# Admin boundary check: only when changing /admin/** or /api/admin/**
 npm run check:preview-admin
 
-# 生产依赖审计：发布前或依赖变更时执行
+# Production dependency audit: run before release or after dependency changes
 npm run audit:prod
 ```
 </details>
 
 
-## 部署
+## Deployment
 
-### 一键部署
+### One-click Deploy
 
 [![Deploy to Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=flat&logo=vercel&logoColor=white)](https://vercel.com/new/clone?repository-url=https://github.com/cxro/astro-whono)&nbsp;&nbsp;[![Deploy to Netlify](https://img.shields.io/badge/Deploy-Netlify-00C7B7?style=flat&logo=netlify&logoColor=white)](https://app.netlify.com/start/deploy?repository=https://github.com/cxro/astro-whono)&nbsp;&nbsp;[![Deploy to Cloudflare Pages](https://img.shields.io/badge/Deploy-Cloudflare%20Pages-F38020?style=flat&logo=cloudflare&logoColor=white)](https://dash.cloudflare.com/?to=/:account/workers-and-pages)
 
-> 建议在生产环境设置：SITE_URL=https://你的域名 （不要以 / 结尾）。
-> 未设置时会使用占位地址，页面可访问，但分享与收录相关链接可能不完整。
+> For production, set: `SITE_URL=https://your-domain` (without a trailing slash).
+> If not set, the site can still run, but link metadata for sharing/indexing may be incomplete.
 
 <details>
-  <summary><strong>Cloudflare Pages 部署（手动导入仓库）</strong></summary>
+  <summary><strong>Cloudflare Pages deployment (manual repository import)</strong></summary>
 
-**构建设置**
-- Framework preset：Astro
-- Build command：`npm run build`
-- Output directory：`dist`
+**Build settings**
+- Framework preset: `Astro`
+- Build command: `npm run build`
+- Output directory: `dist`
 
-**Node.js 版本（通常不用填）**
-- 本项目已提供 `.nvmrc`，Cloudflare Pages 会自动读取。
-- 如需手动指定，可在 Pages 的环境变量里设置：`NODE_VERSION=22.22.0`
+**Node.js version (usually not required)**
+- This project includes `.nvmrc`, and Cloudflare Pages reads it automatically.
+- If you need to set it manually, add `NODE_VERSION=22.22.0` in environment variables.
 
-**环境变量（生产环境应设置）**
-- 在 Pages 项目 → Settings → Environment variables 添加：`SITE_URL=https://你的域名`（例如 `https://astro.whono.me`，不要以 `/` 结尾）
-- `SITE_URL` 用于生成 canonical、Open Graph 的 `og:url`、RSS 链接与 sitemap 等绝对链接；未设置时相关链接会退化为占位域名，影响分享预览与搜索收录。
+**Environment variables (set for production)**
+- In Pages project -> Settings -> Environment variables, add: `SITE_URL=https://your-domain` (for example `https://astro.whono.me`, without a trailing `/`).
+- `SITE_URL` is used to generate absolute links for canonical, Open Graph `og:url`, RSS, and sitemap; without it these links fall back to a placeholder domain, hurting share previews and search indexing.
 
-**关于 sitemap / robots**
-- 只有设置了 `SITE_URL`，才会生成 sitemap，并且 `/robots.txt` 才会输出 `Sitemap:` 行（避免指向错误域名）。
+**About sitemap / robots**
+- `sitemap` is generated only when `SITE_URL` is set, and `/robots.txt` includes a `Sitemap:` line only in that case (to avoid pointing to the wrong domain).
 
 </details>
 
 <details>
-<summary><strong>部署后检查</strong></summary>
+<summary><strong>Post-deploy checklist</strong></summary>
 
-- 首页 / 列表 / 详情页可访问
-- RSS 可访问（`/rss.xml` 及分栏 RSS）
-- 设置 `SITE_URL` 后：canonical / `og:url` 指向你的域名
-- Network 不再请求演示域名资源
+- Home page / list pages / detail pages are accessible
+- RSS endpoints are accessible (`/rss.xml` and section feeds)
+- With `SITE_URL` set: canonical / `og:url` point to your domain
+- No network requests to demo-domain resources
 
 </details>
 
 
-## 配置与入口
+## Configuration and Entry Points
 
-### 项目入口
+### Project Entry Points
 
-- 站点配置：`site.config.mjs`
-- 内容集合：`src/content.config.ts`
-- 样式共享入口：`src/styles/global.css`
-- 页面 / 场景样式入口：`src/styles/home.css`、`src/styles/about.css`、`src/styles/memo.css`、`src/styles/article.css`、`src/styles/bits-page.css`
-- 后台样式入口：`src/styles/components/admin/shell.css` + `src/styles/components/admin/**` 路由私有样式；不再提供全量 `admin.css` 聚合入口
+- Site config: `site.config.mjs`
+- Content collections: `src/content.config.ts`
+- Shared style entry: `src/styles/global.css`
+- Page / scene style entries: `src/styles/home.css`, `src/styles/about.css`, `src/styles/memo.css`, `src/styles/article.css`, `src/styles/bits-page.css`
+- Admin style entry: `src/styles/components/admin/shell.css` + route-specific styles under `src/styles/components/admin/**`; the full `admin.css` aggregate is no longer provided
 
-### Admin Console（/admin）
+### Admin Console (`/admin`)
 
-内置本地 Admin Console，仅面向开发环境，用于查看站点概况、调整主题配置、编辑内容与导入导出 settings 快照。
+The built-in local Admin Console targets development only, for viewing the site overview, adjusting theme settings, editing content, and importing/exporting settings snapshots.
 
-启动 `npm run dev` 后访问 `http://localhost:4321/admin/`（端口以实际为准）。
+Run `npm run dev`, then open `http://localhost:4321/admin/` (replace `4321` with your actual port if changed).
 
-| 入口 | 用途 |
+| Entry | Purpose |
 | :---: | :--- |
-| `/admin/` | 后台稳定入口与 Site Overview |
-| `/admin/theme/` | Theme Console，编辑站点信息、侧栏、首页与内页文案等 |
-| `/admin/images/` | 图片资源浏览与路径辅助 |
-| `/admin/data/` | settings 快照导出 / dry-run 导入 / 确认写入 |
-| `/admin/content/` | 随笔 / 絮语 / 小记 / 关于页的本地编辑、新建与源文件导出 |
+| `/admin/` | Stable Admin entry and Site Overview |
+| `/admin/theme/` | Theme Console for editing site information, sidebar, home page, inner-page copy, and more |
+| `/admin/images/` | Image resource browser and path helper |
+| `/admin/data/` | Settings snapshot export / dry-run import / confirmed write |
+| `/admin/content/` | Local editing, draft creation, and source export for essay / bits / memo / about |
 
-> 使用详情：[Admin Console 快速指南](https://astro.whono.me/archive/admin-console-guide/) · [Theme Console 配置指南](https://astro.whono.me/archive/theme-console-guide/) · [Content Console 使用指南](https://astro.whono.me/archive/content-console-guide/)
+> Guides: [Admin Console](https://astro.whono.me/archive/admin-console-guide/) · [Theme Console](https://astro.whono.me/archive/theme-console-guide/) · [Content Console](https://astro.whono.me/archive/content-console-guide/)
 
-生产构建保持静态站点输出：`/admin/` 可按 Theme 设置显示只读公开 Overview 或关闭态文案，其他后台子路由与 `/api/admin/**` 仅在本地开发可用。
+Production builds remain static output: `/admin/` can show a read-only public Overview or a hidden-state message based on Theme settings; other Admin subroutes and `/api/admin/**` are available in local development only.
 
-#### 兼容迁移（已 fork 用户）
+#### Compatibility for existing forks
 
-- 未创建 `src/data/settings/*.json` 时，前台仍按 `settings > legacy > default` 读取
-- 首次在 `/admin/theme/` 保存后才会生成对应的 JSON 文件，无需手动迁移
+- If `src/data/settings/*.json` does not exist yet, the frontend still reads config via `settings > legacy > default`
+- The JSON files are generated only after the first save in `/admin/theme/`; no manual migration is required
 
 
-## 内容与写作
+## Content and Writing
 
-内容集合、源文件与公开入口如下，字段和写作细节见现有指南：
+Content collections, source locations, and public entry points:
 
-| 类型 | 源文件 | 主要入口 |
+| Type | Source | Main routes |
 | --- | --- | --- |
-| 随笔 | `src/content/essay/` | `/essay/`、`/archive/`、`/archive/[slug]/` |
-| 絮语 | `src/content/bits/` | `/bits/` |
-| 小记 | `src/content/memo/index.md` | `/memo/` |
-| 关于 | `src/content/about/index.md` | `/about/` |
+| Essay | `src/content/essay/` | `/essay/`, `/archive/`, `/archive/[slug]/` |
+| Bits | `src/content/bits/` | `/bits/` |
+| Memo | `src/content/memo/index.md` | `/memo/` |
+| About | `src/content/about/index.md` | `/about/` |
 
-- `essay` / `bits` 是多条内容；`memo` / `about` 是固定单页。
-- `essay` / `bits` 的 `draft: true` 只在本地开发中用于预览，生产构建、公开列表和 RSS 会过滤；`memo` 不应标记为草稿。
-- `essay.archive: false` 只退出 `/archive/` 聚合与归档 RSS，不代表隐藏文章；详情页、`/essay/` 和 essay RSS 仍可见。
-- Admin Console 图片上传默认保存到本地，也可在开发环境配置 S3 兼容对象存储。Images Console 可浏览云端图片并复制 URL。
-- 图片上传、frontmatter 字段、日期与摘要规则见 [Content Console 使用指南](https://astro.whono.me/archive/content-console-guide/)；Callout、Figure、Gallery、公式等 Markdown 扩展见 [Markdown 排版指南](https://astro.whono.me/archive/markdown-guide/)。
+- Essay and Bits are multi-entry collections; Memo and About are fixed single pages.
+- `draft: true` is visible only in local development; production lists and feeds filter drafts. Memo should not be marked as draft.
+- `essay.archive: false` removes an essay from the `/archive/` aggregation and archive feed, but it remains available through `/essay/`, its detail route, and the essay feed.
+- Admin Console image uploads are saved locally by default, with optional S3-compatible object storage available in development. Images Console can browse cloud images and copy their URLs.
+- For image upload, frontmatter, dates, and excerpts, see the [Content Console guide (Chinese)](https://astro.whono.me/archive/content-console-guide/). For Callout, Figure, Gallery, and math syntax, see the [Markdown formatting guide (Chinese)](https://astro.whono.me/archive/markdown-guide/).
 
 
-## 字体与许可
+## Fonts and Licensing
 
-本主题使用两套字体排版（自托管 + 子集化）：
-- Noto Serif SC（400 / 600）
-- LXGW WenKai Lite（Regular）
+This theme uses two typeface families (self-hosted + subsetted):
+- Noto Serif SC (400 / 600)
+- LXGW WenKai Lite (Regular)
 
-仓库提交的是子集化后的 WOFF2 字体（latin / cjk-common / cjk-ext 三段，`unicode-range` 按需加载），因此 **clone 即用**。
-子集字符集由仓库文本 + `tools/charset-base.txt`（3500 常用字）共同生成，用来降低缺字概率。
+The repository includes subsetted WOFF2 files (`latin` / `cjk-common` / `cjk-ext`, loaded on demand via `unicode-range`), so you can use the project immediately after cloning.
+Subset charset is generated from repository text plus `tools/charset-base.txt` (3,500 common characters) to reduce missing-glyph cases.
 
-缺字或更换源字体时，运行 `npm run font:build` 重新生成子集；步骤与文件清单见下。
+To regenerate subsets after glyph gaps or source font changes, run `npm run font:build`; steps and file list below.
 
 <details>
-  <summary>子集再生成与文件清单</summary>
+  <summary>Subset regeneration and file list</summary>
 
-1. 安装 Python 3，执行 `python -m pip install fonttools brotli zopfli`，确认 `pyftsubset --help` 可用（不可用时把 Python Scripts 目录加入 `PATH`）
-2. 把源字体放到 `tools/fonts-src/`
-3. 运行 `npm run font:build`；缺字时把字符补到 `tools/charset-base.txt` 后重跑
-4. `tools/charset-common.txt` 由 `npm run font:charset` 重生成，不要手改
+1. Install Python 3, run `python -m pip install fonttools brotli zopfli`, and make sure `pyftsubset --help` works (add the Python Scripts directory to `PATH` if not)
+2. Put the source fonts in `tools/fonts-src/`
+3. Run `npm run font:build`; if glyphs are missing, add the characters to `tools/charset-base.txt` and rerun
+4. `tools/charset-common.txt` is regenerated by `npm run font:charset`; do not edit it by hand
 
-子集文件（仓库内）：
+Subset files (tracked in repository):
 - `public/fonts/lxgw-wenkai-lite-latin.woff2`
 - `public/fonts/lxgw-wenkai-lite-cjk-common.woff2`
 - `public/fonts/lxgw-wenkai-lite-cjk-ext.woff2`
@@ -214,42 +213,42 @@ npm run audit:prod
 - `public/fonts/noto-serif-sc-600-cjk-common.woff2`
 - `public/fonts/noto-serif-sc-600-cjk-ext.woff2`
 
-源字体（不入库）：
+Source files (not tracked in repository):
 - `tools/fonts-src/LXGWWenKaiLite-Regular.woff2`
 - `tools/fonts-src/NotoSerifSC-Regular.ttf`
 - `tools/fonts-src/NotoSerifSC-SemiBold.ttf`
 </details>
 
-字体许可：SIL Open Font License 1.1（见 `public/fonts/OFL-LXGW-WenKai-Lite.txt` 与 `public/fonts/OFL-NotoSerifSC.txt`）。
+Font license: SIL Open Font License 1.1 (see `public/fonts/OFL-LXGW-WenKai-Lite.txt` and `public/fonts/OFL-NotoSerifSC.txt`).
 
-### 配置排版字体
+### Typography settings
 
-在开发模式下打开 Theme Console（`/admin/theme/` →「排版字体」），可分别设置正文、文案、等宽和品牌字体，保存后在下次构建时生效。选项包括系统字体、自托管字体，以及构建时下载并自托管的在线字体，页面加载不访问第三方字体服务；内置选项以外的字体在 `src/lib/fonts/registry.ts` 中注册。详见 [Theme Console 配置指南 →「排版字体」](https://astro.whono.me/archive/theme-console-guide/)。
+In development, open the Theme Console (`/admin/theme/` → "Typography") to configure the body text, copy, monospace, and brand fonts independently; changes apply on the next build. Options include system fonts, self-hosted fonts, and online fonts downloaded and self-hosted at build time — browsers never contact third-party font services. Fonts beyond the built-in options are registered in `src/lib/fonts/registry.ts`. See the [Theme Console guide → "Typography"](https://astro.whono.me/archive/theme-console-guide/) for details.
 
-运行 `npm run check:font-charset` 可检查字符集和字体子集是否与站点内容一致；检查失败时，按提示运行 `npm run font:build` 重新生成。
+Run `npm run check:font-charset` to verify that the charset and font subsets match the site content. If it fails, follow the prompt to run `npm run font:build`.
 
-### 配置站点图标
+### Site icon settings
 
-在开发模式下打开 Theme Console（`/admin/theme/` →「站点设置」→「站点图标」），可上传正方形 PNG 分别自定义浏览器标签页图标与移动端触摸图标。上传文件以内容哈希命名写入 `public/images/site/`，替换后不受浏览器图标缓存影响；保存并重新构建后生效。
+In development, open the Theme Console (`/admin/theme/` → "Site" → site icons) to upload square PNG files for the browser tab favicon and the mobile touch icon. Uploads are written to `public/images/site/` with content-hash file names, so replaced icons are not affected by browser favicon caching; changes apply after saving and rebuilding.
 
-自定义标签页图标（SVG 或 PNG 任一）后，另一空槽位不再输出主题默认图标，避免部分浏览器继续显示默认图标；触摸图标独立回退，未自定义时保持主题默认。SVG 图标暂不支持在控制台上传，可直接替换 `public/favicon.svg`，或在 `src/data/settings/site.json` 的 `favicon.svg` 中填写 `public/**` 下的 SVG 路径。
+Once either tab icon slot (SVG or PNG) is customized, the other empty slot no longer emits the theme default icon, so browsers do not keep showing the default logo; the touch icon falls back independently and keeps the theme default until customized. SVG upload is not supported in the console yet; replace `public/favicon.svg` directly, or point `favicon.svg` in `src/data/settings/site.json` at an SVG under `public/**`.
 
 
 ## RSS
 
-- `/rss.xml`（默认 RSS；与 `/archive/rss.xml` 使用同源归档数据）
-- `/archive/rss.xml`（归档订阅）
+- `/rss.xml` (default feed; uses the same archive items as `/archive/rss.xml`)
+- `/archive/rss.xml` (archive feed)
 - `/essay/rss.xml`
 
-部署时建议设置 `SITE_URL`（影响 RSS/OG/canonical 的绝对链接）。
+Setting `SITE_URL` is recommended for deployment (affects absolute links in RSS/OG/canonical).
 
 
-## 贡献
+## Contributing
 
-欢迎创建 Issue 来报告问题或提出想法。
-欢迎提交 Pull Request 参与开发，建议从 feature/* 分支发起。
+Issues are welcome for bug reports and ideas.
+Pull requests are welcome; using a `feature/*` branch is recommended.
 
-### Fork 同步上游
+### Sync Upstream in a Fork
 
 ```bash
 git remote add upstream https://github.com/cxro/astro-whono.git
@@ -260,11 +259,11 @@ git push origin main --tags
 ```
 
 
-## 致谢
+## Acknowledgements
 
-- 感谢 [elizen/elizen-blog](https://github.com/elizen/elizen-blog)，这是本主题设计的起点，其风格源自Hugo 主题  [yihui/hugo-ivy](https://github.com/yihui/hugo-ivy)
+- Thanks to [elizen/elizen-blog](https://github.com/elizen/elizen-blog), the starting point of this theme design, which is inspired by the Hugo theme [yihui/hugo-ivy](https://github.com/yihui/hugo-ivy)
 
 
-## 许可证
+## License
 
-License：MIT
+License: MIT
