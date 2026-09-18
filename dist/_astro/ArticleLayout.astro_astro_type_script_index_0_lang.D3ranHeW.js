@@ -1,0 +1,1 @@
+import{i as e,n as t}from"./lightbox.15y4BTir.js";e(),t({dialogId:`lightbox`,containerSelector:`.prose`,enableZoom:!1,enablePan:!1,enableSwipeDownClose:!1});

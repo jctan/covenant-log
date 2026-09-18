@@ -1,0 +1,7 @@
+
+import __ASTRO_IMAGE_IMPORT_0 from "./theme-console/theme-console-home.webp?astroContentImageFlag=&importer=src%2Fcontent%2Fessay%2Ftheme-console-guide.md";
+import __ASTRO_IMAGE_IMPORT_1 from "./theme-console/theme-console-inner-pages.webp?astroContentImageFlag=&importer=src%2Fcontent%2Fessay%2Ftheme-console-guide.md";
+import __ASTRO_IMAGE_IMPORT_2 from "./theme-console/theme-console-sidebar.webp?astroContentImageFlag=&importer=src%2Fcontent%2Fessay%2Ftheme-console-guide.md";
+import __ASTRO_IMAGE_IMPORT_3 from "./theme-console/theme-console-site.webp?astroContentImageFlag=&importer=src%2Fcontent%2Fessay%2Ftheme-console-guide.md";
+export default new Map([["./theme-console/theme-console-home.webp?astroContentImageFlag=&importer=src%2Fcontent%2Fessay%2Ftheme-console-guide.md", __ASTRO_IMAGE_IMPORT_0], ["./theme-console/theme-console-inner-pages.webp?astroContentImageFlag=&importer=src%2Fcontent%2Fessay%2Ftheme-console-guide.md", __ASTRO_IMAGE_IMPORT_1], ["./theme-console/theme-console-sidebar.webp?astroContentImageFlag=&importer=src%2Fcontent%2Fessay%2Ftheme-console-guide.md", __ASTRO_IMAGE_IMPORT_2], ["./theme-console/theme-console-site.webp?astroContentImageFlag=&importer=src%2Fcontent%2Fessay%2Ftheme-console-guide.md", __ASTRO_IMAGE_IMPORT_3]]);
+		
