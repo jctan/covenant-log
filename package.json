@@ -1,16 +1,16 @@
 {
-  "name": "astro-whono",
+  "name": "covenant-logs",
   "version": "0.5.0",
   "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cxro/astro-whono.git"
+    "url": "https://github.com/jctan/covenant-logs.git"
   },
   "bugs": {
-    "url": "https://github.com/cxro/astro-whono/issues"
+    "url": "https://github.com/jctan/covenant-logs/issues"
   },
-  "homepage": "https://astro.whono.me",
+  "homepage": "https://johnctan.com",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"

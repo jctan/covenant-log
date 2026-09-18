@@ -17,11 +17,11 @@ if (
 
 export const site = {
   url: hasSiteUrl ? siteUrl : fallbackSiteUrl,
-  title: 'Astro Themes by Whono',
-  brandTitle: 'Whono',
-  author: 'Whono',
+  title: 'Covenant Logs',
+  brandTitle: 'Covenant Logs',
+  author: 'John Tan',
   authorAvatar: 'author/avatar.webp',
-  description: 'A showcase site for an Astro theme: lightweight, maintainable, and reusable.'
+  description: 'Doing God\'s work through Tech and AI. Documenting on Cloud, Security, and AI.',
 };
 
 export const PAGE_SIZE_ARCHIVE = 12;
