@@ -66,7 +66,7 @@ export const normalizeAboutDirectiveAvatarSource = (value, base = '/') => {
   return `${baseNormalized}${normalized}`.replace(/\/{2,}/g, '/');
 };
 
-const getAvatarLetter = (name) => Array.from(name.trim())[0] ?? '友';
+const getAvatarLetter = (name) => Array.from(name.trim())[0] ?? 'F';
 
 const getText = (node) => {
   if (!node) return '';
@@ -261,12 +261,12 @@ const createSiteInfoNode = (node) => {
 
   const safeUrl = normalizeAboutDirectiveFriendUrl(url);
   const fieldChildren = [
-    createSiteInfoField('名称', name),
-    createSiteInfoField('链接', url, safeUrl
+    createSiteInfoField('Name', name),
+    createSiteInfoField('Link', url, safeUrl
       ? createElement('a', { href: safeUrl }, [createText(url)])
       : null),
-    createSiteInfoField('简介', description),
-    createSiteInfoField('头像', avatar)
+    createSiteInfoField('Description', description),
+    createSiteInfoField('Avatar', avatar)
   ].filter(Boolean);
 
   const copyText = createSiteInfoCopyText({ name, url, description, avatar });
@@ -279,8 +279,8 @@ const createSiteInfoNode = (node) => {
           'data-about-site-info-copy': '',
           'data-about-copy-text': copyText,
           'data-state': 'idle',
-          'aria-label': '复制友链信息',
-          title: '复制友链信息'
+          'aria-label': 'Copy friend link info',
+          title: 'Copy friend link info'
         }, [createCopyIconNode(), createCheckIconNode()])
       ]
     : [];
@@ -356,7 +356,7 @@ const groupDirectiveRuns = (parent) => {
       index = nextIndex;
       nextChildren.push(createElement('div', {
         className: ['qa-list'],
-        'aria-label': '常见问题'
+        'aria-label': 'FAQ'
       }, faqItems));
       continue;
     }

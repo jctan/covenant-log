@@ -12,7 +12,7 @@
   },
   "articleMeta": {
     "showDate": true,
-    "dateLabel": "发布于：",
+    "dateLabel": "Published:",
     "showTags": true,
     "showWordCount": true,
     "showReadingTime": true
@@ -21,8 +21,8 @@
     "sidebarDivider": "default"
   },
   "typography": {
-    "readable": "noto-serif-sc",
-    "copy": "lxgw-wenkai-lite",
+    "readable": "system-serif",
+    "copy": "noto-sans-sc",
     "mono": "system-mono",
     "brand": "serif-georgia"
   }

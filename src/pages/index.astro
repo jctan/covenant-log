@@ -675,11 +675,11 @@ body[data-reading="immersive"] .reader-toggle .icon-book-open {
             {resolvedIntroMoreLinks.map((link, index) => (
               <>
                 {' '}
-                {index > 0 && <>或{' '}</>}
+                {index > 0 && <>or{' '}</>}
                 {index === resolvedIntroMoreLinks.length - 1 ? (
                   <span class="intro__link-tail">
                     <a href={withBase(link.href)}>{link.label}</a>
-                    <span class="intro__tail-punct">。</span>
+                    <span class="intro__tail-punct">.</span>
                   </span>
                 ) : (
                   <a href={withBase(link.href)}>{link.label}</a>
@@ -692,7 +692,7 @@ body[data-reading="immersive"] .reader-toggle .icon-book-open {
     )
   }
 
-  <h2 class="section-title section-title--index">索引</h2>
+  <h2 class="section-title section-title--index">Index</h2>
 
   <div class="list">
     {latest.map((entry) => {

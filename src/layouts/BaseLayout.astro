@@ -61,7 +61,7 @@ const typographyApiFonts = selectedApiFonts.filter((font) =>
 );
 if (import.meta.env.DEV && typographyApiFonts.length !== selectedApiFonts.length) {
   console.warn(
-    '[fonts] ui.typography 选中的字体未注册于本次启动的 fonts 配置，已跳过 <Font> 渲染；重启 dev server 生效。'
+    '[fonts] The font selected in ui.typography is not registered in this dev server run\'s fonts config; skipping <Font> render. Restart the dev server to apply it.'
   );
 }
 const canonical = (hasSiteUrl && Astro.site)
@@ -199,7 +199,7 @@ const adminUiPrefsScriptHref = isDevAdminPage
       )
     }
     {devUiPrefsStylesHref ? <link rel="stylesheet" href={devUiPrefsStylesHref} /> : null}
-    {typographyApiFonts.map((font) => <Font cssVariable={`--font-${font.id}`} />)}
+    {typographyApiFonts.map((font) => <Font cssVariable={`--font-${font.id}` as never} />)}
     <slot name="head" />
   </head>
   <body
@@ -208,7 +208,7 @@ const adminUiPrefsScriptHref = isDevAdminPage
     data-dev-ui={isDev ? 'true' : undefined}
     data-admin-dev={adminDevState}
   >
-    <a class="skip-link" href="#content">跳到内容</a>
+    <a class="skip-link" href="#content">Skip to content</a>
     <div class="shell" data-sidebar-divider={sidebarDividerVariant}>
       <Sidebar
         siteTitle={brandTitle}
@@ -230,8 +230,8 @@ const adminUiPrefsScriptHref = isDevAdminPage
       <button
         type="button"
         class="icon-button float-action scroll-top"
-        aria-label="回到顶部"
-        title="回到顶部"
+        aria-label="Back to top"
+        title="Back to top"
         aria-hidden="true"
         tabindex="-1"
       >

@@ -13,8 +13,8 @@ export async function buildArchiveFeed(context, overrides = {}) {
   });
 
   return rss({
-    title: overrides.title ?? `${settings.site.title} · 归档`,
-    description: overrides.description ?? '归档更新',
+    title: overrides.title ?? `${settings.site.title} · Archive`,
+    description: overrides.description ?? 'Archive updates',
     site: context.site,
     items: archiveItems.map((entry) => ({
       title: entry.data.title,

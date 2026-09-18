@@ -52,10 +52,10 @@ const getNextThemeMode = (mode: ThemeMode): ThemeMode => {
 
 const getThemeModeLabel = (mode: ThemeMode, theme: Theme): string => {
   if (mode === 'system') {
-    return `跟随系统（${theme === 'dark' ? '深色模式' : '浅色模式'}）`;
+    return `Follow system (${theme === 'dark' ? 'Dark mode' : 'Light mode'})`;
   }
 
-  return theme === 'dark' ? '深色模式' : '浅色模式';
+  return theme === 'dark' ? 'Dark mode' : 'Light mode';
 };
 
 const setControlLabel = (element: HTMLElement, label: string) => {

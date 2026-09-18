@@ -192,7 +192,7 @@
 }
 
 .admin-images-copy-btn::after {
-  content: '已复制';
+  content: 'Copied';
   position: absolute;
   top: 50%;
   right: calc(100% + 6px);
