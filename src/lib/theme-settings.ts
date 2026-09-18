@@ -402,11 +402,11 @@ const THEME_SETTINGS_INVALID_MESSAGE =
   'Detected a corrupted settings JSON config file. Theme Console has stopped reading and disabled saving — fix the file, then retry.';
 
 const LEGACY_INTRO_LEAD =
-  'This is an open-source writing theme and sample content library, covering Essay, Memo, Archive, and Bits. See the README for usage and configuration.';
+  'This is an open-source writing theme and sample content library, covering Posts, Memo, Archive, and Bits. See the README for usage and configuration.';
 const LEGACY_INTRO_MORE = 'For more posts, visit';
-const LEGACY_ESSAY_TITLE = 'Essay';
+const LEGACY_ESSAY_TITLE = 'Posts';
 const LEGACY_ARCHIVE_TITLE = 'Archive';
-const LEGACY_ESSAY_SUBTITLE = 'Essays and Miscellany';
+const LEGACY_ESSAY_SUBTITLE = 'Posts and Miscellany';
 const LEGACY_BITS_TITLE = 'Bits';
 const LEGACY_BITS_SUBTITLE = 'Life is more than long-form';
 const LEGACY_ABOUT_TITLE = 'About';
@@ -428,7 +428,7 @@ const LEGACY_SOCIAL_LINKS: SiteSocialLinks = {
   resolvedSocialItems: []
 };
 const LEGACY_NAV: SidebarNavItem[] = [
-  { id: 'essay', label: 'Essay', ornament: ADMIN_NAV_ORNAMENT_DEFAULT, visible: true, order: 1 },
+  { id: 'essay', label: 'Posts', ornament: ADMIN_NAV_ORNAMENT_DEFAULT, visible: true, order: 1 },
   { id: 'bits', label: 'Bits', ornament: ADMIN_NAV_ORNAMENT_DEFAULT, visible: true, order: 2 },
   { id: 'memo', label: 'Memo', ornament: ADMIN_NAV_ORNAMENT_DEFAULT, visible: true, order: 3 },
   { id: 'archive', label: 'Archive', ornament: ADMIN_NAV_ORNAMENT_DEFAULT, visible: true, order: 4 },

@@ -6,7 +6,7 @@ export const ADMIN_IMAGE_DEFAULT_LIST_LIMIT = 20;
 
 export const ADMIN_IMAGE_BROWSE_GROUP_LABELS = {
   all: 'All',
-  essay: 'Essay',
+  essay: 'Posts',
   bits: 'Bits',
   memo: 'Memo',
   assets: 'Config assets',

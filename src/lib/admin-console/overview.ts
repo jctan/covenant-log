@@ -152,7 +152,7 @@ type RecentSource = {
 };
 
 const COLLECTION_LABELS: Record<AdminOverviewCollectionKey, string> = {
-  essay: 'Essay',
+  essay: 'Posts',
   bits: 'Bits',
   memo: 'Memo'
 };

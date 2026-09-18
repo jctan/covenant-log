@@ -90,7 +90,7 @@ export const ADMIN_HOME_INTRO_LINK_LIMIT = 2;
 export const ADMIN_HOME_INTRO_LINK_KEY_SET: ReadonlySet<HomeIntroLinkKey> = new Set(ADMIN_HOME_INTRO_LINK_KEYS);
 export const ADMIN_HOME_INTRO_LINK_OPTIONS = [
   { id: 'archive', label: 'Archive', href: '/archive/' },
-  { id: 'essay', label: 'Essay', href: '/essay/' },
+  { id: 'essay', label: 'Posts', href: '/essay/' },
   { id: 'bits', label: 'Bits', href: '/bits/' },
   { id: 'memo', label: 'Memo', href: '/memo/' },
   { id: 'about', label: 'About', href: '/about/' },

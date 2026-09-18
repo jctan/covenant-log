@@ -18,10 +18,12 @@
   },
   "socialLinks": {
     "github": "https://github.com/jctan/covenant-log",
+    "x": null,
     "email": "johnctan7@gmail.com",
     "presetOrder": {
       "github": 1,
-      "email": 2
+      "x": 2,
+      "email": 3
     },
     "custom": []
   }

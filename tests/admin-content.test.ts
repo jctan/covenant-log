@@ -30,7 +30,7 @@ const mockedSourceIndex = vi.mocked(sourceIndexModule);
 const { getAdminContentEntryListHref } = contentRoutesModule;
 
 const COLLECTION_LABELS: Record<AdminContentCollectionKey, string> = {
-  essay: 'Essay',
+  essay: 'Posts',
   bits: 'Bits',
   memo: 'Memo',
   about: 'About'
@@ -335,7 +335,7 @@ describe('admin-console/content', () => {
     });
     expect(pageData.collectionOptions).toEqual([
       { value: 'all', label: 'All content', count: 5 },
-      { value: 'essay', label: 'Essay', count: 2 },
+      { value: 'essay', label: 'Posts', count: 2 },
       { value: 'bits', label: 'Bits', count: 1 },
       { value: 'memo', label: 'Memo', count: 1 },
       { value: 'about', label: 'About', count: 1 }

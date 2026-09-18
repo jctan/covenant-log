@@ -34,7 +34,7 @@ export const ADMIN_CONTENT_COLLECTION_KEYS = ['essay', 'bits', 'memo', 'about'] 
 export const ADMIN_CONTENT_COLLECTION_CAPABILITIES = {
   essay: {
     collection: 'essay',
-    label: 'Essay',
+    label: 'Posts',
     consoleSectionHref: '/essay/',
     fixedPage: null,
     visible: true,

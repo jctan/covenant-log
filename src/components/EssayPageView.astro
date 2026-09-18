@@ -31,7 +31,7 @@ const {
   }
 } = getThemeSettings();
 
-const pageTitleText = page.essay.title || 'Essay';
+const pageTitleText = page.essay.title || 'Posts';
 const pageTitleParts = [pageTitleText, currentPage > 1 ? `Page ${currentPage}` : null].filter(Boolean);
 const pageTitle = pageTitleParts.join(' · ');
 const subtitleText = joinPageSubtitleText(

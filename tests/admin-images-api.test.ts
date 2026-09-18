@@ -491,7 +491,7 @@ describe('admin images api', () => {
       expect.arrayContaining([
         expect.objectContaining({
           value: 'src/content/essay/guide',
-          label: 'Essay · Attachment mapping test',
+          label: 'Posts · Attachment mapping test',
           count: 1
         })
       ])
@@ -510,7 +510,7 @@ describe('admin images api', () => {
           value: 'src/content/essay/guide-assets/hero.png',
           origin: 'src/content',
           owner: 'src/content/essay/guide',
-          ownerLabel: 'Essay · Attachment mapping test'
+          ownerLabel: 'Posts · Attachment mapping test'
         })
       ])
     );

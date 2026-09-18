@@ -195,7 +195,7 @@ const RELATIVE_CONTENT_ASSET_RE = /!\[[^\]]*]\(([^)]+)\)|<img[^>]+src=["']([^"']
 const ADMIN_IMAGE_SHORT_CACHE_TTL_MS = 3_000;
 const ADMIN_IMAGE_SHORT_CACHE_MAX_ENTRIES = 32;
 const CONTENT_COLLECTION_LABELS = {
-  essay: 'Essay',
+  essay: 'Posts',
   bits: 'Bits',
   memo: 'Memo'
 } as const;
