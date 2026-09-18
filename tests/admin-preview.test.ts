@@ -298,7 +298,7 @@ describe('admin preview api', () => {
     expect(payload.result.html).toContain('href="https://alice.example/"');
     expect(payload.result.html).toContain('src="/friends/alice.webp"');
     expect(payload.result.html).toContain('Engineer');
-    expect(payload.result.html).toContain('<div class="qa-list" aria-label="常见问题">');
+    expect(payload.result.html).toContain('<div class="qa-list" aria-label="FAQ">');
     expect(payload.result.html).toContain('<summary class="qa-question">');
     expect(payload.result.html).toContain('能编辑吗？');
     expect(payload.result.html).toContain('class="about-site-info"');

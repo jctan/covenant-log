@@ -17,8 +17,8 @@ describe('fonts/registry', () => {
         typography: { readable: 'bogus', copy: 'system-mono', mono: 'jetbrains-mono', brand: 'system-mono' }
       })
     ).toEqual({
-      readable: 'noto-serif-sc',
-      copy: 'lxgw-wenkai-lite',
+      readable: 'system-serif',
+      copy: 'noto-sans-sc',
       mono: 'jetbrains-mono',
       brand: 'serif-georgia'
     });
@@ -35,9 +35,10 @@ describe('fonts/registry', () => {
   });
 
   it('selects only chosen astro-fonts-api entries', () => {
-    expect(getSelectedAstroApiFonts(THEME_TYPOGRAPHY_DEFAULT)).toEqual([]);
+    const defaultSelected = getSelectedAstroApiFonts(THEME_TYPOGRAPHY_DEFAULT);
+    expect(defaultSelected.map((entry) => entry.id)).toEqual(['noto-sans-sc']);
     const selected = getSelectedAstroApiFonts({ ...THEME_TYPOGRAPHY_DEFAULT, mono: 'jetbrains-mono' });
-    expect(selected.map((entry) => entry.id)).toEqual(['jetbrains-mono']);
+    expect(selected.map((entry) => entry.id).sort()).toEqual(['jetbrains-mono', 'noto-sans-sc']);
   });
 
   it('keeps CJK api entries downloadable with explicit chinese subsets', () => {
@@ -55,7 +56,7 @@ describe('fonts/registry', () => {
       })
     ).toEqual({
       readable: 'noto-sans-sc',
-      copy: 'lxgw-wenkai-lite',
+      copy: 'noto-sans-sc',
       mono: 'fira-code',
       brand: 'serif-georgia'
     });

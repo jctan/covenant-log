@@ -222,7 +222,7 @@ describe('admin-console/shared', () => {
 
     expect(canonical.ui.typography).toEqual({
       readable: 'lxgw-wenkai-lite',
-      copy: 'lxgw-wenkai-lite',
+      copy: 'noto-sans-sc',
       mono: 'system-mono',
       brand: 'serif-georgia'
     });
