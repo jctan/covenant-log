@@ -17,7 +17,7 @@ let panelEl = $state<HTMLElement | null>(null);
 let closeButtonEl = $state<HTMLButtonElement | null>(null);
 
 const getResultDialogUnit = (kind: ContentBulkResultDialogKind): string =>
-  kind === 'status' ? '内容' : '文件';
+  kind === 'status' ? 'items' : 'files';
 
 const getResultHandledCount = (dialog: ResultDialog): number =>
   dialog.summary.succeeded + dialog.summary.unchanged;
@@ -28,25 +28,25 @@ const getResultUnhandledCount = (dialog: ResultDialog): number =>
 const getResultDialogLead = (dialog: ResultDialog): string => {
   const handled = getResultHandledCount(dialog);
   const unhandled = getResultUnhandledCount(dialog);
-  if (unhandled > 0 && handled > 0) return `${dialog.title}完成，部分${getResultDialogUnit(dialog.kind)}未处理。`;
-  if (unhandled > 0 && dialog.kind === 'export') return `${dialog.title}未完成，未生成下载文件。`;
-  if (unhandled > 0 && dialog.kind === 'delete') return `${dialog.title}未完成，文件未移入回收站。`;
-  if (unhandled > 0) return `${dialog.title}未完成，列表状态未更新。`;
-  if (dialog.note) return `${dialog.title}完成，${dialog.note}`;
-  if (dialog.kind === 'export') return `${dialog.title}完成，已保存为 zip 文件。`;
-  if (dialog.kind === 'delete') return `${dialog.title}完成，文件已移入回收站。`;
-  return `${dialog.title}完成，列表将显示最新状态。`;
+  if (unhandled > 0 && handled > 0) return `${dialog.title} finished, but some ${getResultDialogUnit(dialog.kind)} weren't processed.`;
+  if (unhandled > 0 && dialog.kind === 'export') return `${dialog.title} didn't finish — no download file was generated.`;
+  if (unhandled > 0 && dialog.kind === 'delete') return `${dialog.title} didn't finish — files weren't moved to the recycle bin.`;
+  if (unhandled > 0) return `${dialog.title} didn't finish — the list status wasn't updated.`;
+  if (dialog.note) return `${dialog.title} finished — ${dialog.note}`;
+  if (dialog.kind === 'export') return `${dialog.title} finished — saved as a zip file.`;
+  if (dialog.kind === 'delete') return `${dialog.title} finished — files moved to the recycle bin.`;
+  return `${dialog.title} finished — the list will show the latest status.`;
 };
 
 const getResultDialogDescription = (dialog: ResultDialog): string => {
   const succeeded = dialog.summary.succeeded;
   const unchanged = dialog.summary.unchanged;
   const unhandled = getResultUnhandledCount(dialog);
-  const parts = [`共处理 ${dialog.summary.processed} 个`];
-  if (succeeded > 0) parts.push(`成功 ${succeeded} 个`);
-  if (unchanged > 0) parts.push(`无需修改 ${unchanged} 个`);
-  if (unhandled > 0) parts.push(`未处理 ${unhandled} 个`);
-  return `${parts.join('，')}。`;
+  const parts = [`${dialog.summary.processed} processed`];
+  if (succeeded > 0) parts.push(`${succeeded} succeeded`);
+  if (unchanged > 0) parts.push(`${unchanged} unchanged`);
+  if (unhandled > 0) parts.push(`${unhandled} not processed`);
+  return `${parts.join(', ')}.`;
 };
 
 const getResultDialogState = (dialog: ResultDialog): 'default' | 'warn' =>
@@ -104,16 +104,16 @@ $effect(() => {
           {/each}
         </ol>
         {#if dialog.extraDetailCount > 0}
-          <p class="admin-content-bulk-result__more">还有 {dialog.extraDetailCount} 个{getResultDialogUnit(dialog.kind)}</p>
+          <p class="admin-content-bulk-result__more">{dialog.extraDetailCount} more {getResultDialogUnit(dialog.kind)}</p>
         {:else if dialog.truncated}
-          <p class="admin-content-bulk-result__more">还有更多{getResultDialogUnit(dialog.kind)}</p>
+          <p class="admin-content-bulk-result__more">More {getResultDialogUnit(dialog.kind)}</p>
         {/if}
       {:else if dialog.truncated}
-        <p class="admin-content-bulk-result__more">还有更多{getResultDialogUnit(dialog.kind)}</p>
+        <p class="admin-content-bulk-result__more">More {getResultDialogUnit(dialog.kind)}</p>
       {/if}
     </div>
     <footer class="admin-modal__actions">
-      <button bind:this={closeButtonEl} class="admin-btn admin-btn--primary admin-btn--compact" type="button" onclick={closeDialog}>知道了</button>
+      <button bind:this={closeButtonEl} class="admin-btn admin-btn--primary admin-btn--compact" type="button" onclick={closeDialog}>Got it</button>
     </footer>
   </div>
 </div>

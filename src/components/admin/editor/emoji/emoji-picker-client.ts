@@ -11,30 +11,30 @@ type CreateEmojiPickerOptions = {
 };
 
 const emojiPickerI18n: I18n = {
-  categoriesLabel: '分类',
-  emojiUnsupportedMessage: '当前浏览器不支持彩色 emoji。',
-  favoritesLabel: '最近使用',
-  loadingMessage: '加载中...',
-  networkErrorMessage: '无法加载 emoji 数据。',
-  regionLabel: '表情选择器',
-  searchDescription: '有搜索结果时，可用上下方向键选择，按回车插入。',
-  searchLabel: '搜索表情',
-  searchResultsLabel: '搜索结果',
-  skinToneDescription: '展开后可用上下方向键选择肤色，按回车确认。',
-  skinToneLabel: '选择肤色，当前为 {skinTone}',
-  skinTonesLabel: '肤色',
-  skinTones: ['默认', '浅色', '中浅色', '中等', '中深色', '深色'],
+  categoriesLabel: 'Categories',
+  emojiUnsupportedMessage: "This browser doesn't support color emoji.",
+  favoritesLabel: 'Recently used',
+  loadingMessage: 'Loading...',
+  networkErrorMessage: 'Unable to load emoji data.',
+  regionLabel: 'Emoji picker',
+  searchDescription: 'When there are search results, use the up and down arrow keys to select one, then press Enter to insert it.',
+  searchLabel: 'Search emoji',
+  searchResultsLabel: 'Search results',
+  skinToneDescription: 'Once expanded, use the up and down arrow keys to select a skin tone, then press Enter to confirm.',
+  skinToneLabel: 'Choose a skin tone, currently {skinTone}',
+  skinTonesLabel: 'Skin tone',
+  skinTones: ['Default', 'Light', 'Medium-Light', 'Medium', 'Medium-Dark', 'Dark'],
   categories: {
-    custom: '自定义',
-    'smileys-emotion': '表情',
-    'people-body': '人物',
-    'animals-nature': '动物与自然',
-    'food-drink': '食物',
-    'travel-places': '旅行与地点',
-    activities: '活动',
-    objects: '物品',
-    symbols: '符号',
-    flags: '旗帜'
+    custom: 'Custom',
+    'smileys-emotion': 'Smileys & Emotion',
+    'people-body': 'People & Body',
+    'animals-nature': 'Animals & Nature',
+    'food-drink': 'Food & Drink',
+    'travel-places': 'Travel & Places',
+    activities: 'Activities',
+    objects: 'Objects',
+    symbols: 'Symbols',
+    flags: 'Flags'
   }
 };
 
@@ -209,7 +209,7 @@ export const createAdminEditorEmojiPicker = async ({
   const picker = new Picker({
     dataSource,
     i18n: emojiPickerI18n,
-    locale: 'zh-CN',
+    locale: 'en',
     skinToneEmoji: '👋'
   });
   const handleEmojiClick = (event: Event) => {

@@ -1,11 +1,11 @@
 {
-  "title": "Astro Themes by Whono",
-  "description": "A showcase site for a minimal two-column Astro theme",
+  "title": "Covenant Log",
+  "description": "Notes on Cloud, Security, and AI",
   "defaultLocale": "en",
   "footer": {
-    "startYear": 2025,
+    "startYear": 2026,
     "showCurrentYear": true,
-    "copyright": "Whono · Theme Demo · by cxro"
+    "copyright": "Covenant Log"
   },
   "adminOverview": {
     "publicVisible": true,
@@ -17,11 +17,11 @@
     "appleTouchIcon": null
   },
   "socialLinks": {
-    "github": "https://github.com/cxro/astro-whono",
-    "email": "Astro@Whono.me",
+    "github": "https://github.com/jctan/covenant-log",
+    "email": "johnctan7@gmail.com",
     "presetOrder": {
       "github": 1,
-      "email": 3
+      "email": 2
     },
     "custom": []
   }

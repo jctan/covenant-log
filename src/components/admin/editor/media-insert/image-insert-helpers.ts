@@ -12,7 +12,7 @@ import {
   normalizeInlineText
 } from './editor-html-escape';
 
-export const REMOTE_IMAGE_URL_ERROR = '请输入 https:// 开头的图片链接';
+export const REMOTE_IMAGE_URL_ERROR = 'Enter an image link starting with https://';
 
 export type ImageInsertPresentation = EssayImageInsertPresentation;
 export type ImageDisplaySize = EssayImageDisplaySize;

@@ -1,13 +1,13 @@
 export const FIXED_PAGE_EDITOR_COPY = {
-  actionLabel: '页面操作',
-  moreLabel: '更多页面操作',
-  saveLabel: '保存页面',
-  outlinePanelLabel: '页面目录',
-  outlineHeadingsTabLabel: '正文目录',
-  leaveConfirm: '当前页面尚未保存，确认离开此页面？',
-  saving: '正在保存页面',
-  saved: '页面已保存',
-  unsupportedImageInsert: '当前页面不支持图片插入',
-  unsupportedGalleryInsert: '当前页面不支持图片画廊',
-  saveFallbackError: '保存失败，请检查当前页面与磁盘状态'
+  actionLabel: 'Page actions',
+  moreLabel: 'More page actions',
+  saveLabel: 'Save page',
+  outlinePanelLabel: 'Page outline',
+  outlineHeadingsTabLabel: 'Body outline',
+  leaveConfirm: "This page hasn't been saved yet — leave anyway?",
+  saving: 'Saving page',
+  saved: 'Page saved',
+  unsupportedImageInsert: "This page doesn't support inserting images",
+  unsupportedGalleryInsert: "This page doesn't support image galleries",
+  saveFallbackError: 'Save failed — check the current page and disk state'
 } as const;

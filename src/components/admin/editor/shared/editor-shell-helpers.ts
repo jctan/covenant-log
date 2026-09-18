@@ -86,7 +86,7 @@ export const EDITOR_OUTLINE_VISIBLE_MIN_INLINE_SIZE = {
 } as const;
 export const EDITOR_SCROLLBAR_VISIBILITY_TIMEOUT_MS = 800;
 export const EDITOR_OUTLINE_TARGET_SCROLL_OFFSET_RATIO = 0.18;
-export const EDITOR_SINGLE_VIEW_RETURN_LABEL = '返回编辑与预览双区视图';
+export const EDITOR_SINGLE_VIEW_RETURN_LABEL = 'Return to the edit and preview split view';
 export const DEFAULT_EDITOR_SIDE_PANEL_STACKED_RATIO = 45;
 export const EDITOR_SIDE_PANEL_STACKED_RATIO_STEP = 5;
 export const EDITOR_SIDE_PANEL_OUTLINE_MIN_BLOCK_SIZE = 120;
@@ -211,12 +211,12 @@ export const getEditorLayoutToggleLabel = ({
   editorLayout: EditorLayoutMode;
 }): string =>
   splitBothIsCompact
-    ? '展开上下双区'
+    ? 'Expand to stacked split view'
     : stackedCanReturnToCompact
-      ? '返回单区视图'
+      ? 'Return to single-pane view'
       : editorLayout === 'split'
-        ? '切换到上下布局'
-        : '切换到左右布局';
+        ? 'Switch to stacked layout'
+        : 'Switch to side-by-side layout';
 
 export const getEditorLayoutToggleIcon = ({
   stackedCanReturnToCompact,
@@ -235,19 +235,19 @@ export const getEditorEditViewToggleLabel = ({
   splitBothIsCompact: boolean;
 }): string =>
   editorViewMode === 'edit'
-    ? '取消仅编辑视图'
+    ? 'Exit edit-only view'
     : splitBothIsCompact
-      ? '当前宽度显示编辑区；点击固定为仅编辑'
-      : '仅显示编辑区';
+      ? 'Currently showing the edit pane at this width; click to pin edit-only'
+      : 'Show edit pane only';
 
 export const getEditorPreviewViewToggleLabel = (editorViewMode: EditorViewMode): string =>
-  editorViewMode === 'preview' ? '取消仅预览视图' : '仅显示预览区';
+  editorViewMode === 'preview' ? 'Exit preview-only view' : 'Show preview pane only';
 
 export const getEditorCompactPaneToggleText = (compactPaneMode: EditorPaneMode): string =>
-  compactPaneMode === 'edit' ? '预览' : '编辑';
+  compactPaneMode === 'edit' ? 'Preview' : 'Edit';
 
 export const getEditorCompactPaneToggleLabel = (compactPaneMode: EditorPaneMode): string =>
-  compactPaneMode === 'edit' ? '显示预览区' : '显示编辑区';
+  compactPaneMode === 'edit' ? 'Show preview pane' : 'Show edit pane';
 
 export const getEditorScrollSyncToggleLabel = ({
   available,
@@ -256,7 +256,7 @@ export const getEditorScrollSyncToggleLabel = ({
   available: boolean;
   enabled: boolean;
 }): string =>
-  available ? (enabled ? '关闭同步滚动' : '开启同步滚动') : '单视图下不可同步滚动';
+  available ? (enabled ? 'Turn off synced scrolling' : 'Turn on synced scrolling') : "Synced scrolling isn't available in single-pane view";
 
 const roundEditorSidePanelRatio = (value: number): number => Math.round(value * 10) / 10;
 

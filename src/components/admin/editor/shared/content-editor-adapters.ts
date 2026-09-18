@@ -130,41 +130,41 @@ const isBitsFrontmatterIssuePath = (path: string): boolean =>
   BITS_FRONTMATTER_ISSUE_PATHS.has(path) || path.startsWith('images[');
 
 const ESSAY_FIELD_LABELS: Readonly<Record<string, string>> = {
-  title: '标题',
-  description: '摘要',
-  date: '日期',
-  publishedAt: '发布时间',
-  updatedAt: '更新日期',
-  tags: '标签',
-  draft: '草稿状态',
-  archive: '归档状态',
-  slug: '链接别名',
-  cover: '封面图',
-  badge: '徽标',
-  body: '正文'
+  title: 'Title',
+  description: 'Description',
+  date: 'Date',
+  publishedAt: 'Published at',
+  updatedAt: 'Updated date',
+  tags: 'Tags',
+  draft: 'Draft status',
+  archive: 'Archive status',
+  slug: 'Slug',
+  cover: 'Cover image',
+  badge: 'Badge',
+  body: 'Body'
 };
 
 const BITS_FIELD_LABELS: Readonly<Record<string, string>> = {
-  title: '标题',
-  description: '摘要',
-  date: '时间',
-  tags: '标签',
-  draft: '草稿状态',
-  authorName: '作者名称',
-  authorAvatar: '作者头像',
-  author: '作者',
-  images: '图片',
-  imagesText: '图片',
-  body: '正文'
+  title: 'Title',
+  description: 'Description',
+  date: 'Date',
+  tags: 'Tags',
+  draft: 'Draft status',
+  authorName: 'Author name',
+  authorAvatar: 'Author avatar',
+  author: 'Author',
+  images: 'Images',
+  imagesText: 'Images',
+  body: 'Body'
 };
 
 const MEMO_FIELD_LABELS: Readonly<Record<string, string>> = {
-  title: '标题',
-  subtitle: '副标题',
-  date: '日期',
-  draft: '生产阻断状态',
-  slug: '元信息别名',
-  body: '正文'
+  title: 'Title',
+  subtitle: 'Subtitle',
+  date: 'Date',
+  draft: 'Production block status',
+  slug: 'Metadata slug',
+  body: 'Body'
 };
 
 const buildContentEditorCapabilities = (
@@ -250,7 +250,7 @@ const ABOUT_ADAPTER: ContentEditorAdapter<AdminAboutEditorValues> = {
   cloneValues: cloneAboutValues,
   isEqualValues: isEqualContentEditorValues,
   getWriteFieldLabel: getAdminAboutWriteFieldLabel,
-  getDeleteTitle: () => '关于'
+  getDeleteTitle: () => 'About'
 };
 
 type ContentEditorAdapterMap = {
