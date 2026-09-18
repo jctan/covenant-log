@@ -47,25 +47,25 @@ const isNonNegativeInteger = (value: unknown): value is number =>
   typeof value === 'number' && Number.isInteger(value) && value >= 0;
 
 export const formatAdminImageBytes = (size: number | null): string => {
-  if (!size || size <= 0) return '大小未知';
+  if (!size || size <= 0) return 'Unknown size';
   if (size < 1024) return `${size} B`;
   if (size < 1024 * 1024) return `${(size / 1024).toFixed(size < 10 * 1024 ? 1 : 0)} KB`;
   return `${(size / (1024 * 1024)).toFixed(1)} MB`;
 };
 
 export const getAdminImageOriginLabel = (origin: AdminImageClientMeta['origin']): string => {
-  if (origin === 'public') return '公开资源';
-  if (origin === 'src/assets') return '站点素材';
-  if (origin === 'src/content') return '文章附件';
-  if (origin === 'cloud') return '云端资源';
-  return '本地资源';
+  if (origin === 'public') return 'Public asset';
+  if (origin === 'src/assets') return 'Site asset';
+  if (origin === 'src/content') return 'Post attachment';
+  if (origin === 'cloud') return 'Cloud asset';
+  return 'Local asset';
 };
 
 export const formatAdminImageMetaSummary = (
   meta: Pick<AdminImageClientMeta, 'kind' | 'origin' | 'width' | 'height' | 'size'>
 ): string => {
   if (meta.kind === 'remote') {
-    return '远程图片；不自动读取本地尺寸';
+    return 'Remote image; local dimensions are not read automatically';
   }
 
   const originLabel = getAdminImageOriginLabel(meta.origin);
@@ -73,7 +73,7 @@ export const formatAdminImageMetaSummary = (
   if (meta.width && meta.height) {
     return `${originLabel} · ${meta.width}×${meta.height} · ${sizeLabel}`;
   }
-  return `${originLabel} · 尺寸未知 · ${sizeLabel}`;
+  return `${originLabel} · Unknown dimensions · ${sizeLabel}`;
 };
 
 export const getAdminImageResponseErrors = (payload: unknown): string[] =>
@@ -95,7 +95,7 @@ const isAdminImageClientItem = (item: unknown): item is AdminImageClientItem =>
 
 const parseAdminImageClientItem = (item: unknown): AdminImageClientItem => {
   if (!isAdminImageClientItem(item)) {
-    throw new Error('图片列表响应格式无效');
+    throw new Error('Invalid image list response format');
   }
 
   return item;
@@ -115,7 +115,7 @@ export const isAdminImageClientMeta = (meta: unknown): meta is AdminImageClientM
 
 export const parseAdminImageListResponse = (payload: unknown): AdminImageListPage<AdminImageClientItem> => {
   if (!isRecord(payload) || payload.ok !== true || !isRecord(payload.result) || !Array.isArray(payload.result.items)) {
-    throw new Error('图片列表响应格式无效');
+    throw new Error('Invalid image list response format');
   }
 
   if (
@@ -123,7 +123,7 @@ export const parseAdminImageListResponse = (payload: unknown): AdminImageListPag
     || !isPositiveInteger(payload.result.totalPages)
     || !isNonNegativeInteger(payload.result.totalCount)
   ) {
-    throw new Error('图片列表响应格式无效');
+    throw new Error('Invalid image list response format');
   }
 
   return {
@@ -136,13 +136,13 @@ export const parseAdminImageListResponse = (payload: unknown): AdminImageListPag
 
 export const parseAdminImageMetaResponse = (payload: unknown): AdminImageClientMeta => {
   if (!isRecord(payload) || payload.ok !== true || !isRecord(payload.result) || !isAdminImageClientMeta(payload.result)) {
-    throw new Error('图片元数据响应格式无效');
+    throw new Error('Invalid image metadata response format');
   }
 
   return payload.result;
 };
 
-export const fetchAdminImageJson = async (url: string, fallbackMessage = '图片接口请求失败'): Promise<unknown> => {
+export const fetchAdminImageJson = async (url: string, fallbackMessage = 'Image API request failed'): Promise<unknown> => {
   const response = await fetch(url, {
     method: 'GET',
     headers: { Accept: 'application/json' },
