@@ -69,9 +69,9 @@ export type ThemeFontProvider = ThemeFontRegistryEntry['provider'];
 export const THEME_FONT_REGISTRY = [
   {
     id: 'noto-serif-sc',
-    label: '思源宋体（Noto Serif SC）',
-    cardLabel: '思源宋体',
-    badge: '自托管子集',
+    label: 'Noto Serif SC',
+    cardLabel: 'Noto Serif SC',
+    badge: 'Self-hosted subset',
     roles: ['readable', 'brand'],
     acquisition: 'subset-pipeline',
     provider: null,
@@ -79,13 +79,13 @@ export const THEME_FONT_REGISTRY = [
     fallbacks: ['ui-serif', 'Georgia', '"Times New Roman"', '"Songti SC"', 'serif'],
     weights: [400, 600],
     license: 'OFL-1.1',
-    sizeHint: '自托管内容子集'
+    sizeHint: 'Self-hosted content subset'
   },
   {
     id: 'lxgw-wenkai-lite',
-    label: '霞鹜文楷 Lite（LXGW WenKai Lite）',
-    cardLabel: '霞鹜文楷 Lite',
-    badge: '自托管子集',
+    label: 'LXGW WenKai Lite',
+    cardLabel: 'LXGW WenKai Lite',
+    badge: 'Self-hosted subset',
     roles: ['readable', 'copy', 'brand'],
     acquisition: 'subset-pipeline',
     provider: null,
@@ -93,13 +93,13 @@ export const THEME_FONT_REGISTRY = [
     fallbacks: ['"Kaiti SC"', '"STKaiti"', 'serif'],
     weights: [400],
     license: 'OFL-1.1',
-    sizeHint: '自托管内容子集'
+    sizeHint: 'Self-hosted content subset'
   },
   {
     id: 'system-serif',
-    label: '系统衬线（Songti / Georgia）',
-    cardLabel: '系统衬线',
-    badge: '零下载',
+    label: 'System Serif (Songti / Georgia)',
+    cardLabel: 'System Serif',
+    badge: 'No download',
     roles: ['readable'],
     acquisition: 'system',
     provider: null,
@@ -107,13 +107,13 @@ export const THEME_FONT_REGISTRY = [
     fallbacks: ['ui-serif', 'Georgia', '"Times New Roman"', '"Songti SC"', 'serif'],
     weights: [],
     license: null,
-    sizeHint: '零下载'
+    sizeHint: 'No download'
   },
   {
     id: 'serif-georgia',
-    label: '系统衬线（Georgia）',
+    label: 'System Serif (Georgia)',
     cardLabel: 'Georgia',
-    badge: '零下载',
+    badge: 'No download',
     roles: ['brand'],
     acquisition: 'system',
     provider: null,
@@ -121,13 +121,13 @@ export const THEME_FONT_REGISTRY = [
     fallbacks: ['Georgia', 'serif'],
     weights: [],
     license: null,
-    sizeHint: '零下载'
+    sizeHint: 'No download'
   },
   {
     id: 'system-kai',
-    label: '系统楷体（Kaiti / STKaiti）',
-    cardLabel: '系统楷体',
-    badge: '零下载',
+    label: 'System Kaiti (Kaiti / STKaiti)',
+    cardLabel: 'System Kaiti',
+    badge: 'No download',
     roles: ['copy'],
     acquisition: 'system',
     provider: null,
@@ -135,13 +135,13 @@ export const THEME_FONT_REGISTRY = [
     fallbacks: ['"Kaiti SC"', '"STKaiti"', 'serif'],
     weights: [],
     license: null,
-    sizeHint: '零下载'
+    sizeHint: 'No download'
   },
   {
     id: 'system-mono',
-    label: '系统等宽（Sarasa / SF Mono）',
-    cardLabel: '系统等宽',
-    badge: '零下载',
+    label: 'System Monospace (Sarasa / SF Mono)',
+    cardLabel: 'System Monospace',
+    badge: 'No download',
     roles: ['mono'],
     acquisition: 'system',
     provider: null,
@@ -160,13 +160,13 @@ export const THEME_FONT_REGISTRY = [
     ],
     weights: [],
     license: null,
-    sizeHint: '零下载'
+    sizeHint: 'No download'
   },
   {
     id: 'jetbrains-mono',
-    label: 'JetBrains Mono（拉丁等宽）',
+    label: 'JetBrains Mono (Latin monospace)',
     cardLabel: 'JetBrains Mono',
-    badge: '构建期下载',
+    badge: 'Downloaded at build time',
     roles: ['mono'],
     acquisition: 'astro-fonts-api',
     // fontsource 走 jsDelivr/R2 分发，可达性优于 fonts.google.com（大陆网络不可达）。
@@ -186,13 +186,13 @@ export const THEME_FONT_REGISTRY = [
     ],
     weights: [400],
     license: 'OFL-1.1',
-    sizeHint: '构建时下载自托管（latin，CJK 回退系统等宽）'
+    sizeHint: 'Downloaded and self-hosted at build time (latin; CJK falls back to system monospace)'
   },
   {
     id: 'noto-sans-sc',
-    label: '思源黑体（Noto Sans SC）',
-    cardLabel: '思源黑体',
-    badge: '构建期下载 ~1.1MB',
+    label: 'Noto Sans SC',
+    cardLabel: 'Noto Sans SC',
+    badge: 'Downloaded at build time ~1.1MB',
     roles: ['readable', 'copy'],
     acquisition: 'astro-fonts-api',
     provider: 'fontsource',
@@ -202,14 +202,14 @@ export const THEME_FONT_REGISTRY = [
     // 每加一档字重产物即 +1.1 MB。粗体由浏览器合成，与 lxgw-wenkai-lite 单字重策略一致。
     weights: [400],
     license: 'OFL-1.1',
-    sizeHint: '构建时下载自托管（中文整段约 1.1 MB + latin 13 KB，unicode-range 按需加载）',
+    sizeHint: 'Downloaded and self-hosted at build time (~1.1 MB for the full CJK block + 13 KB latin, loaded on demand via unicode-range)',
     subsets: ['chinese-simplified', 'latin']
   },
   {
     id: 'fira-code',
-    label: 'Fira Code（拉丁等宽，连字）',
+    label: 'Fira Code (Latin monospace, ligatures)',
     cardLabel: 'Fira Code',
-    badge: '构建期下载',
+    badge: 'Downloaded at build time',
     roles: ['mono'],
     acquisition: 'astro-fonts-api',
     provider: 'fontsource',
@@ -228,7 +228,7 @@ export const THEME_FONT_REGISTRY = [
     ],
     weights: [400],
     license: 'OFL-1.1',
-    sizeHint: '构建时下载自托管（latin，CJK 回退系统等宽）'
+    sizeHint: 'Downloaded and self-hosted at build time (latin; CJK falls back to system monospace)'
   }
 ] as const satisfies readonly ThemeFontRegistryEntry[];
 
