@@ -118,7 +118,7 @@ const parsePublicBaseUrl = (value: string): URL => {
       || url.href.includes('?')
       || url.href.includes('#')
     ) {
-      throw new Error('publicBaseUrl 包含不允许的 URL 部分');
+      throw new Error('publicBaseUrl contains a disallowed URL component');
     }
 
     const pathname = url.pathname.replace(/\/+$/, '');

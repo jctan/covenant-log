@@ -195,9 +195,9 @@ const RELATIVE_CONTENT_ASSET_RE = /!\[[^\]]*]\(([^)]+)\)|<img[^>]+src=["']([^"']
 const ADMIN_IMAGE_SHORT_CACHE_TTL_MS = 3_000;
 const ADMIN_IMAGE_SHORT_CACHE_MAX_ENTRIES = 32;
 const CONTENT_COLLECTION_LABELS = {
-  essay: '随笔',
-  bits: '絮语',
-  memo: '小记'
+  essay: 'Essay',
+  bits: 'Bits',
+  memo: 'Memo'
 } as const;
 const OWNER_PATH_SEPARATORS = ['/', '.', '-', '_'] as const;
 const ADMIN_IMAGE_SCAN_ROOTS = [
@@ -238,8 +238,8 @@ const ADMIN_IMAGE_PAGE_ALLOWLIST = [
 ] as const;
 
 const ADMIN_IMAGE_ASSET_SUBGROUP_LABELS = {
-  avatar: '头像',
-  other: '其他'
+  avatar: 'Avatar',
+  other: 'Other'
 } as const;
 
 const SYSTEM_ASSET_FILE_PATTERNS = [
@@ -578,7 +578,7 @@ const getPreferredFieldValue = (record: AdminImageAssetRecord): string | null =>
 };
 
 const isSystemAssetPath = (assetPath: string): boolean => {
-  // Theme Console 站点图标托管目录整体按系统资产处理，不进入浏览与字段选择列表。
+  // The Theme Console site icon hosting directory is treated entirely as a system asset and doesn't enter the browse or field selection list.
   if (assetPath.startsWith('public/images/site/')) return true;
   if (path.posix.dirname(assetPath) !== 'public') return false;
   const fileName = path.posix.basename(assetPath);
@@ -1000,7 +1000,7 @@ const readWebpSize = (buffer: Buffer): { width: number; height: number } | null 
 export const readAdminLocalImageInspectionMeta = async (assetPath: string): Promise<AdminImageInspectionMeta> => {
   const absolutePath = toAbsoluteAssetPath(assetPath);
   if (!existsSync(absolutePath)) {
-    throw new AdminImageError(`图片文件不存在：${assetPath}`, 404);
+    throw new AdminImageError(`Image file doesn't exist: ${assetPath}`, 404);
   }
 
   const cacheKey = getAdminImageCacheKey('inspection-meta', assetPath);
@@ -1055,7 +1055,7 @@ const readLocalImageMeta = async (target: LocalImageTarget): Promise<AdminImageM
 const resolveFieldImageTarget = (field: AdminImageFieldContext, rawValue: string): FieldImageTarget => {
   const value = rawValue.trim();
   if (!value) {
-    throw new AdminImageError('图片值为空，无法读取元数据');
+    throw new AdminImageError('Image value is empty — cannot read metadata');
   }
 
   if (field === 'bits.images') {
@@ -1064,7 +1064,7 @@ const resolveFieldImageTarget = (field: AdminImageFieldContext, rawValue: string
 
     const normalized = normalizeAdminLocalImageSource(value);
     if (!normalized) {
-      throw new AdminImageError('bits.images 只允许 public/** 下的相对图片路径或 https:// 远程 URL');
+      throw new AdminImageError('bits.images only allows a relative image path under public/** or an https:// remote URL');
     }
 
     return {
@@ -1081,7 +1081,7 @@ const resolveFieldImageTarget = (field: AdminImageFieldContext, rawValue: string
   if (field === 'page.bits.defaultAuthor.avatar') {
     const normalized = normalizeBitsAvatarPath(value);
     if (normalized === undefined || !normalized) {
-      throw new AdminImageError('Bits 默认头像只允许相对图片路径（例如 author/avatar.webp）');
+      throw new AdminImageError('Bits default avatar only allows a relative image path (e.g. author/avatar.webp)');
     }
 
     return {
@@ -1097,14 +1097,14 @@ const resolveFieldImageTarget = (field: AdminImageFieldContext, rawValue: string
 
   const normalized = normalizeHeroImageSrc(value);
   if (!normalized) {
-    throw new AdminImageError('Hero 图片只允许 src/assets/**、public 路径或 https:// 远程 URL');
+    throw new AdminImageError('Hero image only allows src/assets/**, a public path, or an https:// remote URL');
   }
 
   if (normalized.startsWith('https://')) return { kind: 'remote', url: normalized };
 
   const localPath = getHeroImageLocalFilePath(normalized);
   if (!localPath) {
-    throw new AdminImageError('Hero 图片地址不支持当前本地路径格式');
+    throw new AdminImageError("Hero image address doesn't support this local path format");
   }
 
   return {
@@ -1130,7 +1130,7 @@ const resolveLocalTargetFromPath = (assetPath: string): LocalImageTarget => {
     || normalizedPath.includes('#')
     || !IMAGE_LOCAL_EXT_RE.test(normalizedPath)
   ) {
-    throw new AdminImageError('图片路径必须是 public/**、src/assets/** 或 src/content/** 下的规范仓库相对图片路径');
+    throw new AdminImageError('Image path must be a canonical repo-relative image path under public/**, src/assets/**, or src/content/**');
   }
 
   const canonicalPath = path.posix.normalize(normalizedPath);
@@ -1162,7 +1162,7 @@ const resolveLocalTargetFromPath = (assetPath: string): LocalImageTarget => {
     };
   }
 
-  throw new AdminImageError('图片路径必须是 public/**、src/assets/** 或 src/content/** 下的规范仓库相对图片路径');
+  throw new AdminImageError('Image path must be a canonical repo-relative image path under public/**, src/assets/**, or src/content/**');
 };
 
 export const getAdminImageMeta = async (input: AdminImageMetaInput): Promise<AdminImageMetaResult> => {
@@ -1188,11 +1188,11 @@ export const getAdminImageMeta = async (input: AdminImageMetaInput): Promise<Adm
 
   const rawValue = 'value' in input && typeof input.value === 'string' ? input.value.trim() : '';
   if (!('field' in input) || !input.field) {
-    throw new AdminImageError('缺少 field 或 path，无法读取图片元数据');
+    throw new AdminImageError('Missing field or path — cannot read image metadata');
   }
 
   if (!rawValue) {
-    throw new AdminImageError('缺少图片值，无法读取元数据');
+    throw new AdminImageError('Missing image value — cannot read metadata');
   }
 
   const fieldTarget = resolveFieldImageTarget(input.field, rawValue);

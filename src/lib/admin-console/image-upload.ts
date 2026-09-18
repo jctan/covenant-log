@@ -51,7 +51,7 @@ const normalizeFileBaseName = (value: string): string => {
 const getSafeImageFileName = (fileName: string): string => {
   const extension = path.extname(fileName).toLowerCase();
   if (!SUPPORTED_IMAGE_EXTENSIONS.has(extension)) {
-    throw new AdminImageUploadError('仅支持 avif / gif / jpg / jpeg / png / svg / webp 图片');
+    throw new AdminImageUploadError('Only avif / gif / jpg / jpeg / png / svg / webp images are supported');
   }
 
   const baseName = normalizeFileBaseName(path.basename(fileName, path.extname(fileName)));
@@ -60,16 +60,16 @@ const getSafeImageFileName = (fileName: string): string => {
 
 const assertUploadFile = (file: File): void => {
   if (file.size <= 0) {
-    throw new AdminImageUploadError('图片文件为空，请重新选择');
+    throw new AdminImageUploadError('The image file is empty — choose it again');
   }
 
   if (file.size > ADMIN_IMAGE_UPLOAD_MAX_BYTES) {
-    throw new AdminImageUploadError('图片超过 12MB，请压缩后再上传', 413);
+    throw new AdminImageUploadError('Image exceeds 12MB — compress it before uploading', 413);
   }
 
   const type = file.type.trim().toLowerCase();
   if (type && !type.startsWith('image/') && type !== 'application/octet-stream') {
-    throw new AdminImageUploadError('请选择图片文件');
+    throw new AdminImageUploadError('Please choose an image file');
   }
 };
 
@@ -114,7 +114,7 @@ const writeUniqueImageFile = async (
     }
   }
 
-  throw new AdminImageUploadError('无法生成可用文件名，请重命名图片后再上传', 409);
+  throw new AdminImageUploadError('Could not generate a usable filename — rename the image before uploading', 409);
 };
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -254,7 +254,7 @@ export const uploadAdminBitsImage = async ({
   const relativePath = toRelativeProjectPath(assetPath);
   const src = getAdminImageFieldValue('bits.images', relativePath, 'public');
   if (!src) {
-    throw new AdminImageUploadError('无法生成 bits.images 可保存的图片路径');
+    throw new AdminImageUploadError('Could not generate a savable image path for bits.images');
   }
 
   invalidateAdminImageCaches();
