@@ -1,10 +1,10 @@
 {
-  "brandTitle": "Whono",
-  "quote": "A minimal Astro theme\nfor essays, notes, and docs.\nDesigned for reading,\nopen-source.",
+  "brandTitle": "Covenant Logs",
+  "quote": "Doing God's work\nthrough Tech and AI.\nDocumenting on Cloud, Security, and AI.",
   "nav": [
     {
-      "id": "essay",
-      "label": "Essay",
+      "id": "blogs",
+      "label": "Blogs",
       "ornament": "·",
       "visible": true,
       "order": 1

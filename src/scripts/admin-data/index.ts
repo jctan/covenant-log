@@ -39,7 +39,7 @@ if (!root) {
   const controlState = queryAdminDataControls();
   if (!controlState.ok) {
     reportAdminDataSetupError(controlState.controls, {
-      message: '页面缺少必要控件，客户端脚本已停止初始化。请刷新页面，或检查模板与控件 id 是否仍保持一致。',
+      message: 'The page is missing required controls, so the client script has stopped initializing. Refresh the page, or check that the template and control IDs still match.',
       details: controlState.missing
     });
   } else {
@@ -48,8 +48,8 @@ if (!root) {
     const bootstrap = parseBootstrap(controls.bootstrapEl.textContent ?? '');
 
     if (!bootstrap) {
-      console.error('[admin-data] bootstrap 数据无效');
-      ui.showBootstrapError('当前页面未能完成 bootstrap 初始化，请刷新页面或重启开发服务器后重试。');
+      console.error('[admin-data] Invalid bootstrap data');
+      ui.showBootstrapError('This page failed to complete bootstrap initialization. Refresh the page or restart the dev server and try again.');
     } else {
       let currentRevision = bootstrap.revision;
       let currentBundle: AdminSettingsExportBundle | null = null;
@@ -130,13 +130,13 @@ if (!root) {
 
       const showImportActionLoading = (action: ImportAction) => {
         const isDryRun = action === 'dry-run';
-        ui.setStatus('loading', isDryRun ? '正在执行 dry-run' : '正在写入');
+        ui.setStatus('loading', isDryRun ? 'Running dry-run…' : 'Writing…');
         ui.showPreviewEmpty({
           state: 'loading',
-          title: isDryRun ? '正在执行 dry-run 校验' : '正在写入 settings',
+          title: isDryRun ? 'Running dry-run validation…' : 'Writing settings…',
           body: isDryRun
-            ? '正在比对当前 settings 与导入快照，完成后会在这里生成差异摘要。'
-            : '正在沿用现有事务链路写入 settings，完成后会在这里回填写入结果。'
+            ? 'Comparing the current settings against the imported snapshot; a diff summary will appear here once finished.'
+            : 'Writing settings through the existing transaction pipeline; the write result will appear here once finished.'
         });
       };
 
@@ -152,14 +152,14 @@ if (!root) {
           hasChanges
             ? {
                 state: 'diff',
-                note: '确认写入前会再次校验 revision，避免覆盖外部修改。'
+                note: 'The revision will be re-validated before confirming the write, to avoid overwriting external changes.'
               }
             : {
                 state: 'clean',
-                body: '当前导入快照与本地 settings 一致，不需要写盘。'
+                body: "The imported snapshot matches the local settings already — no write needed."
               }
         );
-        ui.setStatus(hasChanges ? 'ok' : 'ready', 'dry-run 完成');
+        ui.setStatus(hasChanges ? 'ok' : 'ready', 'Dry-run complete');
       };
 
       const completeApply = (results: WriteResultsMap | null) => {
@@ -168,10 +168,10 @@ if (!root) {
         hasCompletedApply = true;
         ui.renderPreview(results, {
           state: 'applied',
-          body: '✅ 写入成功',
-          note: '继续导入其他快照前，请重新执行 dry-run。'
+          body: '✅ Write succeeded',
+          note: 'Run a dry-run again before importing another snapshot.'
         });
-        ui.setStatus('ok', '写入完成');
+        ui.setStatus('ok', 'Write complete');
       };
 
       const handleSelectedFile = async (file: File | null) => {
@@ -182,17 +182,17 @@ if (!root) {
         if (!file) {
           ui.setSelectedFileLabel(null);
           ui.resetPreview();
-          ui.setStatus('idle', '等待操作', { announce: false });
+          ui.setStatus('idle', 'Waiting for action', { announce: false });
           return;
         }
 
         ui.setSelectedFileLabel(file.name);
         ui.showPreviewEmpty({
           state: 'loading',
-          title: '正在解析导入快照',
-          body: `正在读取 ${file.name} 并校验 manifest 结构。`
+          title: 'Parsing the imported snapshot…',
+          body: `Reading ${file.name} and validating the manifest structure.`
         });
-        ui.setStatus('loading', '正在解析', { announce: false });
+        ui.setStatus('loading', 'Parsing…', { announce: false });
 
         try {
           const text = await file.text();
@@ -202,11 +202,11 @@ if (!root) {
           if (!parsed.ok) {
             showImportFailure({
               status: 'error',
-              statusText: '解析失败',
+              statusText: 'Parsing failed',
               errors: parsed.errors,
-              errorTitle: '导入文件不符合 settings 导出协议',
-              previewTitle: '导入文件解析失败',
-              previewBody: '当前文件不符合 settings 导出协议。请确认 schemaVersion、includedScopes 与 JSON 结构后重试。'
+              errorTitle: "The import file doesn't match the settings export protocol",
+              previewTitle: 'Failed to parse the import file',
+              previewBody: "This file doesn't match the settings export protocol. Check the schemaVersion, includedScopes, and JSON structure, then try again."
             });
             return;
           }
@@ -215,17 +215,17 @@ if (!root) {
           ui.renderFileMeta(parsed.bundle, file.name);
           ui.showPreviewEmpty({
             state: 'ready',
-            title: '快照已就绪',
-            body: `${file.name}\n已完成 manifest 解析，可执行 dry-run`
+            title: 'Snapshot ready',
+            body: `${file.name}\nManifest parsed — you can run a dry-run now`
           });
-          ui.setStatus('ready', '快照已解析');
+          ui.setStatus('ready', 'Snapshot parsed');
         } catch {
           showImportFailure({
             status: 'error',
-            statusText: 'JSON 无效',
-            errors: ['所选文件不是合法 JSON，或编码内容已损坏'],
-            previewTitle: '导入文件不是合法 JSON',
-            previewBody: '所选文件不是合法 JSON，或编码内容已损坏。请重新选择导出快照。'
+            statusText: 'Invalid JSON',
+            errors: ["The selected file isn't valid JSON, or its encoding is corrupted"],
+            previewTitle: "The import file isn't valid JSON",
+            previewBody: "The selected file isn't valid JSON, or its encoding is corrupted. Choose an exported snapshot again."
           });
         } finally {
           syncActionState();
@@ -273,18 +273,18 @@ if (!root) {
             const payloadErrors = getPayloadErrors(payload);
             showImportFailure({
               status: isRevisionConflict ? 'warn' : 'error',
-              statusText: isDryRun ? 'dry-run 未通过' : '写入失败',
+              statusText: isDryRun ? 'Dry-run failed' : 'Write failed',
               errors: payloadErrors.length > 0
                 ? payloadErrors
-                : [isDryRun ? 'dry-run 校验失败，请检查导入文件与当前配置状态' : '写入 settings 失败，请检查响应与控制台日志'],
-              errorTitle: isRevisionConflict ? '检测到外部更新' : '导入未完成',
+                : [isDryRun ? 'Dry-run validation failed — check the import file and current config state' : 'Failed to write settings — check the response and console logs'],
+              errorTitle: isRevisionConflict ? 'Detected an external update' : 'Import incomplete',
               previewState: isRevisionConflict ? 'warn' : 'error',
-              previewTitle: isRevisionConflict ? '检测到外部更新' : isDryRun ? 'dry-run 未通过' : '写入失败',
+              previewTitle: isRevisionConflict ? 'Detected an external update' : isDryRun ? 'Dry-run failed' : 'Write failed',
               previewBody: isRevisionConflict
-                ? '本次导入已停止，避免静默覆盖外部修改。请重新执行 dry-run，并在最新 revision 上确认结果。'
+                ? 'This import was stopped to avoid silently overwriting external changes. Run the dry-run again and confirm the result on the latest revision.'
                 : isDryRun
-                  ? '当前未生成可提交的变更预览，请修正错误清单后再次执行 dry-run。'
-                  : '本次写入未完成，请先处理错误清单，再重新提交配置快照。'
+                  ? 'No submittable change preview was generated. Fix the error list, then run the dry-run again.'
+                  : 'This write did not complete. Resolve the error list, then resubmit the config snapshot.'
             });
             return;
           }
@@ -298,12 +298,12 @@ if (!root) {
         } catch {
           showImportFailure({
             status: 'error',
-            statusText: isDryRun ? 'dry-run 请求失败' : '写入请求失败',
-            errors: [isDryRun ? 'dry-run 请求失败，请稍后重试' : '写入请求失败，请稍后重试'],
-            previewTitle: isDryRun ? 'dry-run 请求失败' : '写入请求失败',
+            statusText: isDryRun ? 'Dry-run request failed' : 'Write request failed',
+            errors: [isDryRun ? 'Dry-run request failed — please try again later' : 'Write request failed — please try again later'],
+            previewTitle: isDryRun ? 'Dry-run request failed' : 'Write request failed',
             previewBody: isDryRun
-              ? '当前未拿到服务端响应，请检查开发服务器状态后重新执行 dry-run。'
-              : '写入结果尚未确认，请检查开发服务器状态后重新提交。'
+              ? 'No server response was received. Check the dev server status, then run the dry-run again.'
+              : 'The write result is unconfirmed. Check the dev server status, then resubmit.'
           });
         } finally {
           activeAction = null;
@@ -316,7 +316,7 @@ if (!root) {
         busy = true;
         syncActionState();
         ui.clearErrors();
-        ui.setStatus('loading', '正在导出快照');
+        ui.setStatus('loading', 'Exporting snapshot…');
 
         try {
           const response = await fetch(bootstrap.exportEndpoint, {
@@ -329,13 +329,13 @@ if (!root) {
 
           if (!response.ok) {
             const payload = await parseResponseBody(response);
-            ui.setStatus(response.status === 409 ? 'warn' : 'error', '导出失败');
+            ui.setStatus(response.status === 409 ? 'warn' : 'error', 'Export failed');
             ui.setErrors(
               getPayloadErrors(payload).length > 0
                 ? getPayloadErrors(payload)
-                : ['当前 settings 状态不可导出，请先修复本地配置后重试'],
+                : ['The current settings state cannot be exported — fix the local config first and try again'],
               {
-                title: response.status === 409 ? 'settings 当前不可导出' : '导出失败'
+                title: response.status === 409 ? "settings can't be exported right now" : 'Export failed'
               }
             );
             return;
@@ -350,10 +350,10 @@ if (!root) {
           anchor.click();
           anchor.remove();
           URL.revokeObjectURL(downloadUrl);
-          ui.setStatus('ok', '快照已导出');
+          ui.setStatus('ok', 'Snapshot exported');
         } catch {
-          ui.setStatus('error', '导出请求失败');
-          ui.setErrors(['导出请求失败，请检查开发服务器状态后重试']);
+          ui.setStatus('error', 'Export request failed');
+          ui.setErrors(['Export request failed — check the dev server status and try again']);
         } finally {
           busy = false;
           syncActionState();
@@ -429,7 +429,7 @@ if (!root) {
       resetDropzoneDragState();
       ui.setSelectedFileLabel(null);
       ui.resetPreview();
-      ui.setStatus('idle', '准备就绪', { announce: false });
+      ui.setStatus('idle', 'Ready', { announce: false });
     }
   }
 }
