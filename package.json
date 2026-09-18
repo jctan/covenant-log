@@ -86,7 +86,7 @@
     "anymatch": {
       "picomatch": "2.3.2"
     },
-    "fast-uri": "3.1.5",
+    "fast-uri": "3.1.8",
     "fast-xml-parser": "5.7.0",
     "h3": "1.15.9",
     "postcss": "8.5.26",
