@@ -35,7 +35,7 @@ export const POST: APIRoute = async ({ request, url }) => {
     return DEV_ONLY_NOT_FOUND_RESPONSE.clone();
   }
 
-  const requestError = validateAdminJsonWriteRequest(request, url, 'Content Console bulk status', '批量更新');
+  const requestError = validateAdminJsonWriteRequest(request, url, 'Content Console bulk status', 'bulk update');
   if (requestError) {
     return createAdminJsonErrorResponse(requestError.status, [requestError.error]);
   }

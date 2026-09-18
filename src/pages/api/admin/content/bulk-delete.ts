@@ -108,7 +108,7 @@ export const POST: APIRoute = async ({ request, url }) => {
     return DEV_ONLY_NOT_FOUND_RESPONSE.clone();
   }
 
-  const requestError = validateAdminJsonWriteRequest(request, url, 'Content Console bulk delete', '批量删除');
+  const requestError = validateAdminJsonWriteRequest(request, url, 'Content Console bulk delete', 'bulk delete');
   if (requestError) {
     return createAdminJsonErrorResponse(requestError.status, [requestError.error]);
   }

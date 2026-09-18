@@ -82,13 +82,13 @@ export const validateAdminJsonWriteRequest = (
   request: Request,
   currentUrl: URL,
   targetLabel: string,
-  actionLabel = '写入'
+  actionLabel = 'write'
 ): AdminWriteRequestValidation | null => {
   const contentType = request.headers.get('content-type')?.toLowerCase() ?? '';
   if (!contentType.includes('application/json')) {
     return {
       status: 415,
-      error: `仅允许 application/json 请求${actionLabel} ${targetLabel}`
+      error: `Only application/json requests can ${actionLabel} ${targetLabel}`
     };
   }
 
@@ -100,14 +100,14 @@ export const validateAdminJsonWriteRequest = (
   if (!requestOrigin) {
     return {
       status: 403,
-      error: `${actionLabel}请求缺少来源标识，仅允许从当前开发站点同源提交`
+      error: `The ${actionLabel} request is missing an origin — only same-origin submissions from the current dev site are allowed`
     };
   }
 
   if (requestOrigin !== currentOrigin) {
     return {
       status: 403,
-      error: `仅允许从当前开发站点同源${actionLabel} ${targetLabel}`
+      error: `Only same-origin requests from the current dev site can ${actionLabel} ${targetLabel}`
     };
   }
 
@@ -118,13 +118,13 @@ export const validateAdminFormDataWriteRequest = (
   request: Request,
   currentUrl: URL,
   targetLabel: string,
-  actionLabel = '上传'
+  actionLabel = 'upload'
 ): AdminWriteRequestValidation | null => {
   const contentType = request.headers.get('content-type')?.toLowerCase() ?? '';
   if (!contentType.includes('multipart/form-data')) {
     return {
       status: 415,
-      error: `仅允许 multipart/form-data 请求${actionLabel} ${targetLabel}`
+      error: `Only multipart/form-data requests can ${actionLabel} ${targetLabel}`
     };
   }
 
@@ -136,14 +136,14 @@ export const validateAdminFormDataWriteRequest = (
   if (!requestOrigin) {
     return {
       status: 403,
-      error: `${actionLabel}请求缺少来源标识，仅允许从当前开发站点同源提交`
+      error: `The ${actionLabel} request is missing an origin — only same-origin submissions from the current dev site are allowed`
     };
   }
 
   if (requestOrigin !== currentOrigin) {
     return {
       status: 403,
-      error: `仅允许从当前开发站点同源${actionLabel} ${targetLabel}`
+      error: `Only same-origin requests from the current dev site can ${actionLabel} ${targetLabel}`
     };
   }
 
@@ -184,7 +184,7 @@ export const readAdminJsonRequestBody = async (
     return {
       ok: false,
       status: 400,
-      error: '请求体不是合法 JSON'
+      error: 'Request body is not valid JSON'
     };
   }
 };
@@ -208,8 +208,9 @@ export const createAdminWriteQueue = (): (<T>(task: () => Promise<T>) => Promise
   };
 };
 
-// settings 保存与 site-assets 上传共享同一写队列：上传阶段的旧文件回收依赖最新 site.json 引用快照，
-// 分离队列会产生「保存引用 A 后，被并发上传按旧快照删除 A」的竞态。
+// The settings save and site-assets upload share the same write queue: cleaning up old files during upload
+// relies on the latest site.json reference snapshot, so separate queues would create a race where saving
+// reference A could later be deleted by a concurrent upload acting on a stale snapshot.
 export const withAdminSettingsWriteLock = createAdminWriteQueue();
 
 export const persistAdminFileTransaction = async <TId extends string>(

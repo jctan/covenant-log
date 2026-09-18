@@ -12,7 +12,7 @@ export const ADMIN_CONTENT_COLLECTIONS = ADMIN_CONTENT_COLLECTION_KEYS.filter((c
 ) as readonly AdminContentCollectionKey[];
 
 export const ADMIN_CONTENT_SCOPE_OPTIONS = [
-  { value: 'all', label: '全部内容' },
+  { value: 'all', label: 'All content' },
   ...ADMIN_CONTENT_COLLECTIONS.map((collection) => ({
     value: collection,
     label: getAdminContentCollectionCapability(collection).label

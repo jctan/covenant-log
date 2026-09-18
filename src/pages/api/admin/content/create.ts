@@ -162,7 +162,7 @@ export const POST: APIRoute = async ({ request, url }) => {
     return DEV_ONLY_NOT_FOUND_RESPONSE.clone();
   }
 
-  const requestError = validateAdminJsonWriteRequest(request, url, 'Content Console create', '新增');
+  const requestError = validateAdminJsonWriteRequest(request, url, 'Content Console create', 'create');
   if (requestError) {
     return createJsonErrorResponse(requestError.status, [requestError.error]);
   }

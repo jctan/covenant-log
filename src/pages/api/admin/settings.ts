@@ -201,7 +201,7 @@ export const POST: APIRoute = async ({ request, url }) => {
   }
 
   const isDryRun = isAdminDryRunRequest(url);
-  const requestError = validateAdminJsonWriteRequest(request, url, 'Theme Console 配置');
+  const requestError = validateAdminJsonWriteRequest(request, url, 'Theme Console configuration');
   if (requestError) {
     return new Response(
       JSON.stringify(

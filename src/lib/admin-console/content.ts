@@ -110,14 +110,14 @@ export type {
 } from './content-routes';
 
 export const ADMIN_CONTENT_SORT_OPTIONS = [
-  { value: 'recent', label: '最近更新' },
-  { value: 'title', label: '标题 A-Z' }
+  { value: 'recent', label: 'Recently updated' },
+  { value: 'title', label: 'Title A-Z' }
 ] as const satisfies readonly { value: AdminContentSortKey; label: string }[];
 
 export const ADMIN_CONTENT_DRAFT_OPTIONS = [
-  { value: 'all', label: '全部状态' },
-  { value: 'published', label: '已发布' },
-  { value: 'draft', label: '仅草稿' }
+  { value: 'all', label: 'All statuses' },
+  { value: 'published', label: 'Published' },
+  { value: 'draft', label: 'Drafts only' }
 ] as const satisfies readonly { value: AdminContentDraftFilter; label: string }[];
 
 const COLLECTION_ORDER = new Map<AdminContentCollectionKey, number>(

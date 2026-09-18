@@ -3,8 +3,8 @@
   "quote": "Doing God's work\nthrough Tech and AI.\nDocumenting on Cloud, Security, and AI.",
   "nav": [
     {
-      "id": "blogs",
-      "label": "Blogs",
+      "id": "posts",
+      "label": "Posts",
       "ornament": "·",
       "visible": true,
       "order": 1

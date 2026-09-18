@@ -33,7 +33,7 @@ const patchOneAdminContentDraftStatus = async (
   if (!isAdminContentCollectionKey(entry.collection)) {
     return createResult(entry, {
       status: 'skipped',
-      errors: [`不支持的 content collection：${entry.collection}`],
+      errors: [`Unsupported content collection: ${entry.collection}`],
       errorCodes: ['unsupported_collection']
     });
   }
@@ -41,7 +41,7 @@ const patchOneAdminContentDraftStatus = async (
   if (!isAdminContentDraftStatusCollectionKey(entry.collection)) {
     return createResult(entry, {
       status: 'skipped',
-      errors: [`当前 collection 暂不支持批量发布或改草稿：${entry.collection}`],
+      errors: [`Bulk publish or draft-toggling isn't supported for this collection yet: ${entry.collection}`],
       errorCodes: ['unsupported_collection']
     });
   }
@@ -53,7 +53,7 @@ const patchOneAdminContentDraftStatus = async (
       return createResult(entry, {
         status: 'failed',
         relativePath: state.relativePath,
-        errors: ['检测到内容文件路径与列表不一致，请刷新后重试'],
+        errors: ['Detected a mismatch between the content file path and the list — refresh and try again'],
         errorCodes: ['relative_path_mismatch']
       });
     }
@@ -103,8 +103,8 @@ const patchOneAdminContentDraftStatus = async (
       status: 'failed',
       errors: [
         error instanceof AdminContentBulkStatusConflictError
-          ? '检测到内容文件已在外部更新，已跳过该条目，请刷新后重试'
-          : getErrorMessage(error, '更新内容状态失败，请检查本地文件权限或日志')
+          ? 'Detected an external update to the content file — this entry was skipped. Refresh and try again'
+          : getErrorMessage(error, 'Failed to update content status — check local file permissions or the logs')
       ],
       errorCodes: [
         error instanceof AdminContentBulkStatusConflictError
