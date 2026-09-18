@@ -41,15 +41,15 @@ export const POST: APIRoute = async ({ request, url }) => {
   }
 
   const bodyResult = await readAdminJsonRequestBody(request, {
-    emptyBodyError: '请求体为空，请确认已发送 JSON 字符串'
+    emptyBodyError: 'Request body is empty — make sure a JSON string was sent'
   });
   if (!bodyResult.ok) {
     return createAdminJsonErrorResponse(bodyResult.status, [bodyResult.error]);
   }
 
   if (!isRecord(bodyResult.body) || typeof bodyResult.body.targetDraft !== 'boolean') {
-    return createAdminJsonErrorResponse(400, ['请求体缺少 targetDraft 布尔值'], [
-      { path: 'targetDraft', message: '请求体缺少 targetDraft 布尔值' }
+    return createAdminJsonErrorResponse(400, ['Request body is missing the targetDraft boolean'], [
+      { path: 'targetDraft', message: 'Request body is missing the targetDraft boolean' }
     ]);
   }
 
