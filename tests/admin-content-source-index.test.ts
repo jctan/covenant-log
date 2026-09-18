@@ -173,7 +173,7 @@ describe('admin-console/content-source-index', () => {
       id: 'index',
       publicHref: '/about/',
       readonlyReason: null,
-      title: '关于',
+      title: 'About',
       slug: 'about',
       date: null,
       year: null,
@@ -181,8 +181,8 @@ describe('admin-console/content-source-index', () => {
       sourceError: null
     });
     expect(about?.dateLabel).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-    expect(about?.dateLabel).not.toBe('固定单页');
-    expect(about?.searchHaystack).toContain('关于');
+    expect(about?.dateLabel).not.toBe('Fixed single page');
+    expect(about?.searchHaystack).toContain('About');
     expect(about?.searchHaystack).not.toContain('About body text');
   });
 
@@ -248,7 +248,7 @@ describe('admin-console/content-source-index', () => {
 
     expect(essay?.id).toBe('bad-yaml');
     expect(essay?.title).toBe('bad-yaml');
-    expect(essay?.sourceError).toContain('解析');
+    expect(essay?.sourceError).toContain('Failed to parse');
     expect(essay?.sourceError).not.toContain('essay.title');
     expect(essay?.sourceError).not.toContain('essay.date');
     expect(essay?.dateLabel).toBe('源文件异常');

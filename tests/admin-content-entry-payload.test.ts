@@ -154,7 +154,7 @@ describe('admin content entry payload contract', () => {
       expect.arrayContaining([
         expect.objectContaining({
           path: 'entryId',
-          message: expect.stringContaining('memo 仅支持固定源文件')
+          message: expect.stringContaining('memo only supports the fixed source file')
         })
       ])
     );
@@ -191,7 +191,7 @@ describe('admin content entry payload contract', () => {
       expect.arrayContaining([
         expect.objectContaining({
           path: 'entryId',
-          message: expect.stringContaining('memo 仅支持固定源文件')
+          message: expect.stringContaining('memo only supports the fixed source file')
         })
       ])
     );

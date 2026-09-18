@@ -134,7 +134,7 @@ describe('admin content source export', () => {
       url: new URL('http://127.0.0.1:4321/api/admin/content/export/?collection=page&entryId=demo')
     } as never);
     expect(invalidCollectionResponse.status).toBe(400);
-    expect(JSON.parse(await invalidCollectionResponse.text()).errors[0]).toContain('不支持的 content collection');
+    expect(JSON.parse(await invalidCollectionResponse.text()).errors[0]).toContain('Unsupported content collection');
 
     const invalidEntryResponse = await GET({
       url: new URL('http://127.0.0.1:4321/api/admin/content/export/?collection=essay&entryId=../secret')
