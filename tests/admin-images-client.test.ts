@@ -26,9 +26,9 @@ const listItem: AdminImageListItem = {
   owner: null,
   ownerLabel: null,
   browseGroup: 'pages',
-  browseGroupLabel: '页面插图',
+  browseGroupLabel: 'Page illustrations',
   browseSubgroup: 'archive',
-  browseSubgroupLabel: '归档',
+  browseSubgroupLabel: 'Archive',
   preferredValue: '/images/archive/cover.png',
   previewSrc: '/images/archive/cover.png',
   value: '/images/archive/cover.png',
@@ -82,7 +82,7 @@ const createBrowseItem = (
   owner: null,
   ownerLabel: null,
   browseGroup: origin === 'cloud' ? 'cloud' : 'pages',
-  browseGroupLabel: origin === 'cloud' ? '云端图片' : '页面插图',
+  browseGroupLabel: origin === 'cloud' ? 'Cloud images' : 'Page illustrations',
   browseSubgroup: '',
   browseSubgroupLabel: null,
   preferredValue: origin === 'cloud' ? path : `/${path.slice('public/'.length)}`,
@@ -145,8 +145,8 @@ describe('admin-images/data', () => {
 
     const browseHtml = render('');
     expect(browseHtml.indexOf(localItem.path)).toBeLessThan(browseHtml.indexOf(cloudItem.path));
-    expect(browseHtml).toContain('aria-label="本地图片"');
-    expect(browseHtml).toContain('aria-label="云端图片"');
+    expect(browseHtml).toContain('aria-label="Local images"');
+    expect(browseHtml).toContain('aria-label="Cloud images"');
 
     const localOnlyHtml = render('', [localItem]);
     expect(localOnlyHtml).not.toContain('admin-images-browser__source-heading');
@@ -254,14 +254,14 @@ describe('admin-images/data', () => {
   });
 
   it('labels cloud image metadata as a remote cloud resource', () => {
-    expect(getAdminImageOriginLabel('cloud')).toBe('云端资源');
+    expect(getAdminImageOriginLabel('cloud')).toBe('Cloud asset');
     expect(formatAdminImageMetaSummary({
       kind: 'remote',
       origin: 'cloud',
       width: null,
       height: null,
       size: 1024
-    })).toBe('远程图片；不自动读取本地尺寸');
+    })).toBe('Remote image; local dimensions are not read automatically');
   });
 
   it('rejects malformed Images Console list items instead of hiding them', async () => {
@@ -275,7 +275,7 @@ describe('admin-images/data', () => {
     mockListFetch(payload);
 
     await expect(fetchList('/api/admin/images/list', createState({ scope: 'recent' }), 20))
-      .rejects.toThrow('图片列表响应格式无效');
+      .rejects.toThrow('Invalid image list response format');
   });
 
   it('rejects missing pagination fields from Images Console list responses', async () => {
@@ -284,7 +284,7 @@ describe('admin-images/data', () => {
     mockListFetch(payload);
 
     await expect(fetchList('/api/admin/images/list', createState({ scope: 'recent' }), 20))
-      .rejects.toThrow('图片列表响应格式无效');
+      .rejects.toThrow('Invalid image list response format');
   });
 
   it('rejects malformed Images Console filter options', async () => {
@@ -292,14 +292,14 @@ describe('admin-images/data', () => {
     payload.result.groupOptions = [
       {
         value: DEFAULT_GROUP,
-        label: '全部',
+        label: 'All',
         count: '1'
       }
     ] as unknown as typeof payload.result.groupOptions;
     mockListFetch(payload);
 
     await expect(fetchList('/api/admin/images/list', createState({ scope: 'recent' }), 20))
-      .rejects.toThrow('图片列表响应格式无效');
+      .rejects.toThrow('Invalid image list response format');
   });
 
   it('rejects malformed shared picker list and metadata responses', () => {
@@ -314,7 +314,7 @@ describe('admin-images/data', () => {
           }
         ]
       }
-    })).toThrow('图片列表响应格式无效');
+    })).toThrow('Invalid image list response format');
 
     expect(() => parseAdminImageMetaResponse({
       ok: true,
@@ -329,7 +329,7 @@ describe('admin-images/data', () => {
         mimeType: listItem.mimeType,
         previewSrc: listItem.previewSrc
       }
-    })).toThrow('图片元数据响应格式无效');
+    })).toThrow('Invalid image metadata response format');
   });
 
   it('keeps cloud uploads out of the local Bits metadata path', async () => {

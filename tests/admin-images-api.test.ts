@@ -130,19 +130,19 @@ describe('admin images api', () => {
     await writeFile(path.join(tempRoot, 'public', 'images', 'archive', 'cover.png'), PNG_1X1);
     await writeFile(
       path.join(tempRoot, 'src', 'content', 'essay', 'guide.md'),
-      ['---', 'title: 附件映射测试', '---', '', '![封面](./guide-assets/hero.png)'].join('\n')
+      ['---', 'title: Attachment mapping test', '---', '', '![Cover](./guide-assets/hero.png)'].join('\n')
     );
     await writeFile(
       path.join(tempRoot, 'src', 'content', 'essay', 'no-assets', 'index.md'),
-      ['---', 'title: 无附件条目', '---', '', '这里只是普通正文，没有图片。'].join('\n')
+      ['---', 'title: No attachment entry', '---', '', 'Just plain body text, no images.'].join('\n')
     );
     await writeFile(
       path.join(tempRoot, 'src', 'content', 'bits', 'demo.md'),
-      ['---', 'title: Bits 图片上传测试', 'date: 2026-05-26T10:00:00+08:00', '---', '', '短内容。'].join('\n')
+      ['---', 'title: Bits image upload test', 'date: 2026-05-26T10:00:00+08:00', '---', '', 'Short content.'].join('\n')
     );
     await writeFile(
       path.join(tempRoot, 'src', 'content', 'memo', 'index.md'),
-      ['---', 'title: Memo 图片上传测试', '---', '', 'memo body'].join('\n')
+      ['---', 'title: Memo image upload test', '---', '', 'memo body'].join('\n')
     );
     await writeFile(
       path.join(tempRoot, 'src', 'content', 'about', 'index.md'),
@@ -283,7 +283,7 @@ describe('admin images api', () => {
           value: 'https://cdn.example.test/uploads/essay/guide/cloud-shot.webp',
           origin: 'cloud',
           browseGroup: 'cloud',
-          browseGroupLabel: '云端图片',
+          browseGroupLabel: 'Cloud images',
           fileName: 'cloud-shot.webp',
           size: 2048,
           mimeType: 'image/webp',
@@ -399,7 +399,7 @@ describe('admin images api', () => {
     const payload = JSON.parse(await response.text());
     expect(payload).toEqual(expect.objectContaining({
       ok: false,
-      errors: ['云端图片操作失败，请查看服务端日志'],
+      errors: ['Cloud image operation failed — check the server-side logs'],
       error: expect.objectContaining({
         code: 'cloud_unknown',
         outcome: 'failed_known',
@@ -421,7 +421,7 @@ describe('admin images api', () => {
     expect(response.status).toBe(500);
     expect(JSON.parse(await response.text())).toEqual(expect.objectContaining({
       ok: false,
-      errors: ['云端图片存储配置无效，请检查服务端配置'],
+      errors: ['Invalid cloud image storage configuration — check the server-side config'],
       error: expect.objectContaining({ code: 'cloud_config_invalid', traceId: expect.any(String) })
     }));
     expect(s3SdkMock.paginateListObjectsV2).not.toHaveBeenCalled();
@@ -439,7 +439,7 @@ describe('admin images api', () => {
     expect(response.status).toBe(500);
     expect(JSON.parse(await response.text())).toEqual(expect.objectContaining({
       ok: false,
-      errors: ['云端图片存储配置无效，请检查服务端配置'],
+      errors: ['Invalid cloud image storage configuration — check the server-side config'],
       error: expect.objectContaining({ code: 'cloud_config_invalid', traceId: expect.any(String) })
     }));
     expect(s3SdkMock.paginateListObjectsV2).not.toHaveBeenCalled();
@@ -467,7 +467,7 @@ describe('admin images api', () => {
     expect(response.status).toBe(500);
     expect(JSON.parse(await response.text())).toEqual(expect.objectContaining({
       ok: false,
-      errors: ['云端图片存储配置无效，请检查服务端配置'],
+      errors: ['Invalid cloud image storage configuration — check the server-side config'],
       error: expect.objectContaining({ code: 'cloud_config_invalid', traceId: expect.any(String) })
     }));
     expect(s3SdkMock.paginateListObjectsV2).not.toHaveBeenCalled();
@@ -491,7 +491,7 @@ describe('admin images api', () => {
       expect.arrayContaining([
         expect.objectContaining({
           value: 'src/content/essay/guide',
-          label: '随笔 · 附件映射测试',
+          label: 'Essay · Attachment mapping test',
           count: 1
         })
       ])
@@ -510,7 +510,7 @@ describe('admin images api', () => {
           value: 'src/content/essay/guide-assets/hero.png',
           origin: 'src/content',
           owner: 'src/content/essay/guide',
-          ownerLabel: '随笔 · 附件映射测试'
+          ownerLabel: 'Essay · Attachment mapping test'
         })
       ])
     );
@@ -748,7 +748,7 @@ describe('admin images api', () => {
     expect(response.status).toBe(502);
     expect(JSON.parse(await response.text())).toEqual(expect.objectContaining({
       ok: false,
-      errors: ['云端图片操作失败，请查看服务端日志'],
+      errors: ['Cloud image operation failed — check the server-side logs'],
       error: expect.objectContaining({ code: 'cloud_unknown', outcome: 'failed_known', traceId: expect.any(String) })
     }));
   });
@@ -912,7 +912,7 @@ describe('admin images api', () => {
     expect(payload.ok).toBe(false);
     expect(payload.errors).toEqual(
       expect.arrayContaining([
-        expect.stringContaining('memo 仅支持固定源文件')
+        expect.stringContaining('memo only supports the fixed source file')
       ])
     );
   });
@@ -934,7 +934,7 @@ describe('admin images api', () => {
     expect(payload.ok).toBe(false);
     expect(payload.errors).toEqual(
       expect.arrayContaining([
-        expect.stringContaining('当前仅支持随笔正文图片、小记正文图片或絮语配图上传')
+        expect.stringContaining('Only essay body images, memo body images, or bits images can be uploaded right now')
       ])
     );
     await expect(readFile(path.join(tempRoot, 'src', 'content', 'about', 'about-shot.png'))).rejects.toThrow();
@@ -955,7 +955,7 @@ describe('admin images api', () => {
     expect(response.status).toBe(400);
     const payload = JSON.parse(await response.text());
     expect(payload.ok).toBe(false);
-    expect(payload.errors).toEqual(expect.arrayContaining(['请选择图片文件']));
+    expect(payload.errors).toEqual(expect.arrayContaining(['Please choose an image file']));
   });
 
   it('derives recent scope from local file mtime and excludes hidden system assets', async () => {
