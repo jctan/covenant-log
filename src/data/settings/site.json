@@ -18,11 +18,9 @@
   },
   "socialLinks": {
     "github": "https://github.com/cxro/astro-whono",
-    "x": "https://twitter.com/yourname",
     "email": "Astro@Whono.me",
     "presetOrder": {
       "github": 1,
-      "x": 2,
       "email": 3
     },
     "custom": []

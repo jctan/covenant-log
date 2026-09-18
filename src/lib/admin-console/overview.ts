@@ -158,17 +158,17 @@ const COLLECTION_LABELS: Record<AdminOverviewCollectionKey, string> = {
 };
 
 const COLLECTION_DETAILS: Record<AdminOverviewCollectionKey, string> = {
-  essay: '文章',
-  bits: '动态',
-  memo: '小记'
+  essay: 'Posts',
+  bits: 'Updates',
+  memo: 'Notes'
 };
 
 const RECENT_LIMIT = 6;
 const TOP_TAG_LIMIT = 6;
 const ACTIVITY_DAY_COUNT = 90;
 const SYSTEM_STATUS_ACTIVITY_DAY_COUNT = 14;
-const WORD_COUNT_COMPACT_THRESHOLD = 100_000;
-const WORD_COUNT_COMPACT_UNIT = 10_000;
+const WORD_COUNT_COMPACT_THRESHOLD = 10_000;
+const WORD_COUNT_COMPACT_UNIT = 1_000;
 const WORD_TOKEN_REGEX =
   /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]|[A-Za-z0-9]+/gu;
 const ASTRO_VERSION = String(packageJson.dependencies?.astro ?? 'unknown').replace(/^[~^]/, '');
@@ -274,7 +274,7 @@ const getRecentMemoPublication = (entry: MemoEntry): AdminOverviewRecentPublicat
   const isDraft = entry.data.draft === true;
   const title = entry.data.title?.trim()
     || getMemoDerivedText(entry).excerptText
-    || '小记';
+    || 'Memo';
   return {
     collection: 'memo',
     collectionLabel: COLLECTION_LABELS.memo,
@@ -282,7 +282,7 @@ const getRecentMemoPublication = (entry: MemoEntry): AdminOverviewRecentPublicat
     href: isDraft ? null : '/memo/',
     isDraft,
     date: entry.data.date ?? null,
-    dateLabel: entry.data.date ? formatCompactDate(entry.data.date) : '未设置日期',
+    dateLabel: entry.data.date ? formatCompactDate(entry.data.date) : 'No date set',
     shortDateLabel: formatShortDate(entry.data.date ?? null)
   };
 };
@@ -351,13 +351,13 @@ export const formatAdminOverviewWordMetric = (wordCount: number): { value: strin
   if (wordCount <= WORD_COUNT_COMPACT_THRESHOLD) {
     return {
       value: String(wordCount),
-      suffix: '字'
+      suffix: 'words'
     };
   }
 
   return {
     value: (wordCount / WORD_COUNT_COMPACT_UNIT).toFixed(1),
-    suffix: '万字'
+    suffix: 'K words'
   };
 };
 

@@ -29,42 +29,42 @@ export const ADMIN_ROUTES: readonly AdminRouteDefinition[] = [
     id: 'overview',
     href: '/admin/',
     label: 'Overview',
-    sidebarLabel: '概览',
+    sidebarLabel: 'Overview',
     sidebarIcon: 'astro-logo-color',
-    description: '后台首页',
+    description: 'Dashboard home',
     activeMatch: 'exact'
   },
   {
     id: 'theme',
     href: '/admin/theme/',
     label: 'Theme',
-    sidebarLabel: '主题',
+    sidebarLabel: 'Theme',
     sidebarIcon: 'palette',
-    description: '主题设置'
+    description: 'Theme settings'
   },
   {
     id: 'content',
     href: '/admin/content/',
     label: 'Content',
-    sidebarLabel: '写作',
+    sidebarLabel: 'Content',
     sidebarIcon: 'admin-page',
-    description: '内容管理'
+    description: 'Content management'
   },
   {
     id: 'images',
     href: '/admin/images/',
     label: 'Images',
-    sidebarLabel: '图片',
+    sidebarLabel: 'Images',
     sidebarIcon: 'images',
-    description: '图片管理'
+    description: 'Image management'
   },
   {
     id: 'data',
     href: '/admin/data/',
     label: 'Data',
-    sidebarLabel: '快照',
+    sidebarLabel: 'Data',
     sidebarIcon: 'database',
-    description: '设置导入导出'
+    description: 'Import/export settings'
   }
 ] as const;
 
