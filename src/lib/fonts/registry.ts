@@ -238,8 +238,8 @@ export type ThemeFontId = (typeof THEME_FONT_REGISTRY)[number]['id'];
 export const TYPOGRAPHY_ROLES = ['readable', 'copy', 'mono', 'brand'] as const satisfies readonly TypographyRole[];
 
 export const THEME_TYPOGRAPHY_DEFAULT: TypographySettings = {
-  readable: 'noto-serif-sc',
-  copy: 'lxgw-wenkai-lite',
+  readable: 'system-serif',
+  copy: 'noto-sans-sc',
   mono: 'system-mono',
   brand: 'serif-georgia'
 };

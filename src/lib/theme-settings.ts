@@ -465,8 +465,8 @@ const cloneThemeSettingsReadDiagnostics = (
 
 const DEFAULT_SITE: SiteSettings = {
   title: 'Whono',
-  description: '一个 Astro 主题的展示站：轻量、可维护、可复用。',
-  defaultLocale: 'zh-CN',
+  description: 'A showcase site for an Astro theme: lightweight, maintainable, and reusable.',
+  defaultLocale: 'en',
   footer: {
     startYear: LEGACY_FOOTER_START_YEAR,
     showCurrentYear: LEGACY_FOOTER_SHOW_CURRENT_YEAR,
