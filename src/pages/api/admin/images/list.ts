@@ -44,7 +44,7 @@ export const GET: APIRoute = async ({ url }) => {
         headers: JSON_HEADERS
       });
     }
-    const message = error instanceof Error ? error.message : '图片列表读取失败';
+    const message = error instanceof Error ? error.message : 'Failed to read the image list';
     if (isAdminImageCloudStorageEnabled()) {
       const cloudError = createAdminImageCloudError('cloud_unknown', 'failed_known', error);
       logAdminImageCloudError('list', cloudError);

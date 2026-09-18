@@ -66,7 +66,7 @@ export const POST: APIRoute = async ({ request, url }) => {
   } catch {
     return createJsonResponse(400, {
       ok: false,
-      errors: ['上传请求不是合法 multipart/form-data']
+      errors: ["The upload request isn't valid multipart/form-data"]
     });
   }
 
@@ -75,10 +75,10 @@ export const POST: APIRoute = async ({ request, url }) => {
   const errors: string[] = [];
 
   if (!isAdminSiteFaviconUploadSlot(slot)) {
-    errors.push('站点图标当前仅支持 png / appleTouchIcon 槽位上传（SVG 请手动替换 public/favicon.svg）');
+    errors.push('Site icons currently only support uploading to the png / appleTouchIcon slots (replace public/favicon.svg manually for SVG)');
   }
   if (!file) {
-    errors.push('上传请求缺少 image 文件');
+    errors.push('Upload request is missing the image file');
   }
 
   if (errors.length > 0 || !file || !isAdminSiteFaviconUploadSlot(slot)) {
@@ -90,7 +90,7 @@ export const POST: APIRoute = async ({ request, url }) => {
 
   return withAdminSiteAssetUploadLock(async () => {
     try {
-      // 临界区内重读，避免缓存快照落后于刚完成的 settings 保存。
+      // Re-read inside the critical section to avoid a cached snapshot lagging behind a just-completed settings save.
       resetThemeSettingsCache();
       const currentFavicon = getThemeSettings().settings.site.favicon;
       const result = await uploadAdminSiteFavicon({
@@ -113,7 +113,7 @@ export const POST: APIRoute = async ({ request, url }) => {
       console.error('[astro-whono] Failed to upload admin site asset:', error);
       return createJsonResponse(500, {
         ok: false,
-        errors: ['站点图标上传失败，请检查本地文件权限或日志']
+        errors: ['Site icon upload failed — check local file permissions or the logs']
       });
     }
   });

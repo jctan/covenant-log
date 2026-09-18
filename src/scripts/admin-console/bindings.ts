@@ -161,7 +161,7 @@ export const bindAdminThemeSocialEvents = ({
 
   socialCustomAddBtn.addEventListener('click', () => {
     if (getCustomRows().length >= ADMIN_SOCIAL_CUSTOM_LIMIT) {
-      uiState.setStatus('warn', '自定义链接已达到上限');
+      uiState.setStatus('warn', 'Custom links have reached the limit');
       return;
     }
     const row = createCustomRow(
@@ -376,12 +376,12 @@ export const bindAdminThemeNavigationGuard = ({
         return;
       }
 
-      const confirmed = window.confirm('当前有未保存更改，确定要离开此页吗？');
+      const confirmed = window.confirm('You have unsaved changes — leave this page anyway?');
       if (confirmed) return;
 
       event.preventDefault();
       event.stopPropagation();
-      uiState.setStatus('warn', '已取消页面切换，请先保存或重置当前更改', { announce: false });
+      uiState.setStatus('warn', 'Navigation canceled — save or reset your changes first', { announce: false });
     },
     true
   );

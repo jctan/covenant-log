@@ -43,7 +43,7 @@ const createCloudInvalidRequestResponse = (
 ): Response => {
   const normalizedErrors = typeof errors === 'string' ? [errors] : [...errors];
   const cloudError = new AdminImageUploadError(
-    normalizedErrors[0] ?? '云端图片请求无效，请检查参数后重试',
+    normalizedErrors[0] ?? 'Invalid cloud image request — check the parameters and try again',
     status,
     {
       code: 'cloud_invalid_request',
@@ -102,10 +102,10 @@ export const POST: APIRoute = async ({ request, url }) => {
     formData = await request.formData();
   } catch {
     return isAdminImageCloudStorageEnabled()
-      ? createCloudInvalidRequestResponse(400, '上传请求不是合法 multipart/form-data')
+      ? createCloudInvalidRequestResponse(400, "The upload request isn't valid multipart/form-data")
       : createJsonResponse(400, {
           ok: false,
-          errors: ['上传请求不是合法 multipart/form-data']
+          errors: ["The upload request isn't valid multipart/form-data"]
         });
   }
 
@@ -115,13 +115,13 @@ export const POST: APIRoute = async ({ request, url }) => {
   const errors: string[] = [];
 
   if (!isAdminContentImageUploadCollectionKey(collection)) {
-    errors.push('当前仅支持随笔正文图片、小记正文图片或絮语配图上传');
+    errors.push('Only essay body images, memo body images, or bits images can be uploaded right now');
   }
   if (!entryId) {
-    errors.push('上传请求缺少 entryId');
+    errors.push('Upload request is missing entryId');
   }
   if (!file) {
-    errors.push('上传请求缺少 image 文件');
+    errors.push('Upload request is missing the image file');
   }
 
   if (errors.length > 0 || !file || !isAdminContentImageUploadCollectionKey(collection)) {
@@ -155,7 +155,7 @@ export const POST: APIRoute = async ({ request, url }) => {
       console.error('[astro-whono] Failed to upload admin image:', error);
       return createJsonResponse(500, {
         ok: false,
-        errors: ['图片上传失败，请检查本地文件权限或日志']
+        errors: ['Image upload failed — check local file permissions or the logs']
       });
     }
   });

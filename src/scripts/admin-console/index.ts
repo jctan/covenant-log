@@ -233,7 +233,7 @@ if (!root) {
         if (field !== 'home.heroImageSrc') return { enabled: true };
         return {
           enabled: controls.inputHomeShowHero.checked,
-          inactivePreviewText: '首页 Hero 图未启用'
+          inactivePreviewText: 'Home hero image not enabled'
         };
       }
     });
