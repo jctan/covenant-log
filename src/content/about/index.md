@@ -1,17 +1,7 @@
 ---
 ---
 
-Hi, welcome
-
-This is a sample About page for the Whono theme.
-
-The sample content covers a site introduction, FAQs, and contact info — replace it with your own.
-
-## FAQ
-
-:::faq{question="Can I republish content from this site?"}
-Please credit the source when republishing. If a specific post states its own license terms, those take precedence.
-:::
+Hey! I'm John Tan, a lead DevSecOps / Cloud & Platform Engineer w/ a focus on Security. I write about my experiences and insights in the tech industry, focusing on cloud computing, security, and artificial intelligence.
 
 ## Contact
 
