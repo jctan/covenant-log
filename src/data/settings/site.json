@@ -1,11 +1,11 @@
 {
-  "title": "Covenant Log",
+  "title": "Covenant Logs",
   "description": "Notes on Cloud, Security, and AI",
   "defaultLocale": "en",
   "footer": {
     "startYear": 2026,
     "showCurrentYear": true,
-    "copyright": "Covenant Log"
+    "copyright": "Covenant Logs"
   },
   "adminOverview": {
     "publicVisible": true,

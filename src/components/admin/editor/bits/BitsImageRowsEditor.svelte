@@ -49,8 +49,8 @@ type ImageDetailEditTarget = {
   field: 'alt' | 'dimensions';
 };
 
-const EMPTY_META_TEXT = '等待选择图片或输入路径';
-const PENDING_META_TEXT = '等待确认路径并读取元数据';
+const EMPTY_META_TEXT = 'Waiting for an image selection or path';
+const PENDING_META_TEXT = 'Waiting to confirm the path and read metadata';
 const META_PREVIEW_DEBOUNCE_MS = 360;
 const IMAGE_DETAIL_PANEL_ID = 'admin-bits-image-detail-panel';
 const IMAGE_INSERT_BUTTON_ID = 'admin-bits-image-insert-button';
@@ -115,26 +115,26 @@ const isInsertTileActive = (): boolean => {
 };
 
 const getImageTabLabel = (index: number): string =>
-  `图片 #${index + 1}`;
+  `Image #${index + 1}`;
 
 const getImageShortLabel = (index: number): string =>
   `#${index + 1}`;
 
 const getImageTabStatus = (index: number, row: BitsImageRowDraft, meta: RowMetaState): string => {
-  if (meta.loading) return '读取中';
-  if (getRowIssueCount(index) > 0) return '需处理';
-  if (!row.src.trim()) return '待填写';
-  return meta.previewSrc ? '已就绪' : '已填写';
+  if (meta.loading) return 'Loading';
+  if (getRowIssueCount(index) > 0) return 'Needs attention';
+  if (!row.src.trim()) return 'Not filled in';
+  return meta.previewSrc ? 'Ready' : 'Filled in';
 };
 
 const getAltSummary = (row: BitsImageRowDraft): string =>
-  row.alt.trim() || '未填写(可选)';
+  row.alt.trim() || 'Not filled in (optional)';
 
 const getDimensionSummary = (row: BitsImageRowDraft): string => {
   const width = row.width.trim();
   const height = row.height.trim();
-  if (!width && !height) return '自动';
-  return `${width || '自动'} × ${height || '自动'}`;
+  if (!width && !height) return 'Auto';
+  return `${width || 'Auto'} × ${height || 'Auto'}`;
 };
 
 const isEditingDetail = (index: number, field: ImageDetailEditTarget['field']): boolean =>
@@ -229,12 +229,12 @@ const applyMeta = async (index: number) => {
   }
 
   if (!picker) {
-    setRowMeta(index, { text: '当前页面未挂载 image picker', loading: false });
+    setRowMeta(index, { text: 'No image picker is mounted on this page', loading: false });
     return;
   }
 
   const token = (rowMeta[index]?.token ?? 0) + 1;
-  setRowMeta(index, { token, loading: true, text: '正在读取图片元数据' });
+  setRowMeta(index, { token, loading: true, text: 'Reading image metadata…' });
 
   try {
     const meta = await picker.readMeta({ field: 'bits.images', value });
@@ -257,7 +257,7 @@ const applyMeta = async (index: number) => {
     const latest = rows[index];
     if (!latest || latest.src.trim() !== value || rowMeta[index]?.token !== token) return;
     setRowMeta(index, {
-      text: error instanceof Error ? error.message : '路径暂时无法读取',
+      text: error instanceof Error ? error.message : 'This path could not be read right now',
       loading: false
     });
   }
@@ -393,7 +393,7 @@ const applyPickedImage = (index: number, item: AdminImageClientItem) => {
     loading: false
   });
   setPreview(index, item.previewSrc);
-  onStatus('ok', `已选择本地图片：${item.value}`);
+  onStatus('ok', `Selected local image: ${item.value}`);
 };
 
 const getUploadPreviewSrc = (result: EditorImageUploadResult): string =>
@@ -419,7 +419,7 @@ const applyUploadedImage = (index: number, result: EditorImageUploadResult) => {
     loading: false
   });
   setPreview(index, getUploadPreviewSrc(result));
-  onStatus('ok', `已上传图片：${result.src}`);
+  onStatus('ok', `Uploaded image: ${result.src}`);
 };
 
 const handleUploadInput = async (index: number, input: HTMLInputElement) => {
@@ -428,7 +428,7 @@ const handleUploadInput = async (index: number, input: HTMLInputElement) => {
   if (!file) return;
 
   if (!uploadEndpoint || !entryId) {
-    onStatus('warn', '当前页面未挂载图片上传入口');
+    onStatus('warn', 'No image upload endpoint is mounted on this page');
     return;
   }
 
@@ -437,7 +437,7 @@ const handleUploadInput = async (index: number, input: HTMLInputElement) => {
   if (!originalRow) return;
   const token = (rowMeta[index]?.token ?? 0) + 1;
   setPreview(index, null);
-  setRowMeta(index, { token, loading: true, text: '正在上传图片' });
+  setRowMeta(index, { token, loading: true, text: 'Uploading image…' });
   updateUploadPending(true);
 
   try {
@@ -461,14 +461,14 @@ const handleUploadInput = async (index: number, input: HTMLInputElement) => {
 
 const openPicker = (index: number) => {
   if (!picker) {
-    onStatus('warn', '当前页面未挂载 image picker');
+    onStatus('warn', 'No image picker is mounted on this page');
     return;
   }
 
   picker.open({
     field: 'bits.images',
-    title: '为 bits.images 选择本地图片',
-    description: '仅列出可直接写入 `bits.images[*].src` 的本地 public/** 资源。',
+    title: 'Choose a local image for bits.images',
+    description: 'Only lists local public/** assets that can be written directly to `bits.images[*].src`.',
     query: rows[index]?.src ?? '',
     currentValue: rows[index]?.src ?? '',
     onSelect: (item) => {
@@ -503,7 +503,7 @@ onMount(() => {
 
   <div class="admin-content-image-editor">
     <div class="admin-content-image-strip">
-      <div class="admin-content-image-film" role="group" aria-label={`bits.images 图片顺序，共 ${getImageTileCount()} 张`}>
+      <div class="admin-content-image-film" role="group" aria-label={`bits.images image order, ${getImageTileCount()} total`}>
         {#each rows as row, index}
           {#if shouldShowImageTile(row)}
             {@const meta = rowMeta[index] ?? createRowMeta()}
@@ -519,7 +519,7 @@ onMount(() => {
               type="button"
               aria-current={selected ? 'true' : undefined}
               aria-controls={selected ? IMAGE_DETAIL_PANEL_ID : undefined}
-              title={`${getImageTabLabel(index)}：${getImageTabStatus(index, row, meta)}`}
+              title={`${getImageTabLabel(index)}: ${getImageTabStatus(index, row, meta)}`}
               onclick={() => handleImageTileClick(index)}
             >
               <span class="admin-content-image-thumb__media" aria-hidden="true">
@@ -536,7 +536,7 @@ onMount(() => {
                 </span>
               </span>
               {#if issueCount > 0}
-                <span class="admin-content-image-thumb__alert" aria-label={`${issueCount} 个字段错误`}>
+                <span class="admin-content-image-thumb__alert" aria-label={`${issueCount} field error(s)`}>
                   <AdminEditorIcon name="triangle-alert" size={12} strokeWidth={2.2} ariaHidden={false} />
                 </span>
               {/if}
@@ -551,14 +551,14 @@ onMount(() => {
           aria-current={isInsertTileActive() ? 'true' : undefined}
           aria-controls={isInsertTileActive() ? IMAGE_DETAIL_PANEL_ID : undefined}
           disabled={disabled}
-          title="插入图片"
+          title="Insert image"
           onclick={() => void handleInsertTileClick()}
         >
           <span class="admin-content-image-thumb__media" aria-hidden="true">
             <AdminEditorIcon name="image-plus" size={18} strokeWidth={1.8} />
           </span>
           <span class="admin-content-image-thumb__body">
-            <span class="admin-content-image-thumb__label">插入图片</span>
+            <span class="admin-content-image-thumb__label">Insert image</span>
           </span>
         </button>
       </div>
@@ -585,17 +585,17 @@ onMount(() => {
       >
         <div class="admin-content-image-row__grid">
           <div class="admin-field admin-content-image-row__field admin-content-image-row__field--src" class:is-invalid={Boolean(srcIssue)}>
-            <label class="admin-sr-only" for={`admin-bits-image-${index}-src`}>图片路径</label>
+            <label class="admin-sr-only" for={`admin-bits-image-${index}-src`}>Image path</label>
             <input
               id={`admin-bits-image-${index}-src`}
               class="admin-field__control"
               type="text"
               value={activeRow.src}
               spellcheck="false"
-              aria-label={`${activeRowIsEmpty ? '插入图片' : getImageTabLabel(index)}路径`}
+              aria-label={`${activeRowIsEmpty ? 'Insert image' : getImageTabLabel(index)} path`}
               aria-invalid={srcIssue ? 'true' : undefined}
               aria-describedby={getFieldDescribedBy(IMAGE_ISSUE_ID_SCOPE, `images[${index}].src`, srcIssue)}
-              placeholder="请上传图片或输入图片链接"
+              placeholder="Upload an image or enter an image link"
               disabled={rowDisabled}
               oninput={(event) => handleSourceInput(index, event.currentTarget.value)}
               onchange={() => void applyMeta(index)}
@@ -603,7 +603,7 @@ onMount(() => {
             <p id={getFieldIssueId(IMAGE_ISSUE_ID_SCOPE, `images[${index}].src`)} class="admin-content-editor__error" hidden={!srcIssue}>{srcIssue}</p>
           </div>
 
-          <div class="admin-content-image-row__actions" aria-label={`${activeRowIsEmpty ? '插入图片' : getImageTabLabel(index)} 操作`}>
+          <div class="admin-content-image-row__actions" aria-label={`${activeRowIsEmpty ? 'Insert image' : getImageTabLabel(index)} actions`}>
             <input
               id={`admin-bits-image-${index}-upload`}
               type="file"
@@ -616,28 +616,28 @@ onMount(() => {
               class="admin-btn admin-btn--secondary admin-content-image-row__action"
               type="button"
               disabled={rowDisabled}
-              title="上传到 public/bits/"
+              title="Upload to public/bits/"
               onclick={() => document.getElementById(`admin-bits-image-${index}-upload`)?.click()}
             >
               <AdminEditorIcon name="upload" size={14} strokeWidth={2} class="admin-icon" />
-              <span>上传</span>
+              <span>Upload</span>
             </button>
             <button
               class="admin-btn admin-btn--ghost admin-content-image-row__action"
               type="button"
               disabled={rowDisabled}
-              title="从本地图片库选择"
+              title="Choose from the local image library"
               onclick={() => openPicker(index)}
             >
               <AdminEditorIcon name="images" size={14} strokeWidth={2} class="admin-icon" />
-              <span>选择</span>
+              <span>Choose</span>
             </button>
             <button
               class="admin-btn admin-btn--ghost admin-content-image-row__remove"
               type="button"
               disabled={rowDisabled}
-              title={activeRowIsEmpty ? '取消插入图片' : `移除${getImageTabLabel(index)}`}
-              aria-label={activeRowIsEmpty ? '取消插入图片' : `移除${getImageTabLabel(index)}`}
+              title={activeRowIsEmpty ? 'Cancel image insert' : `Remove ${getImageTabLabel(index)}`}
+              aria-label={activeRowIsEmpty ? 'Cancel image insert' : `Remove ${getImageTabLabel(index)}`}
               onclick={() => removeRow(index)}
             >
               <AdminEditorIcon name="trash" size={14} strokeWidth={2} class="admin-icon" />
@@ -648,17 +648,17 @@ onMount(() => {
         <div
           class="admin-content-image-row__details"
           role="group"
-          aria-label={`${activeRowIsEmpty ? '插入图片' : getImageTabLabel(index)} 详情`}
+          aria-label={`${activeRowIsEmpty ? 'Insert image' : getImageTabLabel(index)} details`}
         >
           <div
             class="admin-content-image-row__detail-item"
             class:is-editing={showAltEditor}
             onfocusout={(event) => handleDetailFocusOut(event, Boolean(altIssue))}
           >
-            <span class="admin-content-image-row__detail-label">图片说明</span>
+            <span class="admin-content-image-row__detail-label">Image description</span>
             {#if showAltEditor}
               <div class="admin-field admin-content-image-row__field admin-content-image-row__field--alt" class:is-invalid={Boolean(altIssue)}>
-                <label class="admin-sr-only" for={`admin-bits-image-${index}-alt`}>图片说明</label>
+                <label class="admin-sr-only" for={`admin-bits-image-${index}-alt`}>Image description</label>
                 <input
                   id={`admin-bits-image-${index}-alt`}
                   class="admin-field__control admin-content-image-row__detail-input"
@@ -666,7 +666,7 @@ onMount(() => {
                   value={activeRow.alt}
                   aria-invalid={altIssue ? 'true' : undefined}
                   aria-describedby={getFieldDescribedBy(IMAGE_ISSUE_ID_SCOPE, `images[${index}].alt`, altIssue)}
-                  placeholder="未填写(可选)"
+                  placeholder="Not filled in (optional)"
                   disabled={rowDisabled}
                   oninput={(event) => handleDetailInput(index, 'alt', event.currentTarget.value)}
                   onkeydown={(event) => {
@@ -681,7 +681,7 @@ onMount(() => {
                 class:is-empty={altDetailIsEmpty}
                 type="button"
                 disabled={rowDisabled}
-                title="编辑图片说明"
+                title="Edit image description"
                 onclick={() => void editImageDetail(index, 'alt')}
               >
                 {getAltSummary(activeRow)}
@@ -694,11 +694,11 @@ onMount(() => {
             class:is-editing={showDimensionEditor}
             onfocusout={(event) => handleDetailFocusOut(event, Boolean(widthIssue || heightIssue))}
           >
-            <span class="admin-content-image-row__detail-label">图片尺寸</span>
+            <span class="admin-content-image-row__detail-label">Image dimensions</span>
             {#if showDimensionEditor}
               <div class="admin-content-image-row__dimension-fields">
                 <div class="admin-field admin-content-image-row__field" class:is-invalid={Boolean(widthIssue)}>
-                  <label class="admin-sr-only" for={`admin-bits-image-${index}-width`}>图片宽度</label>
+                  <label class="admin-sr-only" for={`admin-bits-image-${index}-width`}>Image width</label>
                   <input
                     id={`admin-bits-image-${index}-width`}
                     class="admin-field__control admin-content-image-row__detail-input"
@@ -707,7 +707,7 @@ onMount(() => {
                     value={activeRow.width}
                     aria-invalid={widthIssue ? 'true' : undefined}
                     aria-describedby={getFieldDescribedBy(IMAGE_ISSUE_ID_SCOPE, `images[${index}].width`, widthIssue)}
-                    placeholder="自动"
+                    placeholder="Auto"
                     disabled={rowDisabled}
                     oninput={(event) => handleDetailInput(index, 'width', event.currentTarget.value)}
                     onkeydown={(event) => {
@@ -718,7 +718,7 @@ onMount(() => {
                 </div>
                 <span class="admin-content-image-row__dimension-separator" aria-hidden="true">×</span>
                 <div class="admin-field admin-content-image-row__field" class:is-invalid={Boolean(heightIssue)}>
-                  <label class="admin-sr-only" for={`admin-bits-image-${index}-height`}>图片高度</label>
+                  <label class="admin-sr-only" for={`admin-bits-image-${index}-height`}>Image height</label>
                   <input
                     id={`admin-bits-image-${index}-height`}
                     class="admin-field__control admin-content-image-row__detail-input"
@@ -727,7 +727,7 @@ onMount(() => {
                     value={activeRow.height}
                     aria-invalid={heightIssue ? 'true' : undefined}
                     aria-describedby={getFieldDescribedBy(IMAGE_ISSUE_ID_SCOPE, `images[${index}].height`, heightIssue)}
-                    placeholder="自动"
+                    placeholder="Auto"
                     disabled={rowDisabled}
                     oninput={(event) => handleDetailInput(index, 'height', event.currentTarget.value)}
                     onkeydown={(event) => {
@@ -743,7 +743,7 @@ onMount(() => {
                 class:is-empty={dimensionDetailIsEmpty}
                 type="button"
                 disabled={rowDisabled}
-                title="编辑图片尺寸"
+                title="Edit image dimensions"
                 onclick={() => void editImageDetail(index, 'dimensions')}
               >
                 {getDimensionSummary(activeRow)}
@@ -757,7 +757,7 @@ onMount(() => {
             disabled={rowDisabled || !activeRow.src.trim()}
             onclick={() => void applyMeta(index)}
           >
-            重新读取尺寸
+            Reread dimensions
           </button>
         </div>
       </div>
