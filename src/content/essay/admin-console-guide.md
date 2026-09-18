@@ -1,73 +1,73 @@
 ---
-title: Admin Console 快速指南
-description: 介绍 astro-whono 本地 Admin Console 的入口、各页面功能。
-badge: 指南
+title: Admin Console Quick Guide
+description: Introduces the entry points and page-by-page features of astro-whono's local Admin Console.
+badge: Guide
 date: 2026-04-24
 updatedAt: 2026-08-10
-tags: [ "Admin Console", "指南" ]
+tags: [ "Admin Console", "Guide" ]
 draft: false
 ---
 
-Admin Console `/admin/`是本地后台入口，用于在 fork、clone 或自托管后接手站点配置与内容维护。
+The Admin Console `/admin/` is the local dashboard entry point, used to take over site configuration and content maintenance after you fork, clone, or self-host the project.
 
-它不是独立 CMS，保存操作会写回仓库里的配置或内容文件，因此适合和 Git 一起使用：改动前后可以看 diff，需要回退时也按普通项目文件处理。
+It isn't a standalone CMS — saving writes back to the config or content files in the repo, so it pairs naturally with Git: you can diff changes before and after, and roll back like any other project file when needed.
 
-:::note[本地工具]
-Admin Console 仅在开发环境提供写入能力。<br>
-生产环境最多保留只读的站点概览页面；`/api/admin/*` 只服务本地后台，不作为公开 API。
+:::note[Local tool]
+The Admin Console only provides write access in the development environment.<br>
+In production, at most a read-only Site Overview page remains; `/api/admin/*` only serves the local dashboard and isn't a public API.
 :::
 
-## 快速入口
+## Quick Start
 
-本地启动项目：
+Start the project locally:
 
 ```bash
 npm install
 npm run dev
 ```
 
-开发服务器默认运行在 `http://localhost:4321/`，如修改过端口，请将 `4321` 换成你的实际端口。
+The dev server runs on `http://localhost:4321/` by default; if you've changed the port, replace `4321` with your actual port.
 
-| 入口 | 页面 | 主要用途 |
+| Entry | Page | Main Purpose |
 | :---: | :---: | :--- |
-| `/admin/` | Site Overview | 查看站点概况、内容结构、近期文章等 |
-| `/admin/theme/` | Theme Console | 编辑站点信息、侧栏、首页、内页文案 |
-| `/admin/content/` | Content Console | 文章管理与可视化写作 |
-| `/admin/images/` | Images Console | 浏览图片资源，复制可用路径 |
-| `/admin/data/` | Data Console | 导入与导出主题设置，便于迁移和备份 |
+| `/admin/` | Site Overview | View site overview, content structure, recent posts, etc. |
+| `/admin/theme/` | Theme Console | Edit site info, sidebar, homepage, and inner-page copy |
+| `/admin/content/` | Content Console | Post management and visual writing |
+| `/admin/images/` | Images Console | Browse image assets and copy usable paths |
+| `/admin/data/` | Data Console | Import and export theme settings for migration and backup |
 
-## 主要页面
+## Main Pages
 
 ### 📈 Site Overview
 
-[Site Overview](/admin/) 是后台首页，可查看站点内容数量、近期更新、后台入口等（入口仅开发环境可见）。
+[Site Overview](/admin/) is the dashboard's home page, showing content counts, recent updates, and dashboard entry points (entries are visible only in the development environment).
 
-本页面可选对访客开放，受 Theme Console 页面内的 Admin Overview 开关控制。
+This page can optionally be made visible to visitors, controlled by the Admin Overview toggle in the Theme Console.
 
 ### 🛠️ Theme Console
 
-Theme Console 管理主题级配置，方便在 fork 或 clone 后快速调整站点基础设置。
+Theme Console manages theme-level configuration, making it easy to quickly adjust basic site settings after a fork or clone.
 
-具体内容详见 [Theme Console 配置指南](/archive/theme-console-guide/)。
+See the [Theme Console configuration guide](/archive/theme-console-guide/) for details.
 
 ### 📝 Content Console
 
-Content Console 是内容管理与可视化写作入口，可以集中查看和维护站点的写作内容。
+Content Console is the entry point for content management and visual writing, letting you view and maintain the site's written content in one place.
 
-具体内容详见 [Content Console 使用指南](/archive/content-console-guide/)。
+See the [Content Console usage guide](/archive/content-console-guide/) for details.
 
 ### 🖼️ Images Console
 
-Images Console 可浏览本地与云端图片、核对图片信息，并复制可用于配置或内容字段的路径或 URL。
+Images Console lets you browse local and cloud images, check image details, and copy paths or URLs usable in config or content fields.
 
-对象存储配置和实际服务验证说明见 [Content Console 使用指南](/archive/content-console-guide/)。
-需要更换本地图片时，先把图片放到项目约定目录，再回到对应页面选择或填写路径。
+See the [Content Console usage guide](/archive/content-console-guide/) for object-storage configuration and live service verification.
+To swap in a local image, first place it in the project's designated directory, then go back to the relevant page to select or fill in the path.
 
 ### 📤 Data Console
 
-Data Console 负责导入或导出主题设置。导出适合做迁移或备份；导入会先走预检，再确认写入。
+Data Console handles importing and exporting theme settings. Exporting is good for migration or backup; importing runs a pre-check before confirming the write.
 
-它处理的是 Theme Console 管理的主题配置数据，不处理文章内容。
+It handles the theme configuration data managed by Theme Console, not post content.
 
 ---
-这些就是目前 Admin Console 的主要入口和功能。如果你有更多想法或建议，欢迎提交 Issue。
+That covers the Admin Console's current main entry points and features. If you have ideas or suggestions, feel free to open an Issue.
