@@ -100,7 +100,7 @@ const adminUiPrefsScriptHref = isDevAdminPage
   <head>
     <script is:inline>
       (() => {
-        // 与 src/scripts/sidebar-theme.ts 保持同一主题偏好契约，避免首屏与运行时状态漂移。
+        // Mirrors the theme-preference contract in src/scripts/sidebar-theme.ts to avoid first-paint/runtime drift.
         const themeKey = 'theme';
         const modeKey = 'theme-mode';
         let storedMode = null;

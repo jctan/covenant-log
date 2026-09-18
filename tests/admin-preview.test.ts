@@ -304,7 +304,7 @@ describe('admin preview api', () => {
     expect(payload.result.html).toContain('class="about-site-info"');
     expect(payload.result.html).toContain('data-about-site-info-copy');
     expect(payload.result.html).toContain('data-about-copy-text=');
-    expect(payload.result.html).toContain('<dt class="about-site-info__field-label">名称</dt>');
+    expect(payload.result.html).toContain('<dt class="about-site-info__field-label">Name</dt>');
     expect(payload.result.html).toContain('<dd class="about-site-info__field-value">Whono</dd>');
     expect(payload.result.html).toContain('avatar: author/avatar.webp');
     expect(payload.result.html).not.toContain('about-site-info__avatar');
