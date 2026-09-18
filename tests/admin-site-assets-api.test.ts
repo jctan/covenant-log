@@ -136,7 +136,7 @@ describe('admin site assets api', () => {
   it('rejects non-square, undersized and oversized icons', async () => {
     const nonSquare = await postUpload(createFaviconFormData('png', createPngBuffer(64, 32)));
     expect(nonSquare.status).toBe(400);
-    expect(nonSquare.payload.errors?.[0]).toContain('正方形');
+    expect(nonSquare.payload.errors?.[0]).toContain('nearly square');
 
     // ~2%（至少 2px）容差内的导出误差可接受
     const nearlySquare = await postUpload(createFaviconFormData('png', createPngBuffer(64, 63)));
@@ -145,7 +145,7 @@ describe('admin site assets api', () => {
 
     const beyondTolerance = await postUpload(createFaviconFormData('png', createPngBuffer(64, 60)));
     expect(beyondTolerance.status).toBe(400);
-    expect(beyondTolerance.payload.errors?.[0]).toContain('正方形');
+    expect(beyondTolerance.payload.errors?.[0]).toContain('nearly square');
 
     const tooSmall = await postUpload(createFaviconFormData('png', createPngBuffer(8, 8)));
     expect(tooSmall.status).toBe(400);

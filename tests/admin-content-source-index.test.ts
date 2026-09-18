@@ -182,7 +182,7 @@ describe('admin-console/content-source-index', () => {
     });
     expect(about?.dateLabel).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     expect(about?.dateLabel).not.toBe('Fixed single page');
-    expect(about?.searchHaystack).toContain('About');
+    expect(about?.searchHaystack).toContain('about');
     expect(about?.searchHaystack).not.toContain('About body text');
   });
 
@@ -251,10 +251,10 @@ describe('admin-console/content-source-index', () => {
     expect(essay?.sourceError).toContain('Failed to parse');
     expect(essay?.sourceError).not.toContain('essay.title');
     expect(essay?.sourceError).not.toContain('essay.date');
-    expect(essay?.dateLabel).toBe('源文件异常');
+    expect(essay?.dateLabel).toBe('Source file error');
     expect(bit?.id).toBe('missing-date');
     expect(bit?.sourceError).toContain('bits.date');
-    expect(bit?.dateLabel).toBe('未设置日期');
+    expect(bit?.dateLabel).toBe('No date set');
     expect(bit?.publicHref).toBeNull();
   });
 
