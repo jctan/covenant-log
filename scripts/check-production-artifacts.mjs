@@ -114,7 +114,7 @@ export const runProductionArtifactCheck = async (options = {}) => {
     'dist/robots.txt',
     'dist/rss.xml',
     'dist/archive/rss.xml',
-    'dist/essay/rss.xml',
+    'dist/posts/rss.xml',
     'dist/index.html',
     'dist/about/index.html',
     'dist/admin/index.html',
@@ -173,7 +173,7 @@ export const runProductionArtifactCheck = async (options = {}) => {
     (match) => match[1].trim()
   ).filter(Boolean);
   const leakedEssayDetail = sitemapLocs.find((loc) =>
-    /^\/essay\/[^/]+\/$/.test(stripBasePrefix(new URL(loc).pathname))
+    /^\/posts\/[^/]+\/$/.test(stripBasePrefix(new URL(loc).pathname))
   );
   expect(!leakedEssayDetail, `Essay compatibility redirect leaked into sitemap: ${leakedEssayDetail}`);
 
@@ -210,7 +210,7 @@ export const runProductionArtifactCheck = async (options = {}) => {
     ['dist/admin/data/index.html', adminDataHtml, 'Data Console']
   ];
   [
-    'dist/admin/content/essay/index.html',
+    'dist/admin/content/posts/index.html',
     'dist/admin/content/bits/index.html',
     'dist/admin/content/memo/index.html'
   ].forEach((filePath) => {
@@ -345,7 +345,7 @@ export const runProductionArtifactCheck = async (options = {}) => {
 
   const defaultRssXml = readText('dist/rss.xml');
   const archiveRssXml = readText('dist/archive/rss.xml');
-  const essayRssXml = readText('dist/essay/rss.xml');
+  const essayRssXml = readText('dist/posts/rss.xml');
 
   const defaultRssLinks = getRssItemLinks(defaultRssXml);
   const archiveRssLinks = getRssItemLinks(archiveRssXml);
@@ -397,7 +397,7 @@ export const runProductionArtifactCheck = async (options = {}) => {
   const latestEssayHtml = readText(latestEssayHtmlPath);
   expect(
     !PREV_LINK_PATTERN.test(latestEssayHtml),
-    `Latest essay detail page should not render a prev link: ${latestEssayHtmlPath}`
+    `Latest posts detail page should not render a prev link: ${latestEssayHtmlPath}`
   );
 
   const oldestEssayLink = essayRssLinks.at(-1);
@@ -406,7 +406,7 @@ export const runProductionArtifactCheck = async (options = {}) => {
   const oldestEssayHtml = readText(oldestEssayHtmlPath);
   expect(
     !NEXT_LINK_PATTERN.test(oldestEssayHtml),
-    `Oldest essay detail page should not render a next link: ${oldestEssayHtmlPath}`
+    `Oldest posts detail page should not render a next link: ${oldestEssayHtmlPath}`
   );
 
   const adminSettingsArtifact = readText('dist/api/admin/settings');

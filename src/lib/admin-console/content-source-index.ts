@@ -245,8 +245,8 @@ const createEssaySourceIndexItem: FrontmatterAdapter = (record) => {
   const bodyDerived = getBodyDerived(record);
   const sourceError = mergeSourceError(
     record.sourceError,
-    !hasSourceError && !normalizeOptionalText(frontmatter.title) ? 'essay.title is missing or not a string' : null,
-    !hasSourceError && !dateResult ? 'essay.date is missing or has an invalid format' : null
+    !hasSourceError && !normalizeOptionalText(frontmatter.title) ? 'posts.title is missing or not a string' : null,
+    !hasSourceError && !dateResult ? 'posts.date is missing or has an invalid format' : null
   );
 
   return createBaseItem(record, {

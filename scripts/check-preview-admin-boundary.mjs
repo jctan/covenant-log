@@ -164,7 +164,7 @@ const createAdminAboutSmokeSource = () => [
 const createTempAdminDevFixture = async () => {
   const tempRoot = await mkdtemp(path.join(tmpdir(), 'astro-whono-admin-dev-'));
   const settingsDir = path.join(tempRoot, 'settings');
-  const contentEntryPath = path.join(tempRoot, 'src', 'content', 'essay', `${ADMIN_CONTENT_SMOKE_ENTRY_ID}.md`);
+  const contentEntryPath = path.join(tempRoot, 'src', 'content', 'posts', `${ADMIN_CONTENT_SMOKE_ENTRY_ID}.md`);
   const bitsEntryPath = path.join(tempRoot, 'src', 'content', 'bits', `${ADMIN_CONTENT_BITS_SMOKE_ENTRY_ID}.md`);
   const memoEntryPath = path.join(tempRoot, 'src', 'content', 'memo', `${ADMIN_CONTENT_MEMO_SMOKE_ENTRY_ID}.md`);
   const aboutEntryPath = path.join(tempRoot, 'src', 'content', 'about', `${ADMIN_CONTENT_ABOUT_SMOKE_ENTRY_ID}.md`);
@@ -215,7 +215,7 @@ const createAdminContentSmokeFrontmatter = (overrides = {}) => ({
 });
 
 const createAdminContentSmokeWritePayload = (revision, options = {}) => ({
-  collection: 'essay',
+  collection: 'posts',
   entryId: ADMIN_CONTENT_SMOKE_ENTRY_ID,
   revision,
   frontmatter: createAdminContentSmokeFrontmatter(options.frontmatter),
@@ -430,12 +430,12 @@ const runDevAdminContentWriteSmoke = async (baseUrl, fixture) => {
 
   const readResponse = await request(
     baseUrl,
-    `/api/admin/content/entry/?collection=essay&entryId=${encodeURIComponent(ADMIN_CONTENT_SMOKE_ENTRY_ID)}`
+    `/api/admin/content/entry/?collection=posts&entryId=${encodeURIComponent(ADMIN_CONTENT_SMOKE_ENTRY_ID)}`
   );
 
-  expect(readResponse.status === 200, `Dev GET /api/admin/content/entry/?collection=essay returned ${readResponse.status}`);
+  expect(readResponse.status === 200, `Dev GET /api/admin/content/entry/?collection=posts returned ${readResponse.status}`);
   expect(readResponse.json?.ok === true, 'Dev Content GET did not return ok=true');
-  expect(readResponse.json?.payload?.collection === 'essay', 'Dev Content GET returned the wrong collection');
+  expect(readResponse.json?.payload?.collection === 'posts', 'Dev Content GET returned the wrong collection');
   expect(readResponse.json?.payload?.entryId === ADMIN_CONTENT_SMOKE_ENTRY_ID, 'Dev Content GET returned the wrong entryId');
   expect(readResponse.json?.payload?.revision === initialRevision, 'Dev Content GET returned an unexpected revision');
   expect(
@@ -480,13 +480,13 @@ const runDevAdminContentWriteSmoke = async (baseUrl, fixture) => {
   );
   expect(
     saveResponse.json?.payload?.bodyText === nextBody,
-    'Dev Content write did not return the updated essay body'
+    'Dev Content write did not return the updated posts body'
   );
 
   const afterSave = await readFile(fixture.contentEntryPath, 'utf8');
   expect(afterSave !== beforeDryRun, 'Dev Content write did not update the source file');
   expect(afterSave.includes(`title: ${ADMIN_CONTENT_SMOKE_UPDATED_TITLE}`), 'Dev Content write persisted an unexpected title');
-  expect(afterSave.endsWith(nextBody), 'Dev Content write persisted an unexpected essay body');
+  expect(afterSave.endsWith(nextBody), 'Dev Content write persisted an unexpected posts body');
   expect(
     saveResponse.json?.payload?.revision === hashSourceText(afterSave)
       && saveResponse.json.payload.revision !== initialRevision,
@@ -713,7 +713,7 @@ export const runPreviewAdminBoundaryCheck = async () => {
     const adminOverviewResponse = await request(baseUrl, '/admin/');
     const adminThemeResponse = await request(baseUrl, '/admin/theme/');
     const adminContentResponse = await request(baseUrl, '/admin/content/');
-    const adminEssayContentEditResponse = await request(baseUrl, '/admin/content/essay/_edit/admin-console-guide/');
+    const adminEssayContentEditResponse = await request(baseUrl, '/admin/content/posts/_edit/admin-console-guide/');
     const adminAboutContentEditResponse = await request(baseUrl, '/admin/content/about/_edit/index/');
     const adminImageResponse = await request(baseUrl, '/admin/images/');
     const adminDataResponse = await request(baseUrl, '/admin/data/');
@@ -727,19 +727,19 @@ export const runPreviewAdminBoundaryCheck = async () => {
         origin: baseUrl
       },
       body: JSON.stringify({
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'preview-boundary-create',
         frontmatter: createAdminContentSmokeFrontmatter()
       })
     });
-    const contentExportResponse = await request(baseUrl, '/api/admin/content/export/?collection=essay&entryId=admin-console-guide');
+    const contentExportResponse = await request(baseUrl, '/api/admin/content/export/?collection=posts&entryId=admin-console-guide');
     const previewGetResponse = await request(baseUrl, '/api/admin/preview/');
     const imageListResponse = await request(baseUrl, '/api/admin/images/list/');
     const imageMetaResponse = await request(baseUrl, '/api/admin/images/meta/');
     const imageUploadGetResponse = await request(baseUrl, '/api/admin/images/upload/');
     const siteAssetUploadGetResponse = await request(baseUrl, '/api/admin/site-assets/upload/');
     const imageUploadFormData = new FormData();
-    imageUploadFormData.set('collection', 'essay');
+    imageUploadFormData.set('collection', 'posts');
     imageUploadFormData.set('entryId', 'preview-boundary-demo');
     imageUploadFormData.set(
       'image',
@@ -753,7 +753,7 @@ export const runPreviewAdminBoundaryCheck = async () => {
         origin: baseUrl
       },
       body: JSON.stringify({
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'preview-boundary-demo',
         revision: 'invalid',
         frontmatter: {}
@@ -766,10 +766,10 @@ export const runPreviewAdminBoundaryCheck = async () => {
         origin: baseUrl
       },
       body: JSON.stringify({
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'preview-boundary-demo',
         revision: 'invalid',
-        expectedRelativePath: 'src/content/essay/preview-boundary-demo.md'
+        expectedRelativePath: 'src/content/posts/preview-boundary-demo.md'
       })
     });
     const contentBulkStatusResponse = await request(baseUrl, '/api/admin/content/bulk-status/', {
@@ -782,9 +782,9 @@ export const runPreviewAdminBoundaryCheck = async () => {
         targetDraft: true,
         entries: [
           {
-            collection: 'essay',
+            collection: 'posts',
             entryId: 'preview-boundary-demo',
-            expectedRelativePath: 'src/content/essay/preview-boundary-demo.md'
+            expectedRelativePath: 'src/content/posts/preview-boundary-demo.md'
           }
         ]
       })
@@ -798,10 +798,10 @@ export const runPreviewAdminBoundaryCheck = async () => {
       body: JSON.stringify({
         entries: [
           {
-            collection: 'essay',
+            collection: 'posts',
             entryId: 'preview-boundary-demo',
             revision: 'invalid',
-            expectedRelativePath: 'src/content/essay/preview-boundary-demo.md'
+            expectedRelativePath: 'src/content/posts/preview-boundary-demo.md'
           }
         ]
       })
@@ -815,9 +815,9 @@ export const runPreviewAdminBoundaryCheck = async () => {
       body: JSON.stringify({
         entries: [
           {
-            collection: 'essay',
+            collection: 'posts',
             entryId: 'preview-boundary-demo',
-            expectedRelativePath: 'src/content/essay/preview-boundary-demo.md'
+            expectedRelativePath: 'src/content/posts/preview-boundary-demo.md'
           }
         ]
       })
@@ -829,7 +829,7 @@ export const runPreviewAdminBoundaryCheck = async () => {
         origin: baseUrl
       },
       body: JSON.stringify({
-        collection: 'essay',
+        collection: 'posts',
         source: '# Preview'
       })
     });
@@ -866,7 +866,7 @@ export const runPreviewAdminBoundaryCheck = async () => {
     assertAdminOverviewShell('Preview GET /admin/', adminOverviewResponse);
     assertReadonlyAdminThemeShell('Preview GET /admin/theme/', adminThemeResponse);
     assertAdminContentPlaceholderShell('Preview GET /admin/content/', adminContentResponse);
-    assertAdminContentEditStaticMissing('Preview GET /admin/content/essay/_edit/admin-console-guide/', adminEssayContentEditResponse);
+    assertAdminContentEditStaticMissing('Preview GET /admin/content/posts/_edit/admin-console-guide/', adminEssayContentEditResponse);
     assertAdminContentEditStaticMissing('Preview GET /admin/content/about/_edit/index/', adminAboutContentEditResponse);
     assertReadonlyAdminImageShell('Preview GET /admin/images/', adminImageResponse);
     assertReadonlyAdminDataShell('Preview GET /admin/data/', adminDataResponse);
@@ -950,7 +950,7 @@ export const runDevAdminSettingsSmokeCheck = async () => {
     expect(payload.settings && typeof payload.settings === 'object', 'Dev payload settings snapshot is missing');
 
     const contentOverviewResponse = await request(baseUrl, '/admin/content/');
-    const contentEssayEditResponse = await request(baseUrl, '/admin/content/essay/_edit/admin-console-guide/');
+    const contentEssayEditResponse = await request(baseUrl, '/admin/content/posts/_edit/admin-console-guide/');
     const contentBitsEditResponse = await request(
       baseUrl,
       `/admin/content/bits/_edit/${ADMIN_CONTENT_BITS_SMOKE_ENTRY_ID}/`
@@ -964,7 +964,7 @@ export const runDevAdminSettingsSmokeCheck = async () => {
       `/admin/content/about/_edit/${ADMIN_CONTENT_ABOUT_SMOKE_ENTRY_ID}/`
     );
     assertAdminContentOverviewDevShell('Dev GET /admin/content/', contentOverviewResponse);
-    assertAdminContentEditDevShell('Dev GET /admin/content/essay/_edit/admin-console-guide/', contentEssayEditResponse, 'essay');
+    assertAdminContentEditDevShell('Dev GET /admin/content/posts/_edit/admin-console-guide/', contentEssayEditResponse, 'posts');
     assertAdminContentEditDevShell(
       `Dev GET /admin/content/bits/_edit/${ADMIN_CONTENT_BITS_SMOKE_ENTRY_ID}/`,
       contentBitsEditResponse,

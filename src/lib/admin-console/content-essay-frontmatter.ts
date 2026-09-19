@@ -186,7 +186,7 @@ export const validateEssayPublicSlug = async (
       createIssue(
         'slug',
         frontmatter.slug
-          ? 'essay.slug must be lowercase kebab-case'
+          ? 'posts.slug must be lowercase kebab-case'
           : "The public slug derived by flattening this entry's path is invalid — set a valid slug or adjust the file path"
       )
     );
@@ -196,7 +196,7 @@ export const validateEssayPublicSlug = async (
     issues.push(
       createIssue(
         'slug',
-        `The public slug "${publicSlug}" conflicts with a reserved route under /archive or /essay — change the slug`
+        `The public slug "${publicSlug}" conflicts with a reserved route under /archive or /posts — change the slug`
       )
     );
   }
@@ -212,7 +212,7 @@ export const validateEssayPublicSlug = async (
       issues.push(
         createIssue(
           'slug',
-          `The public slug "${publicSlug}" is already used by another essay: ${collisionEntryId}`
+          `The public slug "${publicSlug}" is already used by another post: ${collisionEntryId}`
         )
       );
       return issues;
@@ -221,7 +221,7 @@ export const validateEssayPublicSlug = async (
     issues.push(
       createIssue(
         'slug',
-        `Failed to complete the essay.slug uniqueness check: ${error instanceof Error ? error.message : 'unknown error'}`
+        `Failed to complete the posts.slug uniqueness check: ${error instanceof Error ? error.message : 'unknown error'}`
       )
     );
   }
@@ -244,7 +244,7 @@ export const buildEssayFrontmatterFromValues = (
 
   const dateResult = parseEssayDateInput(values.date);
   if (!dateResult) {
-    issues.push(createIssue('date', 'essay.date must be YYYY-MM-DD or an ISO 8601 date-time with a timezone'));
+    issues.push(createIssue('date', 'posts.date must be YYYY-MM-DD or an ISO 8601 date-time with a timezone'));
   }
 
   const explicitPublishedAt = values.publishedAt.trim();
@@ -254,7 +254,7 @@ export const buildEssayFrontmatterFromValues = (
     : dateResult?.publishedAt;
 
   if (hasExplicitPublishedAt && !publishedAt) {
-    issues.push(createIssue('publishedAt', 'essay.publishedAt must be an ISO 8601 date-time with a timezone'));
+    issues.push(createIssue('publishedAt', 'posts.publishedAt must be an ISO 8601 date-time with a timezone'));
   }
 
   const explicitUpdatedAt = values.updatedAt.trim();
@@ -264,7 +264,7 @@ export const buildEssayFrontmatterFromValues = (
     : null;
 
   if (hasExplicitUpdatedAt && !updatedAtResult) {
-    issues.push(createIssue('updatedAt', 'essay.updatedAt must be YYYY-MM-DD or an ISO 8601 date-time with a timezone'));
+    issues.push(createIssue('updatedAt', 'posts.updatedAt must be YYYY-MM-DD or an ISO 8601 date-time with a timezone'));
   }
 
   const tags = parseTagsText(values.tagsText);
@@ -293,7 +293,7 @@ export const buildEssayFrontmatterFromValues = (
       : null;
 
   if (finalUpdatedAtResult && finalUpdatedAtResult.date.valueOf() < effectiveDateResult.date.valueOf()) {
-    issues.push(createIssue('updatedAt', "essay.updatedAt can't be earlier than essay.date"));
+    issues.push(createIssue('updatedAt', "posts.updatedAt can't be earlier than posts.date"));
     return { issues };
   }
 
