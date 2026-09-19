@@ -10,7 +10,7 @@ draft: true
 
 astro-whono provides a local Content Console for managing the site's written content in the development environment.
 
-Content Console lives at `/admin/content/`. It covers browsing, searching, editing, and previewing across the four content types — Essay, Bits, Memo, and About — and supports creating new drafts, downloading source files, and deleting, so you can maintain content without hand-writing frontmatter.
+Content Console lives at `/admin/content/`. It covers browsing, searching, editing, and previewing across the four content types — Posts, Bits, Memo, and About — and supports creating new drafts, downloading source files, and deleting, so you can maintain content without hand-writing frontmatter.
 
 :::note[Development environment]
 `/admin/content/` and its edit pages are only operable in the development environment. In production, visiting shows only a local-development notice — content data and the editor aren't loaded; `/api/admin/content/*` only serves the local dashboard and isn't a public API.
@@ -39,7 +39,7 @@ Content Console reads source files directly from `src/content/**` and doesn't de
 
 By default, the Admin Console saves uploaded images locally; you can also configure S3-compatible object storage in the development environment.
 
-Once enabled, body images for Essay/Memo and image attachments for Bits are uploaded to the configured bucket, and the `https://` public address is written into the content. Existing local images aren't migrated automatically. Images Console (`/admin/images/`) lets you browse and copy cloud URLs.
+Once enabled, body images for Posts/Memo and image attachments for Bits are uploaded to the configured bucket, and the `https://` public address is written into the content. Existing local images aren't migrated automatically. Images Console (`/admin/images/`) lets you browse and copy cloud URLs.
 
 Maintainers can run `npm run smoke:cloud-images` to verify the live service. This command doesn't touch the network by default; only when `ASTRO_WHONO_CLOUD_SMOKE=1` is explicitly set and dedicated test credentials are provided will it upload a test object, paginate through the object list, and clean the object up afterward.
 
@@ -85,16 +85,16 @@ Content Console manages all four content types in one place, but their capabilit
 
 | Content | Directory | Create | Edit | Delete | List filters |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| Essay | `src/content/essay/` | Yes | Yes | Yes | Yes |
+| Posts | `src/content/posts/` | Yes | Yes | Yes | Yes |
 | Bits | `src/content/bits/` | Yes | Yes | Yes | Yes |
 | Memo | `src/content/memo/index.md` | — | Yes | — | — |
 | About | `src/content/about/index.md` | — | Yes | — | — |
 
-Essay and Bits are multi-entry content — you can create new drafts, edit and delete entries one by one in the console, and the list also offers filtering and pagination. Memo and About are fixed single-page content — you can only edit the existing body text; creating or deleting isn't supported.
+Posts and Bits are multi-entry content — you can create new drafts, edit and delete entries one by one in the console, and the list also offers filtering and pagination. Memo and About are fixed single-page content — you can only edit the existing body text; creating or deleting isn't supported.
 
 ## Browsing, Filtering, and Search
 
-When you open `/admin/content/`, it shows a content overview grouped by Essay, Bits, Memo, and About by default. The top toolbar offers:
+When you open `/admin/content/`, it shows a content overview grouped by Posts, Bits, Memo, and About by default. The top toolbar offers:
 
 - Search: look up content across all types by title, tag, or slug
 - Scope: switch between "All content" and a single content type
@@ -102,17 +102,17 @@ When you open `/admin/content/`, it shows a content overview grouped by Essay, B
 - Sort: Recently updated / Title A–Z
 - Year: filter by the content's year
 
-Status, sort, year filtering, and pagination only apply to Essay and Bits; Memo and About are fixed single pages and don't expose these filters. In the list, drafts are marked `[draft]`, and essays with archiving turned off are marked `[archive off]`.
+Status, sort, year filtering, and pagination only apply to Posts and Bits; Memo and About are fixed single pages and don't expose these filters. In the list, drafts are marked `[draft]`, and posts with archiving turned off are marked `[archive off]`.
 
 Each item provides an "Edit" button, plus a "More" menu with revision info, view on the live site, download, and delete actions.
 
 ## Creating and Editing
 
-### Essay
+### Posts
 
-Click "New post" in the Essay group; after filling in basic info like the title, a draft is generated and you're taken to the edit page.
+Click "New post" in the Posts group; after filling in basic info like the title, a draft is generated and you're taken to the edit page.
 
-The essay edit page provides:
+The posts edit page provides:
 
 - A CodeMirror-based body editor with multiple built-in syntax-highlighting themes and a line-number option
 - Edit/preview layout toggle, with server-rendered previews
@@ -151,13 +151,13 @@ Bulk actions apply to whatever's checked in the current list; narrow things down
 - Download: click "Download source file" in that item's "More" menu to get the corresponding Markdown file
 - Delete: delete from that item's "More" menu; the source file is moved to the recycle bin rather than erased outright; a confirmation is shown before deleting
 
-Download and delete act on the source file itself. Delete is only supported for Essay and Bits; Memo and About don't offer deletion.
+Download and delete act on the source file itself. Delete is only supported for Posts and Bits; Memo and About don't offer deletion.
 
 ## Content Fields and Writing Conventions
 
 Content Console shares the same field rules as editing `src/content/**` directly. Listed here are the parts used most often in everyday writing; for the full set of formatting examples, see the [Markdown Formatting Guide](https://astro.whono.me/archive/markdown-guide/).
 
-### Essay
+### Posts
 
 ```yaml
 title: My Post
@@ -169,9 +169,9 @@ archive: true
 # updatedAt: 2026-01-02
 ```
 
-`title` and `date` are required; `tags`, `description`, `cover`, `badge`, and other fields are optional as needed. `date` can be `YYYY-MM-DD` or an ISO 8601 timestamp with a timezone; fill in `publishedAt` only when you need to preserve a specific publish time, and `updatedAt` can't be earlier than `date`. If `slug` is left blank, it's derived from the source file path (e.g. `2024/my-post` becomes `2024-my-post`); custom values must use lowercase kebab-case. The final slug can't be `page`, `tag`, or `rss.xml`, and can't duplicate another essay's slug.
+`title` and `date` are required; `tags`, `description`, `cover`, `badge`, and other fields are optional as needed. `date` can be `YYYY-MM-DD` or an ISO 8601 timestamp with a timezone; fill in `publishedAt` only when you need to preserve a specific publish time, and `updatedAt` can't be earlier than `date`. If `slug` is left blank, it's derived from the source file path (e.g. `2024/my-post` becomes `2024-my-post`); custom values must use lowercase kebab-case. The final slug can't be `page`, `tag`, or `rss.xml`, and can't duplicate another post's slug.
 
-`draft: true` essays only show up in local development; production lists, RSS, and the sitemap filter them out. `archive: false` only removes the post from the `/archive/` aggregation and the archive RSS feed — it's still reachable from `/essay/` and its detail route.
+`draft: true` posts only show up in local development; production lists, RSS, and the sitemap filter them out. `archive: false` only removes the post from the `/archive/` aggregation and the archive RSS feed — it's still reachable from `/posts/` and its detail route.
 
 ### Bits
 
@@ -196,11 +196,11 @@ Memo and About are both fixed single pages: Memo's source file is `src/content/m
 
 ### Images, Excerpts, and Body Text
 
-- Essay/Memo body images are saved to the current content's attachment directory by default; Bits local images are saved to `public/bits/`. Once cloud storage is enabled in the Admin Console, newly uploaded images are written to the configured bucket instead, with the `https://` address written into the content — existing local images aren't migrated automatically.
+- Posts/Memo body images are saved to the current content's attachment directory by default; Bits local images are saved to `public/bits/`. Once cloud storage is enabled in the Admin Console, newly uploaded images are written to the configured bucket instead, with the `https://` address written into the content — existing local images aren't migrated automatically.
 - List excerpts default to a cleaned, truncated version of the body; use `<!-- more -->` to mark the truncation point explicitly. `description` is only used for the SEO and Open Graph meta description — it doesn't affect the list excerpt.
 - Syntax and examples for callouts, figures, galleries, formulas, code blocks, and more are all in the [Markdown Formatting Guide](https://astro.whono.me/archive/markdown-guide/).
 
-Newly created essays and bits default to draft; after saving, preview locally first, and publish only after confirming the content, images, and frontmatter.
+Newly created posts and bits default to draft; after saving, preview locally first, and publish only after confirming the content, images, and frontmatter.
 
 ---
 
@@ -222,7 +222,7 @@ Content Console isn't meant to replace the command line or a code editor — the
 The features originally envisioned for Content Console are now largely implemented; going forward, the Admin dashboard will mostly focus on maintenance and detail polish, with no plans to keep stacking new features for now. If you have good ideas or suggestions while using it, feel free to share them.
 
 :::tip[Roadmap]
-Comments are on the roadmap — Waline is the current leading candidate for integration. Wiring it into Essay is relatively straightforward; Bits, being a short-update-style page, will need the comment system's styling and layout redesigned to fit. So while the comments module is already planned, it may still take some time before it officially ships.
+Comments are on the roadmap — Waline is the current leading candidate for integration. Wiring it into Posts is relatively straightforward; Bits, being a short-update-style page, will need the comment system's styling and layout redesigned to fit. So while the comments module is already planned, it may still take some time before it officially ships.
 :::
 
 ---
