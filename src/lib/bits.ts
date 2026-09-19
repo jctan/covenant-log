@@ -2,7 +2,6 @@ import type { CollectionEntry } from 'astro:content';
 import { getPublished, getPageSlice, getTotalPages, type GetPublishedOptions } from './content';
 import { createWithBase, formatDateTime } from '../utils/format';
 import { deriveBitsCardText } from './bits-card-view-model';
-import { getThemeSettings } from './theme-settings';
 import {
   buildPublishedBitsHrefMap,
   compareBitsForRouting,
@@ -57,9 +56,6 @@ type BitsQueryOptions = Pick<GetPublishedOptions<'bits'>, 'includeDraft'>;
 
 const MAX_INDEX_TEXT = 600;
 export const MAX_PRIMARY_BITS_FILTER_YEARS = 2;
-
-export const isBitsPageEnabled = (): boolean =>
-  getThemeSettings().settings.shell.nav.find((item) => item.id === 'bits')?.visible ?? true;
 const shouldMemoizeBitQueries = import.meta.env.PROD;
 const base = import.meta.env.BASE_URL ?? '/';
 const withBase = createWithBase(base);

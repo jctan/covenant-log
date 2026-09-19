@@ -1,12 +1,7 @@
 ---
 import BitsPageView from '../../components/BitsPageView.astro';
-import { getBitsPageData, getBitsPagePath, isBitsPageEnabled } from '../../lib/bits';
+import { getBitsPageData, getBitsPagePath } from '../../lib/bits';
 import { PAGE_SIZE_BITS } from '../../../site.config.mjs';
-
-console.error('[debug] isBitsPageEnabled=', isBitsPageEnabled(), JSON.stringify((await import('../../lib/theme-settings')).getThemeSettings().settings.shell.nav.find(i=>i.id==='bits')));
-if (!isBitsPageEnabled()) {
-  return new Response(null, { status: 404 });
-}
 
 const currentPage = 1;
 const { items, yearOptions, totalCount, totalPages } = await getBitsPageData(currentPage, PAGE_SIZE_BITS);

@@ -1,14 +1,10 @@
 import type { APIRoute } from 'astro';
-import { getBitsSearchIndex, isBitsPageEnabled } from '../../lib/bits';
+import { getBitsSearchIndex } from '../../lib/bits';
 import { PAGE_SIZE_BITS } from '../../../site.config.mjs';
 
 export const prerender = true;
 
 export const GET: APIRoute = async () => {
-  if (!isBitsPageEnabled()) {
-    return new Response(null, { status: 404 });
-  }
-
   const index = await getBitsSearchIndex(PAGE_SIZE_BITS);
   const cacheControl = import.meta.env.DEV
     ? 'no-store'

@@ -1,0 +1,1 @@
+import{n as e,r as t}from"./lightbox.DiK692M6.js";t(),e({dialogId:`lightbox`,containerSelector:`.prose`,enableZoom:!1,enablePan:!1,enableSwipeDownClose:!1});
