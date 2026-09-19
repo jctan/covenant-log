@@ -105,7 +105,7 @@ export const captureReturnFocus = (trigger?: Element | null) => {
   <ImageInsertDialog
     open={imageInsertOpen}
     editDraft={imageEditDraft}
-    collection={imageUploadCollection ?? 'essay'}
+    collection={imageUploadCollection ?? 'posts'}
     uploadEndpoint={imageUploadEndpoint}
     {entryId}
     {disabled}

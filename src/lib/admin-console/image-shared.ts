@@ -195,7 +195,7 @@ const RELATIVE_CONTENT_ASSET_RE = /!\[[^\]]*]\(([^)]+)\)|<img[^>]+src=["']([^"']
 const ADMIN_IMAGE_SHORT_CACHE_TTL_MS = 3_000;
 const ADMIN_IMAGE_SHORT_CACHE_MAX_ENTRIES = 32;
 const CONTENT_COLLECTION_LABELS = {
-  essay: 'Posts',
+  posts: 'Posts',
   bits: 'Bits',
   memo: 'Memo'
 } as const;
@@ -629,10 +629,10 @@ const resolveBrowseMeta = (record: AdminImageAssetRecord): AdminImageAssetBrowse
     };
   }
 
-  if (record.path.startsWith('src/content/essay/')) {
+  if (record.path.startsWith('src/content/posts/')) {
     return {
-      browseGroup: 'essay',
-      browseGroupLabel: ADMIN_IMAGE_BROWSE_GROUP_LABELS.essay,
+      browseGroup: 'posts',
+      browseGroupLabel: ADMIN_IMAGE_BROWSE_GROUP_LABELS.posts,
       browseSubgroup: record.owner ?? '',
       browseSubgroupLabel: record.ownerLabel,
       preferredValue,

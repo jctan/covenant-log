@@ -1,12 +1,12 @@
 export type AdminImageOrigin = 'public' | 'src/assets' | 'src/content' | 'cloud';
-export type AdminImageBrowseGroup = 'all' | 'essay' | 'bits' | 'memo' | 'assets' | 'pages' | 'cloud' | 'uncategorized';
+export type AdminImageBrowseGroup = 'all' | 'posts' | 'bits' | 'memo' | 'assets' | 'pages' | 'cloud' | 'uncategorized';
 export type AdminImageScopeKey = 'recent';
 
 export const ADMIN_IMAGE_DEFAULT_LIST_LIMIT = 20;
 
 export const ADMIN_IMAGE_BROWSE_GROUP_LABELS = {
   all: 'All',
-  essay: 'Posts',
+  posts: 'Posts',
   bits: 'Bits',
   memo: 'Memo',
   assets: 'Config assets',
@@ -17,7 +17,7 @@ export const ADMIN_IMAGE_BROWSE_GROUP_LABELS = {
 
 export const ADMIN_IMAGE_BROWSE_GROUP_ORDER = [
   'all',
-  'essay',
+  'posts',
   'bits',
   'memo',
   'assets',

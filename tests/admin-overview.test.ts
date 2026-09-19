@@ -20,7 +20,7 @@ const date = (value: string) => new Date(value);
 
 const essay = (id: string, options: Record<string, unknown> = {}) => ({
   id,
-  collection: 'essay',
+  collection: 'posts',
   data: {
     title: `Essay ${id}`,
     date: date('2026-01-10T00:00:00.000Z'),
@@ -140,7 +140,7 @@ describe('admin-console/overview', () => {
     ].reduce((total, body) => total + countAdminOverviewWords(body), 0);
 
     mockCollections({
-      essay: [
+      posts: [
         withBody(essay('published-essay'), '中文 alpha 123'),
         withBody(essay('draft-essay', { draft: true }), '草稿 draft 999')
       ],

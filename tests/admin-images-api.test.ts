@@ -116,8 +116,8 @@ describe('admin images api', () => {
     await mkdir(path.join(tempRoot, 'public', 'author'), { recursive: true });
     await mkdir(path.join(tempRoot, 'public', 'bits'), { recursive: true });
     await mkdir(path.join(tempRoot, 'public', 'images', 'archive'), { recursive: true });
-    await mkdir(path.join(tempRoot, 'src', 'content', 'essay', 'guide-assets'), { recursive: true });
-    await mkdir(path.join(tempRoot, 'src', 'content', 'essay', 'no-assets'), { recursive: true });
+    await mkdir(path.join(tempRoot, 'src', 'content', 'posts', 'guide-assets'), { recursive: true });
+    await mkdir(path.join(tempRoot, 'src', 'content', 'posts', 'no-assets'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'bits'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'memo'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'about'), { recursive: true });
@@ -129,11 +129,11 @@ describe('admin images api', () => {
     await writeFile(path.join(tempRoot, 'public', 'bits', 'demo.png'), PNG_1X1);
     await writeFile(path.join(tempRoot, 'public', 'images', 'archive', 'cover.png'), PNG_1X1);
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'guide.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'guide.md'),
       ['---', 'title: Attachment mapping test', '---', '', '![Cover](./guide-assets/hero.png)'].join('\n')
     );
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'no-assets', 'index.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'no-assets', 'index.md'),
       ['---', 'title: No attachment entry', '---', '', 'Just plain body text, no images.'].join('\n')
     );
     await writeFile(
@@ -148,7 +148,7 @@ describe('admin images api', () => {
       path.join(tempRoot, 'src', 'content', 'about', 'index.md'),
       ['---', '---', '', 'about body'].join('\n')
     );
-    await writeFile(path.join(tempRoot, 'src', 'content', 'essay', 'guide-assets', 'hero.png'), PNG_1X1);
+    await writeFile(path.join(tempRoot, 'src', 'content', 'posts', 'guide-assets', 'hero.png'), PNG_1X1);
     await writeFile(path.join(tempRoot, 'src', 'assets', 'hero.png'), PNG_1X1);
   });
 
@@ -231,16 +231,16 @@ describe('admin images api', () => {
       {
         Contents: [
           {
-            Key: 'uploads/essay/guide/cloud-shot.webp',
+            Key: 'uploads/posts/guide/cloud-shot.webp',
             LastModified: new Date('2026-07-11T02:00:00.000Z'),
             Size: 2048
           },
           {
-            Key: 'uploads/essay/guide/space 雪#hash?query%.png',
+            Key: 'uploads/posts/guide/space 雪#hash?query%.png',
             Size: 512
           },
           {
-            Key: 'uploads/essay/guide/readme.txt',
+            Key: 'uploads/posts/guide/readme.txt',
             Size: 10
           }
         ],
@@ -279,15 +279,15 @@ describe('admin images api', () => {
     expect(payload.result.items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          path: 'https://cdn.example.test/uploads/essay/guide/cloud-shot.webp',
-          value: 'https://cdn.example.test/uploads/essay/guide/cloud-shot.webp',
+          path: 'https://cdn.example.test/uploads/posts/guide/cloud-shot.webp',
+          value: 'https://cdn.example.test/uploads/posts/guide/cloud-shot.webp',
           origin: 'cloud',
           browseGroup: 'cloud',
           browseGroupLabel: 'Cloud images',
           fileName: 'cloud-shot.webp',
           size: 2048,
           mimeType: 'image/webp',
-          previewSrc: 'https://cdn.example.test/uploads/essay/guide/cloud-shot.webp'
+          previewSrc: 'https://cdn.example.test/uploads/posts/guide/cloud-shot.webp'
         }),
         expect.objectContaining({
           path: 'https://cdn.example.test/uploads/bits/demo/cloud-cover.png',
@@ -296,7 +296,7 @@ describe('admin images api', () => {
           mimeType: 'image/png'
         }),
         expect.objectContaining({
-          path: 'https://cdn.example.test/uploads/essay/guide/space%20%E9%9B%AA%23hash%3Fquery%25.png',
+          path: 'https://cdn.example.test/uploads/posts/guide/space%20%E9%9B%AA%23hash%3Fquery%25.png',
           origin: 'cloud',
           size: 512,
           mimeType: 'image/png'
@@ -330,7 +330,7 @@ describe('admin images api', () => {
     configureS3TestEnv({ publicBaseUrl: 'https://cdn.example.test/media%40images///' });
     s3SdkMock.paginateListObjectsV2.mockReturnValue(createS3Paginator([{
       Contents: [{
-        Key: 'uploads/essay/guide/space 雪#hash?query%.png',
+        Key: 'uploads/posts/guide/space 雪#hash?query%.png',
         Size: 512
       }]
     }]));
@@ -344,8 +344,8 @@ describe('admin images api', () => {
     const payload = JSON.parse(await response.text());
     expect(payload.result.items).toEqual(expect.arrayContaining([
       expect.objectContaining({
-        path: 'https://cdn.example.test/media%40images/uploads/essay/guide/space%20%E9%9B%AA%23hash%3Fquery%25.png',
-        value: 'https://cdn.example.test/media%40images/uploads/essay/guide/space%20%E9%9B%AA%23hash%3Fquery%25.png'
+        path: 'https://cdn.example.test/media%40images/uploads/posts/guide/space%20%E9%9B%AA%23hash%3Fquery%25.png',
+        value: 'https://cdn.example.test/media%40images/uploads/posts/guide/space%20%E9%9B%AA%23hash%3Fquery%25.png'
       })
     ]));
   });
@@ -354,7 +354,7 @@ describe('admin images api', () => {
     configureS3TestEnv({ prefix: '' });
     s3SdkMock.paginateListObjectsV2.mockReturnValue(createS3Paginator([{
       Contents: [
-        { Key: 'essay/guide/cloud-shot.webp', Size: 2048 },
+        { Key: 'posts/guide/cloud-shot.webp', Size: 2048 },
         { Key: 'bits/demo/cloud-cover.png', Size: 4 },
         { Key: 'other/not-managed.png', Size: 8 },
         { Key: 'bucket-root.png', Size: 16 }
@@ -371,7 +371,7 @@ describe('admin images api', () => {
     expect(payload.result.items).toEqual(expect.arrayContaining([
       expect.objectContaining({
         origin: 'cloud',
-        path: 'https://cdn.example.test/essay/guide/cloud-shot.webp'
+        path: 'https://cdn.example.test/posts/guide/cloud-shot.webp'
       }),
       expect.objectContaining({
         origin: 'cloud',
@@ -478,7 +478,7 @@ describe('admin images api', () => {
 
     const response = await GET({
       url: new URL(
-        'http://127.0.0.1:4321/api/admin/images/list?dir=src/content&owner=src/content/essay/guide&page=1&limit=10'
+        'http://127.0.0.1:4321/api/admin/images/list?dir=src/content&owner=src/content/posts/guide&page=1&limit=10'
       )
     } as never);
 
@@ -486,11 +486,11 @@ describe('admin images api', () => {
     const payload = JSON.parse(await response.text());
     expect(payload.ok).toBe(true);
     expect(payload.result.directory).toBe('src/content');
-    expect(payload.result.owner).toBe('src/content/essay/guide');
+    expect(payload.result.owner).toBe('src/content/posts/guide');
     expect(payload.result.ownerOptions).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          value: 'src/content/essay/guide',
+          value: 'src/content/posts/guide',
           label: 'Posts · Attachment mapping test',
           count: 1
         })
@@ -499,22 +499,22 @@ describe('admin images api', () => {
     expect(payload.result.ownerOptions).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          value: 'src/content/essay/no-assets/index'
+          value: 'src/content/posts/no-assets/index'
         })
       ])
     );
     expect(payload.result.items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          path: 'src/content/essay/guide-assets/hero.png',
-          value: 'src/content/essay/guide-assets/hero.png',
+          path: 'src/content/posts/guide-assets/hero.png',
+          value: 'src/content/posts/guide-assets/hero.png',
           origin: 'src/content',
-          owner: 'src/content/essay/guide',
+          owner: 'src/content/posts/guide',
           ownerLabel: 'Posts · Attachment mapping test'
         })
       ])
     );
-    expect(payload.result.items.every((item: { owner: string | null }) => item.owner === 'src/content/essay/guide')).toBe(true);
+    expect(payload.result.items.every((item: { owner: string | null }) => item.owner === 'src/content/posts/guide')).toBe(true);
   });
 
   it('returns metadata for field values and keeps remote urls readonly-compatible', async () => {
@@ -598,10 +598,10 @@ describe('admin images api', () => {
     expect(Array.isArray(unsafePayload.errors)).toBe(true);
   });
 
-  it('uploads essay body images next to the current source file', async () => {
+  it('uploads posts body images next to the current source file', async () => {
     const { POST } = await import('../src/pages/api/admin/images/upload');
     const formData = new FormData();
-    formData.set('collection', 'essay');
+    formData.set('collection', 'posts');
     formData.set('entryId', 'guide');
     formData.set('image', new File([PNG_1X1], 'Hero Shot.PNG', { type: 'image/png' }));
 
@@ -616,20 +616,20 @@ describe('admin images api', () => {
     expect(payload.result).toEqual(
       expect.objectContaining({
         src: './guide-assets/hero-shot.png',
-        path: 'src/content/essay/guide-assets/hero-shot.png',
+        path: 'src/content/posts/guide-assets/hero-shot.png',
         fileName: 'hero-shot.png',
         width: 1,
         height: 1,
         mimeType: 'image/png'
       })
     );
-    await expect(readFile(path.join(tempRoot, 'src', 'content', 'essay', 'guide-assets', 'hero-shot.png'))).resolves.toEqual(PNG_1X1);
+    await expect(readFile(path.join(tempRoot, 'src', 'content', 'posts', 'guide-assets', 'hero-shot.png'))).resolves.toEqual(PNG_1X1);
   });
 
   it('keeps uploads non-blocking by auto-renaming conflicts', async () => {
     const { POST } = await import('../src/pages/api/admin/images/upload');
     const formData = new FormData();
-    formData.set('collection', 'essay');
+    formData.set('collection', 'posts');
     formData.set('entryId', 'guide');
     formData.set('image', new File([PNG_1X1], 'hero.png', { type: 'image/png' }));
 
@@ -642,7 +642,7 @@ describe('admin images api', () => {
     const payload = JSON.parse(await response.text());
     expect(payload.ok).toBe(true);
     expect(payload.result.src).toBe('./guide-assets/hero-2.png');
-    await expect(readFile(path.join(tempRoot, 'src', 'content', 'essay', 'guide-assets', 'hero-2.png'))).resolves.toEqual(PNG_1X1);
+    await expect(readFile(path.join(tempRoot, 'src', 'content', 'posts', 'guide-assets', 'hero-2.png'))).resolves.toEqual(PNG_1X1);
   });
 
   it('uploads bits images to the public bits directory with field-ready src', async () => {
@@ -934,7 +934,7 @@ describe('admin images api', () => {
     expect(payload.ok).toBe(false);
     expect(payload.errors).toEqual(
       expect.arrayContaining([
-        expect.stringContaining('Only essay body images, memo body images, or bits images can be uploaded right now')
+        expect.stringContaining('Only posts body images, memo body images, or bits images can be uploaded right now')
       ])
     );
     await expect(readFile(path.join(tempRoot, 'src', 'content', 'about', 'about-shot.png'))).rejects.toThrow();
@@ -943,7 +943,7 @@ describe('admin images api', () => {
   it('rejects non-image uploads without writing files', async () => {
     const { POST } = await import('../src/pages/api/admin/images/upload');
     const formData = new FormData();
-    formData.set('collection', 'essay');
+    formData.set('collection', 'posts');
     formData.set('entryId', 'guide');
     formData.set('image', new File(['hello'], 'note.txt', { type: 'text/plain' }));
 
@@ -969,7 +969,7 @@ describe('admin images api', () => {
     await touch('public/author/avatar.png', '2026-04-01T00:00:00.000Z');
     await touch('public/bits/demo.png', '2026-04-02T00:00:00.000Z');
     await touch('public/images/archive/cover.png', '2026-04-03T00:00:00.000Z');
-    await touch('src/content/essay/guide-assets/hero.png', '2026-03-31T00:00:00.000Z');
+    await touch('src/content/posts/guide-assets/hero.png', '2026-03-31T00:00:00.000Z');
     await touch('src/assets/hero.png', '2026-04-04T00:00:00.000Z');
     await touch('public/apple-touch-icon.png', '2026-04-05T00:00:00.000Z');
     // Theme Console 站点图标托管目录整体隐藏，即便文件是最新的也不进入 recent。
@@ -985,7 +985,7 @@ describe('admin images api', () => {
       'public/bits/demo.png',
       'public/author/avatar.png'
     ]);
-    expect(scopeIndex.recent).toContain('src/content/essay/guide-assets/hero.png');
+    expect(scopeIndex.recent).toContain('src/content/posts/guide-assets/hero.png');
     expect(scopeIndex.recent).not.toContain('public/favicon.png');
     expect(scopeIndex.recent).not.toContain('public/apple-touch-icon.png');
     expect(scopeIndex.recent).not.toContain('public/images/site/favicon-64x64-a1b2c3d4.png');
@@ -1007,7 +1007,7 @@ describe('admin images api', () => {
     configureS3TestEnv();
     s3SdkMock.paginateListObjectsV2.mockReturnValue(createS3Paginator([{
       Contents: [{
-        Key: 'uploads/essay/guide/cloud-recent.png',
+        Key: 'uploads/posts/guide/cloud-recent.png',
         LastModified: new Date('2099-01-01T00:00:00.000Z'),
         Size: 12
       }]
@@ -1021,7 +1021,7 @@ describe('admin images api', () => {
     expect(response.status).toBe(200);
     const payload = JSON.parse(await response.text());
     expect(payload.result.items[0]).toEqual(expect.objectContaining({
-      path: 'https://cdn.example.test/uploads/essay/guide/cloud-recent.png',
+      path: 'https://cdn.example.test/uploads/posts/guide/cloud-recent.png',
       origin: 'cloud',
       size: 12
     }));

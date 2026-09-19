@@ -48,7 +48,7 @@ type Props = {
 let {
   open,
   value = $bindable(),
-  collection = 'essay',
+  collection = 'posts',
   issues = [],
   disabled = false,
   loading = false,
@@ -209,7 +209,7 @@ $effect(() => {
             <div class="admin-editor-frontmatter-popover__toggles">
               {#if draftLocked}
                 <span class="admin-badge admin-editor-frontmatter-popover__state-badge">Draft</span>
-                {#if collection === 'essay' && isEssayEditorValues(value)}
+                {#if collection === 'posts' && isEssayEditorValues(value)}
                   <span class="admin-badge admin-editor-frontmatter-popover__state-badge">Archived</span>
                 {/if}
                 {#if draftLockHelp}
@@ -220,7 +220,7 @@ $effect(() => {
                   <input name="draft" type="checkbox" bind:checked={value.draft} disabled={disabled || loading} onchange={onDirty} />
                   <span>Draft</span>
                 </label>
-                {#if collection === 'essay' && isEssayEditorValues(value)}
+                {#if collection === 'posts' && isEssayEditorValues(value)}
                   <label class="admin-toggle-row">
                     <input name="archive" type="checkbox" bind:checked={value.archive} disabled={disabled || loading} onchange={onDirty} />
                     <span>Archive</span>

@@ -21,13 +21,13 @@ const createEssayFrontmatter = (overrides: Record<string, unknown> = {}) => ({
 describe('admin content create contract', () => {
   const getTempRoot = setupAdminContentWriteFixture();
 
-  it('creates draft essay entries without requiring revision', async () => {
+  it('creates draft posts entries without requiring revision', async () => {
     const { POST } = await import('../src/pages/api/admin/content/create');
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/create', {
-        collection: 'essay',
-        entryId: 'new-essay',
+        collection: 'posts',
+        entryId: 'new-posts',
         frontmatter: createEssayFrontmatter()
       }),
       url: new URL('http://127.0.0.1:4321/api/admin/content/create')
@@ -37,12 +37,12 @@ describe('admin content create contract', () => {
     const payload = JSON.parse(await response.text());
     expect(payload.ok).toBe(true);
     expect(payload.result.written).toBe(true);
-    expect(payload.editHref).toBe('/admin/content/essay/_edit/new-essay/');
-    expect(payload.payload.collection).toBe('essay');
-    expect(payload.payload.entryId).toBe('new-essay');
+    expect(payload.editHref).toBe('/admin/content/posts/_edit/new-posts/');
+    expect(payload.payload.collection).toBe('posts');
+    expect(payload.payload.entryId).toBe('new-posts');
     expect(payload.payload.values.draft).toBe(true);
 
-    const source = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', 'new-essay.md'), 'utf8');
+    const source = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', 'new-posts.md'), 'utf8');
     expect(source).toContain('title: New Essay');
     expect(source).toContain('draft: true');
     expect(source).toContain('tags:');
@@ -82,7 +82,7 @@ describe('admin content create contract', () => {
 
     const chineseResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/create', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: '中文标题',
         frontmatter: createEssayFrontmatter({
           title: '中文标题',
@@ -93,12 +93,12 @@ describe('admin content create contract', () => {
     } as never);
 
     expect(chineseResponse.status).toBe(200);
-    const chineseSource = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', '中文标题.md'), 'utf8');
-    expect(chineseSource).toMatch(/\bslug: essay-260608-[a-z0-9]{4}\b/);
+    const chineseSource = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', '中文标题.md'), 'utf8');
+    expect(chineseSource).toMatch(/\bslug: post-260608-[a-z0-9]{4}\b/);
 
     const englishTitleResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/create', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: '中文-source',
         frontmatter: createEssayFrontmatter({
           title: 'Readable English Title',
@@ -109,12 +109,12 @@ describe('admin content create contract', () => {
     } as never);
 
     expect(englishTitleResponse.status).toBe(200);
-    const englishTitleSource = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', '中文-source.md'), 'utf8');
+    const englishTitleSource = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', '中文-source.md'), 'utf8');
     expect(englishTitleSource).toContain('slug: readable-english-title');
 
     const multiSegmentTitleResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/create', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: '中文-slash-title',
         frontmatter: createEssayFrontmatter({
           title: 'AI/ML Notes',
@@ -125,12 +125,12 @@ describe('admin content create contract', () => {
     } as never);
 
     expect(multiSegmentTitleResponse.status).toBe(200);
-    const multiSegmentTitleSource = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', '中文-slash-title.md'), 'utf8');
+    const multiSegmentTitleSource = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', '中文-slash-title.md'), 'utf8');
     expect(multiSegmentTitleSource).toContain('slug: ai-ml-notes');
 
     const manualSlugResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/create', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: '中文-manual',
         frontmatter: createEssayFrontmatter({
           title: '中文标题',
@@ -142,7 +142,7 @@ describe('admin content create contract', () => {
     } as never);
 
     expect(manualSlugResponse.status).toBe(200);
-    const manualSlugSource = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', '中文-manual.md'), 'utf8');
+    const manualSlugSource = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', '中文-manual.md'), 'utf8');
     expect(manualSlugSource).toContain('slug: my-chinese-title');
   });
 
@@ -151,7 +151,7 @@ describe('admin content create contract', () => {
 
     const duplicateFileResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/create', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         frontmatter: createEssayFrontmatter()
       }),
@@ -163,7 +163,7 @@ describe('admin content create contract', () => {
       expect.arrayContaining([expect.objectContaining({ path: 'entryId' })])
     );
 
-    const indexConflictDir = path.join(getTempRoot(), 'src', 'content', 'essay', 'index-conflict');
+    const indexConflictDir = path.join(getTempRoot(), 'src', 'content', 'posts', 'index-conflict');
     await mkdir(indexConflictDir, { recursive: true });
     await writeFile(
       path.join(indexConflictDir, 'index.md'),
@@ -173,7 +173,7 @@ describe('admin content create contract', () => {
 
     const duplicateIndexResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/create', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'index-conflict',
         frontmatter: createEssayFrontmatter()
       }),
@@ -187,7 +187,7 @@ describe('admin content create contract', () => {
 
     const duplicateExplicitIndexResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/create', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo/index',
         frontmatter: createEssayFrontmatter()
       }),
@@ -201,9 +201,9 @@ describe('admin content create contract', () => {
 
     const duplicateSlugResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/create', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'new-slug-conflict',
-        frontmatter: createEssayFrontmatter({ slug: 'existing-essay' })
+        frontmatter: createEssayFrontmatter({ slug: 'existing-posts' })
       }),
       url: new URL('http://127.0.0.1:4321/api/admin/content/create')
     } as never);
@@ -233,7 +233,7 @@ describe('admin content create contract', () => {
 
     const invalidEntryResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/create', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: '../secret',
         frontmatter: createEssayFrontmatter()
       }),

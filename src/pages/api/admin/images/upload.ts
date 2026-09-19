@@ -115,7 +115,7 @@ export const POST: APIRoute = async ({ request, url }) => {
   const errors: string[] = [];
 
   if (!isAdminContentImageUploadCollectionKey(collection)) {
-    errors.push('Only essay body images, memo body images, or bits images can be uploaded right now');
+    errors.push('Only posts body images, memo body images, or bits images can be uploaded right now');
   }
   if (!entryId) {
     errors.push('Upload request is missing entryId');

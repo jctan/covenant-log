@@ -43,7 +43,7 @@ import { createContentEntry, saveContentEntry } from '../shared/content-editor-c
 import { isBitsEditorValues, isEssayEditorValues } from '../shared/content-editor-adapters';
 
 type DialogMode = 'edit' | 'create';
-type ContentInfoCollection = Extract<AdminContentDeletableCollectionKey, 'essay' | 'bits'>;
+type ContentInfoCollection = Extract<AdminContentDeletableCollectionKey, 'posts' | 'bits'>;
 type ContentInfoFrontmatter = AdminEssayEditorValues | AdminBitsEditorValues;
 type ContentInfoPayload = Extract<AdminContentEditorPayload, { collection: ContentInfoCollection }>;
 
@@ -63,7 +63,7 @@ let dialogMode = $state<DialogMode>('edit');
 let busy = $state(false);
 let loadingEntry = $state(false);
 let loadRequestId = 0;
-let selectedCollection = $state<ContentInfoCollection>('essay');
+let selectedCollection = $state<ContentInfoCollection>('posts');
 let selectedEntryId = $state('');
 let selectedDefaultPublicSlug = $state('');
 let createEntryId = $state('');
@@ -122,7 +122,7 @@ const isEqualInfoFrontmatter = (
   JSON.stringify(left) === JSON.stringify(right);
 
 const isContentInfoCollection = (value: string): value is ContentInfoCollection =>
-  value === 'essay' || value === 'bits';
+  value === 'posts' || value === 'bits';
 
 const dirty = $derived(!isEqualInfoFrontmatter(frontmatter, baselineFrontmatter));
 const canSave = $derived(
@@ -231,7 +231,7 @@ const openCreateDialog = async (trigger: HTMLElement) => {
   busy = false;
   loadingEntry = false;
   open = false;
-  selectedCollection = 'essay';
+  selectedCollection = 'posts';
   selectedEntryId = '';
   selectedDefaultPublicSlug = '';
   createEntryId = '';
@@ -381,10 +381,10 @@ const saveEditor = async () => {
 
   try {
     let saveOutcome: Awaited<ReturnType<typeof saveContentEntry>> | null = null;
-    if (collection === 'essay' && isEssayEditorValues(frontmatter)) {
+    if (collection === 'posts' && isEssayEditorValues(frontmatter)) {
       saveOutcome = await saveContentEntry({
         endpoint,
-        collection: 'essay',
+        collection: 'posts',
         entryId: selectedEntryId,
         revision,
         frontmatter
@@ -420,7 +420,7 @@ const saveEditor = async () => {
     const result = saveOutcome.result;
     const latestValues = saveOutcome.latestValues;
     let nextFrontmatter: ContentInfoFrontmatter | null = null;
-    if (collection === 'essay' && isEssayEditorValues(latestValues)) {
+    if (collection === 'posts' && isEssayEditorValues(latestValues)) {
       nextFrontmatter = latestValues;
     } else if (collection === 'bits' && isBitsEditorValues(latestValues)) {
       nextFrontmatter = latestValues;
@@ -461,7 +461,7 @@ const saveCreate = async () => {
   try {
     const outcome = await createContentEntry({
       endpoint: createEndpoint,
-      collection: 'essay',
+      collection: 'posts',
       entryId: createEntryId,
       frontmatter: createFrontmatter
     });

@@ -32,7 +32,7 @@ export const setupAdminContentWriteFixture = (): (() => string) => {
     tempRoot = await mkdtemp(path.join(tmpdir(), 'astro-whono-content-'));
     process.env.ASTRO_WHONO_INTERNAL_TEST_PROJECT_ROOT = tempRoot;
 
-    await mkdir(path.join(tempRoot, 'src', 'content', 'essay'), { recursive: true });
+    await mkdir(path.join(tempRoot, 'src', 'content', 'posts'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'bits'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'memo'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'about'), { recursive: true });
@@ -40,18 +40,18 @@ export const setupAdminContentWriteFixture = (): (() => string) => {
 
     await writeFile(path.join(tempRoot, 'public', 'author', 'alice.webp'), 'avatar');
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'demo.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'demo.md'),
       ['---', 'title: Demo Essay', 'date: 2026-03-18', 'draft: false', '---', '', '# Essay', '', '正文保持不变。', ''].join('\n'),
       'utf8'
     );
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'admin-console-guide copy.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'admin-console-guide copy.md'),
       ['---', 'title: Space Name Essay', 'date: 2026-03-21', 'draft: false', '---', '', '# Space Name', ''].join('\n'),
       'utf8'
     );
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'other.md'),
-      ['---', 'title: Other Essay', 'date: 2026-03-20', 'slug: existing-essay', '---', '', '# Other', '', 'duplicate guard', ''].join('\n'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'other.md'),
+      ['---', 'title: Other Essay', 'date: 2026-03-20', 'slug: existing-posts', '---', '', '# Other', '', 'duplicate guard', ''].join('\n'),
       'utf8'
     );
     await writeFile(

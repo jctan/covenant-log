@@ -96,7 +96,7 @@ let {
   initialArticleInfoOpen = false
 }: EssayEditorShellProps = $props();
 
-const collection = 'essay' as const;
+const collection = 'posts' as const;
 const editorAdapter = getContentEditorAdapter(collection);
 const slugPlaceholder = $derived(`Leave blank to use the default: ${defaultPublicSlug || flattenEntryIdToSlug(entryId)}`);
 const bodyEditingEnabled = editorAdapter.capabilities.body;

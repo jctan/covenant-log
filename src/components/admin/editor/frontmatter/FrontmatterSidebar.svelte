@@ -41,7 +41,7 @@ type Props = {
 
 let {
   value = $bindable(),
-  collection = 'essay',
+  collection = 'posts',
   issues = [],
   disabled = false,
   entryId = '',
@@ -186,7 +186,7 @@ const bitsAuthorAvatarFallback = $derived(
 
 <aside class="admin-editor-frontmatter" aria-label={ariaLabel}>
   <div class="admin-editor-frontmatter__fields">
-    {#if collection === 'essay' && isEssayEditorValues(value)}
+    {#if collection === 'posts' && isEssayEditorValues(value)}
       <label class="admin-field admin-content-editor__field" class:is-invalid={Boolean(getIssue('title'))}>
         <span class="admin-field__label">Post title</span>
         <input
