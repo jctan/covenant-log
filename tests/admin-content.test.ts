@@ -30,14 +30,14 @@ const mockedSourceIndex = vi.mocked(sourceIndexModule);
 const { getAdminContentEntryListHref } = contentRoutesModule;
 
 const COLLECTION_LABELS: Record<AdminContentCollectionKey, string> = {
-  essay: 'Posts',
+  posts: 'Posts',
   bits: 'Bits',
   memo: 'Memo',
   about: 'About'
 };
 
 const defaultManifest: AdminContentSourceManifest = {
-  essay: ['src/content/essay/essay-a.md', 'src/content/essay/essay-b.md'],
+  posts: ['src/content/posts/posts-a.md', 'src/content/posts/posts-b.md'],
   bits: ['src/content/bits/bits-a.md'],
   memo: ['src/content/memo/index.md'],
   about: ['src/content/about/index.md']
@@ -48,7 +48,7 @@ let bodyItemsByCollection: Record<AdminContentCollectionKey, AdminContentIndexIt
 let sourceCounts: AdminContentSourceCountMap;
 
 const createItem = (overrides: Partial<AdminContentIndexItem> = {}): AdminContentIndexItem => {
-  const collection = overrides.collection ?? 'essay';
+  const collection = overrides.collection ?? 'posts';
   return {
     collection,
     collectionLabel: COLLECTION_LABELS[collection],
@@ -72,7 +72,7 @@ const createItem = (overrides: Partial<AdminContentIndexItem> = {}): AdminConten
 };
 
 const createDefaultItems = (): Record<AdminContentCollectionKey, AdminContentIndexItem[]> => ({
-  essay: [createItem()],
+  posts: [createItem()],
   bits: [
     createItem({
       collection: 'bits',
@@ -155,9 +155,9 @@ const setSourceItems = (
     ...items
   };
   bodyItemsByCollection = {
-    essay: sourceItemsByCollection.essay.map((item) => ({
+    posts: sourceItemsByCollection.posts.map((item) => ({
       ...item,
-      searchHaystack: `${item.searchHaystack} essay body text`
+      searchHaystack: `${item.searchHaystack} posts body text`
     })),
     bits: sourceItemsByCollection.bits.map((item) => ({
       ...item,
@@ -177,7 +177,7 @@ const setSourceItems = (
 
 const setSourceCounts = (counts: Partial<AdminContentSourceCountMap> = {}) => {
   sourceCounts = {
-    essay: 2,
+    posts: 2,
     bits: 1,
     memo: 1,
     about: 1,
@@ -223,30 +223,30 @@ describe('admin-console/content', () => {
 
   it('normalizes malformed page params to the first page', () => {
     expect(getAdminContentFilterState(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['page', '2']
     ])).page).toBe(2);
     expect(getAdminContentFilterState(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['page', '2abc']
     ])).page).toBe(1);
     expect(getAdminContentFilterState(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['page', '1.5']
     ])).page).toBe(1);
   });
 
   it('builds content list hrefs with source entryId query identity', () => {
-    expect(getAdminContentEntryListHref('essay')).toBe('/admin/content/?collection=essay');
-    expect(getAdminContentEntryListHref('essay', { entryId: 'drafts/my note.md' }))
-      .toBe('/admin/content/?collection=essay&entryId=drafts%2Fmy+note.md');
+    expect(getAdminContentEntryListHref('posts')).toBe('/admin/content/?collection=posts');
+    expect(getAdminContentEntryListHref('posts', { entryId: 'drafts/my note.md' }))
+      .toBe('/admin/content/?collection=posts&entryId=drafts%2Fmy+note.md');
   });
 
   it('filters content items by query, draft, tag and year', () => {
     const items = [
       createItem(),
       createItem({
-        id: 'essay/draft',
+        id: 'posts/draft',
         title: 'Draft Entry',
         slug: 'draft-entry',
         isDraft: true,
@@ -315,13 +315,13 @@ describe('admin-console/content', () => {
 
   it('loads source index data only for the selected collection scope', async () => {
     const pageData = await getAdminContentConsolePageData(new URLSearchParams([
-      ['collection', 'essay']
+      ['collection', 'posts']
     ]));
 
     expect(mockedSourceIndex.loadAdminContentSourceManifest).toHaveBeenCalledTimes(1);
     expect(mockedSourceIndex.getAdminContentSourceCounts).toHaveBeenCalledWith(defaultManifest);
     expect(mockedSourceIndex.loadAdminContentSourceIndex).toHaveBeenCalledTimes(1);
-    expect(mockedSourceIndex.loadAdminContentSourceIndex).toHaveBeenCalledWith(defaultManifest, 'essay');
+    expect(mockedSourceIndex.loadAdminContentSourceIndex).toHaveBeenCalledWith(defaultManifest, 'posts');
     expect(mockedSourceIndex.loadAdminContentSourceIndexWithBody).not.toHaveBeenCalled();
     expect(pageData.totalCount).toBe(5);
     expect(pageData.mode).toBe('collection');
@@ -335,20 +335,20 @@ describe('admin-console/content', () => {
     });
     expect(pageData.collectionOptions).toEqual([
       { value: 'all', label: 'All content', count: 5 },
-      { value: 'essay', label: 'Posts', count: 2 },
+      { value: 'posts', label: 'Posts', count: 2 },
       { value: 'bits', label: 'Bits', count: 1 },
       { value: 'memo', label: 'Memo', count: 1 },
       { value: 'about', label: 'About', count: 1 }
     ]);
     expect('tagOptions' in pageData).toBe(false);
     expect(pageData.sections).toHaveLength(1);
-    expect(pageData.sections[0]?.collection).toBe('essay');
+    expect(pageData.sections[0]?.collection).toBe('posts');
     expect(pageData.sections[0]?.totalCount).toBe(2);
   });
 
   it('keeps legacy URL tag filters compatible without exposing tag options', async () => {
     const pageData = await getAdminContentConsolePageData(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['tag', 'Missing Tag']
     ]));
 
@@ -360,13 +360,13 @@ describe('admin-console/content', () => {
 
   it('loads body search text only when a scoped query is active', async () => {
     const pageData = await getAdminContentConsolePageData(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['q', 'body']
     ]));
 
     expect(mockedSourceIndex.loadAdminContentSourceIndex).not.toHaveBeenCalled();
     expect(mockedSourceIndex.loadAdminContentSourceIndexWithBody).toHaveBeenCalledTimes(1);
-    expect(mockedSourceIndex.loadAdminContentSourceIndexWithBody).toHaveBeenCalledWith(defaultManifest, 'essay');
+    expect(mockedSourceIndex.loadAdminContentSourceIndexWithBody).toHaveBeenCalledWith(defaultManifest, 'posts');
     expect(pageData.filteredCount).toBe(1);
     expect(pageData.sections[0]?.items[0]?.id).toBe('admin-console-guide');
   });
@@ -387,7 +387,7 @@ describe('admin-console/content', () => {
     expect(mockedSourceIndex.loadAdminContentSourceIndexWithBody).not.toHaveBeenCalled();
     expect(mockedSourceIndex.loadAdminContentSourceIndex).toHaveBeenCalledTimes(4);
     expect(pageData.filteredCount).toBe(1);
-    expect(pageData.sections.find((section) => section.collection === 'essay')?.items[0]?.id)
+    expect(pageData.sections.find((section) => section.collection === 'posts')?.items[0]?.id)
       .toBe('admin-console-guide');
   });
 
@@ -453,22 +453,22 @@ describe('admin-console/content', () => {
 
   it('uses entryId as an exact source identity without public slug fallback', async () => {
     setSourceItems({
-      essay: [
+      posts: [
         createItem({
           id: 'source file',
           publicEntryId: 'public-slug',
-          relativePath: 'src/content/essay/source file.md'
+          relativePath: 'src/content/posts/source file.md'
         })
       ]
     });
 
     const matched = await getAdminContentConsolePageData(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['entryId', 'source file'],
       ['q', 'body']
     ]));
     const unmatched = await getAdminContentConsolePageData(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['entryId', 'public-slug']
     ]));
 
@@ -484,7 +484,7 @@ describe('admin-console/content', () => {
 
   it('ignores legacy entry query params', async () => {
     const pageData = await getAdminContentConsolePageData(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['entry', 'admin-console-guide']
     ]));
 
@@ -495,42 +495,42 @@ describe('admin-console/content', () => {
 
   it('uses the source file path as the admin entry id when the public id is normalized', async () => {
     setSourceItems({
-      essay: [
+      posts: [
         createItem({
           id: 'admin-console-guide copy',
           publicEntryId: 'admin-console-guide-copy',
-          relativePath: 'src/content/essay/admin-console-guide copy.md',
+          relativePath: 'src/content/posts/admin-console-guide copy.md',
           publicHref: '/archive/admin-console-guide-copy/'
         })
       ]
     });
 
     const pageData = await getAdminContentConsolePageData(new URLSearchParams([
-      ['collection', 'essay']
+      ['collection', 'posts']
     ]));
     const item = pageData.sections[0]?.items[0];
 
     expect(item?.id).toBe('admin-console-guide copy');
     expect(item?.publicEntryId).toBe('admin-console-guide-copy');
-    expect(item?.relativePath).toBe('src/content/essay/admin-console-guide copy.md');
+    expect(item?.relativePath).toBe('src/content/posts/admin-console-guide copy.md');
     expect(item?.publicHref).toBe('/archive/admin-console-guide-copy/');
   });
 
   it('paginates collection scope data in the page data layer', async () => {
     const entries = Array.from({ length: 25 }, (_, index) => createItem({
-      id: `essay-${String(index + 1).padStart(2, '0')}`,
-      publicEntryId: `essay-${String(index + 1).padStart(2, '0')}`,
+      id: `posts-${String(index + 1).padStart(2, '0')}`,
+      publicEntryId: `posts-${String(index + 1).padStart(2, '0')}`,
       title: `Essay ${index + 1}`
     }));
-    setSourceItems({ essay: entries });
-    setSourceCounts({ essay: 25, bits: 0, memo: 0, about: 0 });
+    setSourceItems({ posts: entries });
+    setSourceCounts({ posts: 25, bits: 0, memo: 0, about: 0 });
 
     const secondPage = await getAdminContentConsolePageData(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['page', '2']
     ]));
     const overBoundPage = await getAdminContentConsolePageData(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['page', '99']
     ]));
 
@@ -552,11 +552,11 @@ describe('admin-console/content', () => {
       id: `overview-${index + 1}`,
       publicEntryId: `overview-${index + 1}`
     }));
-    setSourceItems({ essay: entries, bits: [], memo: [], about: [] });
-    setSourceCounts({ essay: 10, bits: 0, memo: 0, about: 0 });
+    setSourceItems({ posts: entries, bits: [], memo: [], about: [] });
+    setSourceCounts({ posts: 10, bits: 0, memo: 0, about: 0 });
 
     const pageData = await getAdminContentConsolePageData(new URLSearchParams());
-    const essaySection = pageData.sections.find((section) => section.collection === 'essay');
+    const essaySection = pageData.sections.find((section) => section.collection === 'posts');
 
     expect(pageData.mode).toBe('overview');
     expect(pageData.pagination).toBeNull();
@@ -604,7 +604,7 @@ describe('admin-console/content', () => {
       });
     });
     setSourceItems({ bits: [draftItem, ...publishedEntries] });
-    setSourceCounts({ essay: 0, bits: 21, memo: 0, about: 0 });
+    setSourceCounts({ posts: 0, bits: 21, memo: 0, about: 0 });
 
     const firstPage = await getAdminContentConsolePageData(new URLSearchParams([
       ['collection', 'bits']
@@ -684,7 +684,7 @@ describe('admin-console/content', () => {
 
   it('drops article-only filter params when building fixed-page scope links', () => {
     const filterState = getAdminContentFilterState(new URLSearchParams([
-      ['collection', 'essay'],
+      ['collection', 'posts'],
       ['q', 'about body'],
       ['draft', 'draft'],
       ['tag', 'Admin'],

@@ -15,15 +15,15 @@ import type {
 import { getAdminContentCollectionCapability } from '../src/lib/admin-console/content-collections';
 
 describe('content editor adapters', () => {
-  it('keeps essay body image tools separate from bits image array tools', () => {
-    const essay = getContentEditorAdapter('essay');
+  it('keeps posts body image tools separate from bits image array tools', () => {
+    const posts = getContentEditorAdapter('posts');
     const bits = getContentEditorAdapter('bits');
     const memo = getContentEditorAdapter('memo');
     const about = getContentEditorAdapter('about');
 
-    expect(essay.capabilities.bodyImageInsert).toBe(true);
-    expect(essay.capabilities.imageArray).toBe(false);
-    expect(essay.capabilities.delete).toBe(true);
+    expect(posts.capabilities.bodyImageInsert).toBe(true);
+    expect(posts.capabilities.imageArray).toBe(false);
+    expect(posts.capabilities.delete).toBe(true);
 
     expect(bits.capabilities.body).toBe(true);
     expect(bits.capabilities.preview).toBe(true);
@@ -32,7 +32,7 @@ describe('content editor adapters', () => {
     expect(bits.capabilities.imageArray).toBe(true);
     expect(bits.capabilities.delete).toBe(true);
     expect(bits.isFrontmatterIssuePath('images[0].src')).toBe(true);
-    expect(essay.isFrontmatterIssuePath('images[0].src')).toBe(false);
+    expect(posts.isFrontmatterIssuePath('images[0].src')).toBe(false);
 
     expect(memo.capabilities.body).toBe(true);
     expect(memo.capabilities.preview).toBe(true);
@@ -56,7 +56,7 @@ describe('content editor adapters', () => {
   });
 
   it('derives delete affordance from collection capabilities', () => {
-    const collections: AdminContentWriteCollectionKey[] = ['essay', 'bits', 'memo', 'about'];
+    const collections: AdminContentWriteCollectionKey[] = ['posts', 'bits', 'memo', 'about'];
 
     for (const collection of collections) {
       const adapter = getContentEditorAdapter(collection);
@@ -93,9 +93,9 @@ describe('content editor adapters', () => {
     };
 
     expect(getPayloadEditorValues(payload, 'bits')).toEqual(bitsValues);
-    expect(getPayloadEditorValues(payload, 'essay')).toBeNull();
+    expect(getPayloadEditorValues(payload, 'posts')).toBeNull();
     expect(getPayloadEditorBody(payload, 'bits')).toBe('Bit body');
-    expect(getPayloadEditorBody(payload, 'essay')).toBeNull();
+    expect(getPayloadEditorBody(payload, 'posts')).toBeNull();
   });
 
   it('accepts writable memo payloads with body text', () => {

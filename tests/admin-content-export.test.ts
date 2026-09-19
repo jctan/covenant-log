@@ -10,24 +10,24 @@ describe('admin content source export', () => {
     tempRoot = await mkdtemp(path.join(tmpdir(), 'astro-whono-content-export-'));
     process.env.ASTRO_WHONO_INTERNAL_TEST_PROJECT_ROOT = tempRoot;
 
-    await mkdir(path.join(tempRoot, 'src', 'content', 'essay'), { recursive: true });
+    await mkdir(path.join(tempRoot, 'src', 'content', 'posts'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'bits'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'memo'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'about'), { recursive: true });
 
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'demo.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'demo.md'),
       ['---', 'title: Demo Essay', 'date: 2026-03-18', '---', '', '# Demo', ''].join('\n'),
       'utf8'
     );
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'admin-console-guide copy.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'admin-console-guide copy.md'),
       ['---', 'title: Space Name Essay', 'date: 2026-03-21', '---', '', '# Space Name', ''].join('\n'),
       'utf8'
     );
-    await mkdir(path.join(tempRoot, 'src', 'content', 'essay', 'series', 'intro'), { recursive: true });
+    await mkdir(path.join(tempRoot, 'src', 'content', 'posts', 'series', 'intro'), { recursive: true });
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'series', 'intro', 'index.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'series', 'intro', 'index.md'),
       ['---', 'title: Intro Essay', 'date: 2026-03-19', '---', '', '# Intro', ''].join('\n'),
       'utf8'
     );
@@ -58,10 +58,10 @@ describe('admin content source export', () => {
   it('reads a normal content source file with the original file name', async () => {
     const { readAdminContentSourceDownload } = await import('../src/lib/admin-console/content-export');
 
-    const download = await readAdminContentSourceDownload('essay', 'demo');
+    const download = await readAdminContentSourceDownload('posts', 'demo');
 
     expect(download.fileName).toBe('demo.md');
-    expect(download.relativePath).toBe('src/content/essay/demo.md');
+    expect(download.relativePath).toBe('src/content/posts/demo.md');
     expect(download.contentType).toBe('text/markdown; charset=utf-8');
     expect(download.sourceText).toContain('title: Demo Essay');
   });
@@ -69,10 +69,10 @@ describe('admin content source export', () => {
   it('exports a source file whose file name contains spaces', async () => {
     const { readAdminContentSourceDownload } = await import('../src/lib/admin-console/content-export');
 
-    const download = await readAdminContentSourceDownload('essay', 'admin-console-guide copy');
+    const download = await readAdminContentSourceDownload('posts', 'admin-console-guide copy');
 
     expect(download.fileName).toBe('admin-console-guide copy.md');
-    expect(download.relativePath).toBe('src/content/essay/admin-console-guide copy.md');
+    expect(download.relativePath).toBe('src/content/posts/admin-console-guide copy.md');
     expect(download.sourceText).toContain('# Space Name');
   });
 
@@ -80,7 +80,7 @@ describe('admin content source export', () => {
     const { readAdminContentSourceDownload } = await import('../src/lib/admin-console/content-export');
 
     const bitsDownload = await readAdminContentSourceDownload('bits', 'bits-2026-02-03-2230');
-    const nestedEssayDownload = await readAdminContentSourceDownload('essay', 'series/intro');
+    const nestedEssayDownload = await readAdminContentSourceDownload('posts', 'series/intro');
     const memoDownload = await readAdminContentSourceDownload('memo', 'index');
     const aboutDownload = await readAdminContentSourceDownload('about', 'index');
 
@@ -93,7 +93,7 @@ describe('admin content source export', () => {
 
   it('serves the source file as an attachment from the export api', async () => {
     const { GET } = await import('../src/pages/api/admin/content/export');
-    const url = new URL('http://127.0.0.1:4321/api/admin/content/export/?collection=essay&entryId=demo');
+    const url = new URL('http://127.0.0.1:4321/api/admin/content/export/?collection=posts&entryId=demo');
 
     const response = await GET({ url } as never);
 
@@ -137,13 +137,13 @@ describe('admin content source export', () => {
     expect(JSON.parse(await invalidCollectionResponse.text()).errors[0]).toContain('Unsupported content collection');
 
     const invalidEntryResponse = await GET({
-      url: new URL('http://127.0.0.1:4321/api/admin/content/export/?collection=essay&entryId=../secret')
+      url: new URL('http://127.0.0.1:4321/api/admin/content/export/?collection=posts&entryId=../secret')
     } as never);
     expect(invalidEntryResponse.status).toBe(400);
     expect(JSON.parse(await invalidEntryResponse.text()).errors[0]).toContain('Unsupported content entryId');
 
     const missingEntryResponse = await GET({
-      url: new URL('http://127.0.0.1:4321/api/admin/content/export/?collection=essay&entryId=missing')
+      url: new URL('http://127.0.0.1:4321/api/admin/content/export/?collection=posts&entryId=missing')
     } as never);
     expect(missingEntryResponse.status).toBe(404);
     expect(JSON.parse(await missingEntryResponse.text()).errors[0]).toContain('No content source file found');

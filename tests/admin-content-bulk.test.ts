@@ -32,18 +32,18 @@ describe('admin content bulk api', () => {
     tempRoot = await mkdtemp(path.join(tmpdir(), 'astro-whono-content-bulk-'));
     process.env.ASTRO_WHONO_INTERNAL_TEST_PROJECT_ROOT = tempRoot;
 
-    await mkdir(path.join(tempRoot, 'src', 'content', 'essay'), { recursive: true });
+    await mkdir(path.join(tempRoot, 'src', 'content', 'posts'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'bits'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'memo'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'about'), { recursive: true });
 
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'published.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'published.md'),
       ['---', 'title: Published', 'date: 2026-03-18', '---', '', '# Published', ''].join('\n'),
       'utf8'
     );
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'delete-me.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'delete-me.md'),
       ['---', 'title: Delete Me', 'date: 2026-03-19', 'draft: false', '---', '', '# Delete', ''].join('\n'),
       'utf8'
     );
@@ -53,7 +53,7 @@ describe('admin content bulk api', () => {
       'utf8'
     );
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'broken-frontmatter.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'broken-frontmatter.md'),
       ['---', 'title: [broken', '---', '', 'still exportable', ''].join('\n'),
       'utf8'
     );
@@ -81,7 +81,7 @@ describe('admin content bulk api', () => {
 
   it('patches draft status per entry without rewriting unchanged published entries', async () => {
     const { POST } = await import('../src/pages/api/admin/content/bulk-status');
-    const sourcePath = path.join(tempRoot, 'src', 'content', 'essay', 'published.md');
+    const sourcePath = path.join(tempRoot, 'src', 'content', 'posts', 'published.md');
     const before = await readFile(sourcePath, 'utf8');
     const url = 'http://127.0.0.1:4321/api/admin/content/bulk-status/';
 
@@ -90,9 +90,9 @@ describe('admin content bulk api', () => {
         targetDraft: false,
         entries: [
           {
-            collection: 'essay',
+            collection: 'posts',
             entryId: 'published',
-            expectedRelativePath: 'src/content/essay/published.md'
+            expectedRelativePath: 'src/content/posts/published.md'
           }
         ]
       }),
@@ -109,9 +109,9 @@ describe('admin content bulk api', () => {
         targetDraft: true,
         entries: [
           {
-            collection: 'essay',
+            collection: 'posts',
             entryId: 'published',
-            expectedRelativePath: 'src/content/essay/published.md'
+            expectedRelativePath: 'src/content/posts/published.md'
           },
           {
             collection: 'bits',
@@ -142,7 +142,7 @@ describe('admin content bulk api', () => {
   });
 
   it('reports revision conflicts when bulk status source changes before write', async () => {
-    const sourcePath = path.join(tempRoot, 'src', 'content', 'essay', 'published.md');
+    const sourcePath = path.join(tempRoot, 'src', 'content', 'posts', 'published.md');
     vi.resetModules();
     vi.doMock('../src/lib/admin-console/admin-api', async (importOriginal) => {
       const actual = await importOriginal<typeof import('../src/lib/admin-console/admin-api')>();
@@ -170,9 +170,9 @@ describe('admin content bulk api', () => {
         targetDraft: true,
         entries: [
           {
-            collection: 'essay',
+            collection: 'posts',
             entryId: 'published',
-            expectedRelativePath: 'src/content/essay/published.md'
+            expectedRelativePath: 'src/content/posts/published.md'
           }
         ]
       }),
@@ -192,7 +192,7 @@ describe('admin content bulk api', () => {
   it('bulk-deletes successful entries while keeping conflicted entries in place', async () => {
     const { POST } = await import('../src/pages/api/admin/content/bulk-delete');
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
-    const deletePayload = await readAdminContentEntryEditorPayload('essay', 'delete-me');
+    const deletePayload = await readAdminContentEntryEditorPayload('posts', 'delete-me');
     const stalePayload = await readAdminContentEntryEditorPayload('bits', 'stale');
     const stalePath = path.join(tempRoot, 'src', 'content', 'bits', 'stale.md');
     await writeFile(
@@ -206,7 +206,7 @@ describe('admin content bulk api', () => {
       request: createJsonRequest(url, {
         entries: [
           {
-            collection: 'essay',
+            collection: 'posts',
             entryId: 'delete-me',
             revision: deletePayload.revision,
             expectedRelativePath: deletePayload.relativePath
@@ -229,7 +229,7 @@ describe('admin content bulk api', () => {
       succeeded: 1,
       failed: 1
     });
-    await expect(access(path.join(tempRoot, 'src', 'content', 'essay', 'delete-me.md'))).rejects.toThrow();
+    await expect(access(path.join(tempRoot, 'src', 'content', 'posts', 'delete-me.md'))).rejects.toThrow();
     await expect(readFile(stalePath, 'utf8')).resolves.toContain('updated stale bit');
     const deleted = payload.results.find((result: any) => result.entryId === 'delete-me');
     await expect(readFile(toAbsoluteTestPath(tempRoot, deleted.trashedPath), 'utf8')).resolves.toContain('# Delete');
@@ -243,9 +243,9 @@ describe('admin content bulk api', () => {
       request: createJsonRequest(url, {
         entries: [
           {
-            collection: 'essay',
+            collection: 'posts',
             entryId: 'broken-frontmatter',
-            expectedRelativePath: 'src/content/essay/broken-frontmatter.md'
+            expectedRelativePath: 'src/content/posts/broken-frontmatter.md'
           },
           {
             collection: 'about',
@@ -267,7 +267,7 @@ describe('admin content bulk api', () => {
     expect(response.headers.get('x-admin-content-bulk-export-summary')).toBeTruthy();
 
     const zip = unzipSync(new Uint8Array(await response.arrayBuffer()));
-    expect(readZipText(zip, 'essay/broken-frontmatter/broken-frontmatter.md')).toContain('title: [broken');
+    expect(readZipText(zip, 'posts/broken-frontmatter/broken-frontmatter.md')).toContain('title: [broken');
     expect(readZipText(zip, 'about/index/about.md')).toContain('about body');
     const report = readZipText(zip, '_admin-content-export-report.md');
     expect(report).toContain('# Admin Content 批量下载报告');

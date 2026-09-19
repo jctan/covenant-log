@@ -6,17 +6,17 @@ import { createJsonRequest, setupAdminContentWriteFixture } from './admin-conten
 describe('admin content entry payload contract', () => {
   const getTempRoot = setupAdminContentWriteFixture();
 
-  it('loads editable payload for essay entries', async () => {
+  it('loads editable payload for posts entries', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
-    const payload = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const payload = await readAdminContentEntryEditorPayload('posts', 'demo');
 
-    expect(payload.collection).toBe('essay');
-    if (payload.collection !== 'essay') throw new Error('Expected essay payload');
+    expect(payload.collection).toBe('posts');
+    if (payload.collection !== 'posts') throw new Error('Expected posts payload');
     expect(payload.writable).toBe(true);
     expect(payload.values.title).toBe('Demo Essay');
     expect(payload.values.date).toBe('2026-03-18');
     expect(payload.defaultPublicSlug).toBe('demo');
-    if (payload.collection === 'essay') {
+    if (payload.collection === 'posts') {
       expect(payload.values.publishedAt).toBe('');
       expect(payload.values.updatedAt).toBe('');
     }
@@ -37,15 +37,15 @@ describe('admin content entry payload contract', () => {
   it('loads and validates source files whose names differ from Astro public ids', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
-    const current = await readAdminContentEntryEditorPayload('essay', 'admin-console-guide copy');
+    const current = await readAdminContentEntryEditorPayload('posts', 'admin-console-guide copy');
 
     expect(current.entryId).toBe('admin-console-guide copy');
     expect(current.defaultPublicSlug).toBe('admin-console-guide-copy');
-    expect(current.relativePath).toBe('src/content/essay/admin-console-guide copy.md');
+    expect(current.relativePath).toBe('src/content/posts/admin-console-guide copy.md');
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'admin-console-guide copy',
         revision: current.revision,
         frontmatter: {
@@ -62,9 +62,9 @@ describe('admin content entry payload contract', () => {
     expect(payload.result.changedFields).toEqual(['title']);
   });
 
-  it('loads legacy essay datetime dates for compatibility', async () => {
+  it('loads legacy posts datetime dates for compatibility', async () => {
     await writeFile(
-      path.join(getTempRoot(), 'src', 'content', 'essay', 'legacy-datetime.md'),
+      path.join(getTempRoot(), 'src', 'content', 'posts', 'legacy-datetime.md'),
       [
         '---',
         'title: Legacy Datetime',
@@ -79,17 +79,17 @@ describe('admin content entry payload contract', () => {
     );
 
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
-    const payload = await readAdminContentEntryEditorPayload('essay', 'legacy-datetime');
+    const payload = await readAdminContentEntryEditorPayload('posts', 'legacy-datetime');
 
-    if (payload.collection === 'essay') {
+    if (payload.collection === 'posts') {
       expect(payload.values.date).toBe('2024-11-23');
       expect(payload.values.publishedAt).toBe('2024-11-23T18:00:00+08:00');
     }
   });
 
-  it('loads optional essay updatedAt as editable date text', async () => {
+  it('loads optional posts updatedAt as editable date text', async () => {
     await writeFile(
-      path.join(getTempRoot(), 'src', 'content', 'essay', 'updated-date.md'),
+      path.join(getTempRoot(), 'src', 'content', 'posts', 'updated-date.md'),
       [
         '---',
         'title: Updated Date',
@@ -105,9 +105,9 @@ describe('admin content entry payload contract', () => {
     );
 
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
-    const payload = await readAdminContentEntryEditorPayload('essay', 'updated-date');
+    const payload = await readAdminContentEntryEditorPayload('posts', 'updated-date');
 
-    if (payload.collection === 'essay') {
+    if (payload.collection === 'posts') {
       expect(payload.values.updatedAt).toBe('2026-03-20');
     }
   });
@@ -228,19 +228,19 @@ describe('admin content entry payload contract', () => {
         message: 'Request body is missing revision'
       },
       {
-        body: { collection: 'essay', entryId: '../secret', revision: 'stale', frontmatter: {} },
+        body: { collection: 'posts', entryId: '../secret', revision: 'stale', frontmatter: {} },
         status: 400,
         issuePath: 'entryId',
         message: 'entryId'
       },
       {
-        body: { collection: 'essay', entryId: 'missing', revision: 'stale', frontmatter: {} },
+        body: { collection: 'posts', entryId: 'missing', revision: 'stale', frontmatter: {} },
         status: 404,
         issuePath: 'entryId',
         message: 'No content source file found'
       },
       {
-        body: { collection: 'essay', entryId: 'demo', revision: 'stale', frontmatter: [] },
+        body: { collection: 'posts', entryId: 'demo', revision: 'stale', frontmatter: [] },
         status: 400,
         issuePath: 'frontmatter',
         message: 'frontmatter must be an object'
@@ -258,7 +258,7 @@ describe('admin content entry payload contract', () => {
         message: 'The memo save request is missing the body field'
       },
       {
-        body: { collection: 'essay', entryId: 'demo', revision: 'stale', frontmatter: {}, body: 42 },
+        body: { collection: 'posts', entryId: 'demo', revision: 'stale', frontmatter: {}, body: 42 },
         status: 400,
         issuePath: 'body',
         message: 'body must be a Markdown string'

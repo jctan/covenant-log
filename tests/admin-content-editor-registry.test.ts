@@ -30,12 +30,12 @@ const endpoints: AdminContentEditorEndpoints = {
 };
 
 const essayPayload: AdminEssayEditorPayload = {
-  collection: 'essay',
-  entryId: 'essay-entry',
-  publicEntryId: 'essay-entry',
-  defaultPublicSlug: 'essay-entry',
-  revision: 'essay-rev',
-  relativePath: 'src/content/essay/essay-entry.md',
+  collection: 'posts',
+  entryId: 'posts-entry',
+  publicEntryId: 'posts-entry',
+  defaultPublicSlug: 'posts-entry',
+  revision: 'posts-rev',
+  relativePath: 'src/content/posts/posts-entry.md',
   writable: true,
   readonlyReason: null,
   bodyText: 'Essay body',
@@ -109,31 +109,31 @@ const aboutPayload: AdminAboutEditorPayload = {
 };
 
 describe('admin content editor page registry', () => {
-  it('declares page-level affordances for essay, bits, memo, and about', () => {
-    const essay = getAdminContentEditorPageRegistration('essay');
+  it('declares page-level affordances for posts, bits, memo, and about', () => {
+    const posts = getAdminContentEditorPageRegistration('posts');
     const bits = getAdminContentEditorPageRegistration('bits');
     const memo = getAdminContentEditorPageRegistration('memo');
     const about = getAdminContentEditorPageRegistration('about');
 
-    expect(essay.island).toBe('essay');
-    expect(essay.styleSlots).toEqual([
+    expect(posts.island).toBe('posts');
+    expect(posts.styleSlots).toEqual([
       'article',
       'adminContentEditor',
       'adminContentEditorFrontmatter',
       'adminContentEditorImageInsert',
       'adminContentEditorGalleryInsert'
     ]);
-    expect(essay.outlineKind).toBe('essay');
-    expect(essay.resolveReturnHref({
+    expect(posts.outlineKind).toBe('posts');
+    expect(posts.resolveReturnHref({
       withBase: (path) => `/base${path}`,
-      collectionHref: '/base/admin/content/?collection=essay'
+      collectionHref: '/base/admin/content/?collection=posts'
     })).toBe('/base/admin/content/');
-    expect(essay.infoTrigger).toEqual({
+    expect(posts.infoTrigger).toEqual({
       attribute: 'data-admin-article-info-trigger',
       label: 'Edit info',
       panelId: 'admin-editor-frontmatter-panel'
     });
-    expect(essay.usesImagePicker).toBe(false);
+    expect(posts.usesImagePicker).toBe(false);
 
     expect(bits.island).toBe('bits');
     expect(bits.styleSlots).toEqual([
@@ -174,7 +174,7 @@ describe('admin content editor page registry', () => {
   });
 
   it('derives image picker affordance from collection capabilities', () => {
-    const collections: AdminContentWriteCollectionKey[] = ['essay', 'bits', 'memo', 'about'];
+    const collections: AdminContentWriteCollectionKey[] = ['posts', 'bits', 'memo', 'about'];
 
     for (const collection of collections) {
       expect(getAdminContentEditorPageRegistration(collection).usesImagePicker)
@@ -214,8 +214,8 @@ describe('admin content editor page registry', () => {
   });
 
   it('keeps registered editor islands within the supported island loader keys', () => {
-    expect(ADMIN_CONTENT_EDITOR_ISLAND_KEYS).toEqual(['essay', 'bits', 'memo', 'about']);
-    expect(ADMIN_CONTENT_EDITOR_ISLAND_KEYS).toContain(getAdminContentEditorPageRegistration('essay').island);
+    expect(ADMIN_CONTENT_EDITOR_ISLAND_KEYS).toEqual(['posts', 'bits', 'memo', 'about']);
+    expect(ADMIN_CONTENT_EDITOR_ISLAND_KEYS).toContain(getAdminContentEditorPageRegistration('posts').island);
     expect(ADMIN_CONTENT_EDITOR_ISLAND_KEYS).toContain(getAdminContentEditorPageRegistration('bits').island);
     expect(ADMIN_CONTENT_EDITOR_ISLAND_KEYS).toContain(getAdminContentEditorPageRegistration('memo').island);
     expect(ADMIN_CONTENT_EDITOR_ISLAND_KEYS).toContain(getAdminContentEditorPageRegistration('about').island);
@@ -225,9 +225,9 @@ describe('admin content editor page registry', () => {
     const outlines = {
       essayOutlineItems: [
         {
-          entryId: 'essay-entry',
+          entryId: 'posts-entry',
           title: 'Essay title',
-          editHref: '/admin/content/essay/_edit/essay-entry/',
+          editHref: '/admin/content/posts/_edit/posts-entry/',
           dateLabel: '2026-06-01',
           sourceError: null
         }
@@ -252,7 +252,7 @@ describe('admin content editor page registry', () => {
       initialArticleInfoOpen: true
     });
     expect(essayProps).toMatchObject({
-      entryId: 'essay-entry',
+      entryId: 'posts-entry',
       returnHref: '/admin/content/',
       initialFrontmatter: essayPayload.values,
       initialBody: 'Essay body',

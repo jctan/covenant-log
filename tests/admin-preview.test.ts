@@ -17,7 +17,7 @@ describe('admin preview api', () => {
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/preview', {
-        collection: 'essay',
+        collection: 'posts',
         source: [
           '# Preview',
           '',
@@ -34,7 +34,7 @@ describe('admin preview api', () => {
     expect(response.status).toBe(200);
     const payload = JSON.parse(await response.text());
     expect(payload.ok).toBe(true);
-    expect(payload.result.collection).toBe('essay');
+    expect(payload.result.collection).toBe('posts');
     expect(payload.result.codeHighlight).toBe('shiki-rehype');
     expect(payload.result.html).toContain('<h1>Preview</h1>');
     expect(payload.result.html).toContain('class="callout warning"');
@@ -48,7 +48,7 @@ describe('admin preview api', () => {
     const { renderAdminMarkdownPreview } = await import('../src/lib/admin-console/preview');
 
     const result = await renderAdminMarkdownPreview({
-      collection: 'essay',
+      collection: 'posts',
       source: ['```ts', 'const value = 1;', '```'].join('\n')
     });
 
@@ -62,7 +62,7 @@ describe('admin preview api', () => {
     const { renderAdminMarkdownPreview } = await import('../src/lib/admin-console/preview');
 
     const result = await renderAdminMarkdownPreview({
-      collection: 'essay',
+      collection: 'posts',
       source: ['```math', 'x + y', '```'].join('\n')
     });
 
@@ -75,7 +75,7 @@ describe('admin preview api', () => {
     const { renderAdminMarkdownPreview } = await import('../src/lib/admin-console/preview');
 
     const result = await renderAdminMarkdownPreview({
-      collection: 'essay',
+      collection: 'posts',
       source: [
         '<span class="math-inline">x + y</span>',
         '<code class="language-math math-inline">a + b</code>',
@@ -95,7 +95,7 @@ describe('admin preview api', () => {
     const { renderAdminMarkdownPreview } = await import('../src/lib/admin-console/preview');
 
     const result = await renderAdminMarkdownPreview({
-      collection: 'essay',
+      collection: 'posts',
       source: [
         'Inline math $$x + y$$.',
         '',
@@ -120,7 +120,7 @@ describe('admin preview api', () => {
     const { renderAdminMarkdownPreview } = await import('../src/lib/admin-console/preview');
 
     const result = await renderAdminMarkdownPreview({
-      collection: 'essay',
+      collection: 'posts',
       source: ['Inline math $$x + y$$.', '', '$$', 'x^2 + y^2 = z^2', '$$'].join('\n')
     });
 
@@ -136,7 +136,7 @@ describe('admin preview api', () => {
     const { renderAdminMarkdownPreview } = await import('../src/lib/admin-console/preview');
 
     const result = await renderAdminMarkdownPreview({
-      collection: 'essay',
+      collection: 'posts',
       source: 'The price is $12 and inline single-dollar $x$ stays plain text.'
     });
 
@@ -149,7 +149,7 @@ describe('admin preview api', () => {
     const { renderAdminMarkdownPreview } = await import('../src/lib/admin-console/preview');
 
     const result = await renderAdminMarkdownPreview({
-      collection: 'essay',
+      collection: 'posts',
       source: ['~~删除线~~', '', '- [x] 已完成', '- [ ] 待办事项'].join('\n')
     });
 
@@ -162,7 +162,7 @@ describe('admin preview api', () => {
     const { renderAdminMarkdownPreview } = await import('../src/lib/admin-console/preview');
 
     const result = await renderAdminMarkdownPreview({
-      collection: 'essay',
+      collection: 'posts',
       source: 'He said "Hello" -- ok.'
     });
 
@@ -190,7 +190,7 @@ describe('admin preview api', () => {
     expect(second).toBeDefined();
 
     const result = await renderAdminMarkdownPreview({
-      collection: 'essay',
+      collection: 'posts',
       source
     });
 
@@ -205,14 +205,14 @@ describe('admin preview api', () => {
     const { splitMarkdownFrontmatter } = await import('../src/lib/admin-console/frontmatter');
 
     const markdownGuide = splitMarkdownFrontmatter(
-      await readFile('src/content/essay/markdown-guide.md', 'utf8')
+      await readFile('src/content/posts/markdown-guide.md', 'utf8')
     ).bodyText;
     const memo = splitMarkdownFrontmatter(
       await readFile('src/content/memo/index.md', 'utf8')
     ).bodyText;
 
     const markdownGuideResult = await renderAdminMarkdownPreview({
-      collection: 'essay',
+      collection: 'posts',
       source: markdownGuide
     });
     const memoResult = await renderAdminMarkdownPreview({
@@ -317,7 +317,7 @@ describe('admin preview api', () => {
     expect(payload.result.html).not.toContain('http://bad.example');
   });
 
-  it('keeps about-only directives out of essay and memo preview rendering', async () => {
+  it('keeps about-only directives out of posts and memo preview rendering', async () => {
     const { renderAdminMarkdownPreview } = await import('../src/lib/admin-console/preview');
     const source = [
       ':::faq{question="Should not become about FAQ"}',
@@ -326,7 +326,7 @@ describe('admin preview api', () => {
     ].join('\n');
 
     const [essayResult, memoResult] = await Promise.all([
-      renderAdminMarkdownPreview({ collection: 'essay', source }),
+      renderAdminMarkdownPreview({ collection: 'posts', source }),
       renderAdminMarkdownPreview({ collection: 'memo', entryId: 'index', source })
     ]);
 

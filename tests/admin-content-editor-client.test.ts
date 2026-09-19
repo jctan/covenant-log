@@ -44,17 +44,17 @@ describe('content editor client', () => {
           changed: true,
           written: true,
           changedFields: ['entry'],
-          relativePath: 'src/content/essay/new-essay.md',
-          editHref: '/admin/content/essay/_edit/new-essay/'
+          relativePath: 'src/content/posts/new-posts.md',
+          editHref: '/admin/content/posts/_edit/new-posts/'
         },
-        editHref: '/admin/content/essay/_edit/new-essay/',
+        editHref: '/admin/content/posts/_edit/new-posts/',
         payload: {
-          collection: 'essay',
-          entryId: 'new-essay',
-          publicEntryId: 'new-essay',
-          defaultPublicSlug: 'new-essay',
+          collection: 'posts',
+          entryId: 'new-posts',
+          publicEntryId: 'new-posts',
+          defaultPublicSlug: 'new-posts',
           revision: 'rev',
-          relativePath: 'src/content/essay/new-essay.md',
+          relativePath: 'src/content/posts/new-posts.md',
           writable: true,
           readonlyReason: null,
           bodyText: '\n',
@@ -68,19 +68,19 @@ describe('content editor client', () => {
 
     const outcome = await createContentEntry({
       endpoint: '/api/admin/content/create/',
-      collection: 'essay',
-      entryId: 'new-essay',
+      collection: 'posts',
+      entryId: 'new-posts',
       frontmatter: essayValues,
       fetchImpl
     });
 
     expect(requested.body).toEqual({
-      collection: 'essay',
-      entryId: 'new-essay',
+      collection: 'posts',
+      entryId: 'new-posts',
       frontmatter: essayValues
     });
-    expect(outcome.editHref).toBe('/admin/content/essay/_edit/new-essay/');
-    expect(outcome.payload?.collection).toBe('essay');
+    expect(outcome.editHref).toBe('/admin/content/posts/_edit/new-posts/');
+    expect(outcome.payload?.collection).toBe('posts');
   });
 
   it('sends bits create payloads without client entry ids', async () => {

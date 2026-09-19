@@ -13,12 +13,12 @@ import type {
 } from '../src/lib/admin-console/content-shared';
 
 const essayPayload: AdminEssayEditorPayload = {
-  collection: 'essay',
-  entryId: 'essay-entry',
-  publicEntryId: 'essay-entry',
-  defaultPublicSlug: 'essay-entry',
-  revision: 'essay-rev',
-  relativePath: 'src/content/essay/essay-entry.md',
+  collection: 'posts',
+  entryId: 'posts-entry',
+  publicEntryId: 'posts-entry',
+  defaultPublicSlug: 'posts-entry',
+  revision: 'posts-rev',
+  relativePath: 'src/content/posts/posts-entry.md',
   writable: true,
   readonlyReason: null,
   bodyText: 'Essay body',
@@ -94,9 +94,9 @@ const aboutPayload: AdminAboutEditorPayload = {
 const outlineFixture: AdminContentEditorOutlines = {
   essayOutlineItems: [
     {
-      entryId: 'essay-entry',
+      entryId: 'posts-entry',
       title: 'Essay title',
-      editHref: '/admin/content/essay/_edit/essay-entry/',
+      editHref: '/admin/content/posts/_edit/posts-entry/',
       dateLabel: '2026-06-01',
       sourceError: null
     }
@@ -166,7 +166,7 @@ describe('admin content edit dev state', () => {
   });
 
   it.each([
-    ['essay', essayPayload, [
+    ['posts', essayPayload, [
       'article',
       'adminContentEditor',
       'adminContentEditorFrontmatter',

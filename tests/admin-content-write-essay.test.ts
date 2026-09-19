@@ -8,14 +8,14 @@ import {
   setupAdminContentWriteFixture
 } from './admin-content-write-fixture';
 
-describe('admin content essay write contract', () => {
+describe('admin content posts write contract', () => {
   const getTempRoot = setupAdminContentWriteFixture();
 
-  it('supports dry-run and real writes for essay frontmatter without changing body', async () => {
+  it('supports dry-run and real writes for posts frontmatter without changing body', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const nextValues = {
       ...current.values,
       title: 'Edited Essay',
@@ -24,7 +24,7 @@ describe('admin content essay write contract', () => {
 
     const dryRunResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: nextValues
@@ -38,11 +38,11 @@ describe('admin content essay write contract', () => {
     expect(dryRunPayload.dryRun).toBe(true);
     expect(dryRunPayload.result.changedFields).toEqual(['title', 'tags']);
 
-    const before = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md'), 'utf8');
+    const before = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md'), 'utf8');
 
     const writeResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: nextValues
@@ -55,15 +55,15 @@ describe('admin content essay write contract', () => {
     expect(writePayload.ok).toBe(true);
     expect(writePayload.result.written).toBe(true);
 
-    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md'), 'utf8');
+    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md'), 'utf8');
     expect(after).toContain('title: Edited Essay');
     expect(after).toContain('tags:');
     expect(after.endsWith('# Essay\n\n正文保持不变。\n')).toBe(true);
     expect(after).not.toBe(before);
   });
 
-  it('normalizes legacy essay datetime dates to date plus publishedAt on save', async () => {
-    const legacyPath = path.join(getTempRoot(), 'src', 'content', 'essay', 'legacy-datetime.md');
+  it('normalizes legacy posts datetime dates to date plus publishedAt on save', async () => {
+    const legacyPath = path.join(getTempRoot(), 'src', 'content', 'posts', 'legacy-datetime.md');
     await writeFile(
       legacyPath,
       [
@@ -82,10 +82,10 @@ describe('admin content essay write contract', () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'legacy-datetime');
+    const current = await readAdminContentEntryEditorPayload('posts', 'legacy-datetime');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'legacy-datetime',
         revision: current.revision,
         frontmatter: {
@@ -108,8 +108,8 @@ describe('admin content essay write contract', () => {
     expect(after).not.toContain('date: 2024-11-23T18:00:00+08:00');
   });
 
-  it('preserves derived publishedAt when older essay payloads omit the field', async () => {
-    const legacyPath = path.join(getTempRoot(), 'src', 'content', 'essay', 'legacy-datetime.md');
+  it('preserves derived publishedAt when older posts payloads omit the field', async () => {
+    const legacyPath = path.join(getTempRoot(), 'src', 'content', 'posts', 'legacy-datetime.md');
     await writeFile(
       legacyPath,
       [
@@ -128,10 +128,10 @@ describe('admin content essay write contract', () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'legacy-datetime');
+    const current = await readAdminContentEntryEditorPayload('posts', 'legacy-datetime');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'legacy-datetime',
         revision: current.revision,
         frontmatter: {
@@ -154,14 +154,14 @@ describe('admin content essay write contract', () => {
     expect(after).not.toContain('date: 2024-11-23T18:00:00+08:00');
   });
 
-  it('does not create publishedAt when older essay payloads omit it for date-only entries', async () => {
+  it('does not create publishedAt when older posts payloads omit it for date-only entries', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -177,20 +177,20 @@ describe('admin content essay write contract', () => {
     expect(payload.ok).toBe(true);
     expect(payload.result.changedFields).toEqual(['title']);
 
-    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md'), 'utf8');
+    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md'), 'utf8');
     expect(after).toContain('title: Date Only Legacy Payload');
     expect(after).toContain('date: 2026-03-18');
     expect(after).not.toContain('publishedAt:');
   });
 
-  it('writes explicit essay publishedAt without forcing date datetime syntax', async () => {
+  it('writes explicit posts publishedAt without forcing date datetime syntax', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -206,19 +206,19 @@ describe('admin content essay write contract', () => {
     expect(payload.ok).toBe(true);
     expect(payload.result.changedFields).toEqual(['publishedAt']);
 
-    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md'), 'utf8');
+    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md'), 'utf8');
     expect(after).toContain('date: 2026-03-18');
     expect(after).toContain('publishedAt: 2026-03-18T19:30:00+08:00');
   });
 
-  it('normalizes essay date from explicit publishedAt instead of blocking the save', async () => {
+  it('normalizes posts date from explicit publishedAt instead of blocking the save', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -235,7 +235,7 @@ describe('admin content essay write contract', () => {
     expect(payload.ok).toBe(true);
     expect(payload.result.changedFields).toEqual(['date', 'publishedAt']);
 
-    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md'), 'utf8');
+    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md'), 'utf8');
     expect(after).toContain('date: 2026-03-19');
     expect(after).toContain('publishedAt: 2026-03-19T00:30:00+08:00');
   });
@@ -244,10 +244,10 @@ describe('admin content essay write contract', () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -272,8 +272,8 @@ describe('admin content essay write contract', () => {
     );
   });
 
-  it('allows essay authors to explicitly clear publishedAt', async () => {
-    const essayPath = path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md');
+  it('allows posts authors to explicitly clear publishedAt', async () => {
+    const essayPath = path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md');
     await writeFile(
       essayPath,
       [
@@ -293,10 +293,10 @@ describe('admin content essay write contract', () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -317,14 +317,14 @@ describe('admin content essay write contract', () => {
     expect(after).not.toContain('publishedAt:');
   });
 
-  it('rejects impossible essay publishedAt calendar dates before writing', async () => {
+  it('rejects impossible posts publishedAt calendar dates before writing', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -347,14 +347,14 @@ describe('admin content essay write contract', () => {
     );
   });
 
-  it('writes optional essay updatedAt as a date-only frontmatter field', async () => {
+  it('writes optional posts updatedAt as a date-only frontmatter field', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -371,12 +371,12 @@ describe('admin content essay write contract', () => {
     expect(payload.result.changedFields).toEqual(['updatedAt']);
     expect(payload.payload.values.updatedAt).toBe('2026-03-20');
 
-    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md'), 'utf8');
+    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md'), 'utf8');
     expect(after).toContain('updatedAt: 2026-03-20');
   });
 
-  it('preserves existing updatedAt when older essay payloads omit the field', async () => {
-    const essayPath = path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md');
+  it('preserves existing updatedAt when older posts payloads omit the field', async () => {
+    const essayPath = path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md');
     await writeFile(
       essayPath,
       [
@@ -396,10 +396,10 @@ describe('admin content essay write contract', () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -421,7 +421,7 @@ describe('admin content essay write contract', () => {
   });
 
   it('rejects preserved updatedAt earlier than the final publish date', async () => {
-    const essayPath = path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md');
+    const essayPath = path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md');
     await writeFile(
       essayPath,
       [
@@ -441,10 +441,10 @@ describe('admin content essay write contract', () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -467,8 +467,8 @@ describe('admin content essay write contract', () => {
     );
   });
 
-  it('repairs semantically invalid current essay frontmatter instead of failing before next validation', async () => {
-    const essayPath = path.join(getTempRoot(), 'src', 'content', 'essay', 'broken-current.md');
+  it('repairs semantically invalid current posts frontmatter instead of failing before next validation', async () => {
+    const essayPath = path.join(getTempRoot(), 'src', 'content', 'posts', 'broken-current.md');
     await writeFile(
       essayPath,
       [
@@ -491,14 +491,14 @@ describe('admin content essay write contract', () => {
 
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
-    const current = await readAdminContentEntryEditorPayload('essay', 'broken-current');
-    if (current.collection !== 'essay') {
-      throw new Error('Expected essay editor payload');
+    const current = await readAdminContentEntryEditorPayload('posts', 'broken-current');
+    if (current.collection !== 'posts') {
+      throw new Error('Expected posts editor payload');
     }
 
     const invalidNextResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'broken-current',
         revision: current.revision,
         frontmatter: {
@@ -521,7 +521,7 @@ describe('admin content essay write contract', () => {
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'broken-current',
         revision: current.revision,
         frontmatter: {
@@ -553,17 +553,17 @@ describe('admin content essay write contract', () => {
     expect(after).not.toContain('cover: 42');
   });
 
-  it('supports dry-run and real writes for essay body while preserving frontmatter bytes', async () => {
+  it('supports dry-run and real writes for posts body while preserving frontmatter bytes', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { splitMarkdownFrontmatter } = await import('../src/lib/admin-console/frontmatter');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const nextBody = ['# Essay', '', '正文已经由后台编辑器写入。', ''].join('\n');
 
     const dryRunResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: current.values,
@@ -578,12 +578,12 @@ describe('admin content essay write contract', () => {
     expect(dryRunPayload.dryRun).toBe(true);
     expect(dryRunPayload.result.changedFields).toEqual(['body']);
 
-    const before = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md'), 'utf8');
+    const before = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md'), 'utf8');
     const beforeSection = splitMarkdownFrontmatter(before);
 
     const writeResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: current.values,
@@ -599,20 +599,20 @@ describe('admin content essay write contract', () => {
     expect(writePayload.result.changedFields).toEqual(['body']);
     expect(writePayload.payload.bodyText).toBe(nextBody);
 
-    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md'), 'utf8');
+    const after = await readFile(path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md'), 'utf8');
     const afterSection = splitMarkdownFrontmatter(after);
     expect(afterSection.frontmatterBlock).toBe(beforeSection.frontmatterBlock);
     expect(afterSection.bodyText).toBe(nextBody);
   });
 
-  it('allows essay saves when local image references exist or are outside the local-relative check', async () => {
+  it('allows posts saves when local image references exist or are outside the local-relative check', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
-    await mkdir(path.join(getTempRoot(), 'src', 'content', 'essay', 'demo-assets'), { recursive: true });
-    await writeFile(path.join(getTempRoot(), 'src', 'content', 'essay', 'demo-assets', 'existing.webp'), 'image');
+    await mkdir(path.join(getTempRoot(), 'src', 'content', 'posts', 'demo-assets'), { recursive: true });
+    await writeFile(path.join(getTempRoot(), 'src', 'content', 'posts', 'demo-assets', 'existing.webp'), 'image');
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const nextBody = [
       '# Essay',
       '',
@@ -633,7 +633,7 @@ describe('admin content essay write contract', () => {
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: current.values,
@@ -648,12 +648,12 @@ describe('admin content essay write contract', () => {
     expect(payload.result.changedFields).toEqual(['body']);
   });
 
-  it('rejects essay body saves when submitted body references missing local images', async () => {
+  it('rejects posts body saves when submitted body references missing local images', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
 
     await writeFile(
-      path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md'),
+      path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md'),
       [
         '---',
         'title: Demo Essay',
@@ -686,14 +686,14 @@ describe('admin content essay write contract', () => {
       'utf8'
     );
 
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
-    if (current.collection !== 'essay') {
-      throw new Error('Expected essay editor payload');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
+    if (current.collection !== 'posts') {
+      throw new Error('Expected posts editor payload');
     }
 
     const frontmatterOnlyResponse = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -711,7 +711,7 @@ describe('admin content essay write contract', () => {
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: current.values,
@@ -725,14 +725,14 @@ describe('admin content essay write contract', () => {
     expect(payload.ok).toBe(false);
     expect(payload.errors).toEqual(
       expect.arrayContaining([
-        "The body references a local image that doesn't exist: src/content/essay/demo-assets/missing.webp",
-        "The body references a local image that doesn't exist: src/content/essay/demo-assets/missing-figure.webp",
-        "The body references a local image that doesn't exist: src/content/essay/demo-assets/missing-rich-caption-figure.webp",
-        "The body references a local image that doesn't exist: src/content/essay/demo-assets/missing-gallery.webp"
+        "The body references a local image that doesn't exist: src/content/posts/demo-assets/missing.webp",
+        "The body references a local image that doesn't exist: src/content/posts/demo-assets/missing-figure.webp",
+        "The body references a local image that doesn't exist: src/content/posts/demo-assets/missing-rich-caption-figure.webp",
+        "The body references a local image that doesn't exist: src/content/posts/demo-assets/missing-gallery.webp"
       ])
     );
     expect(payload.errors).not.toContain(
-      '正文引用的本地图片不存在：src/content/essay/demo-assets/missing-in-code.webp'
+      '正文引用的本地图片不存在：src/content/posts/demo-assets/missing-in-code.webp'
     );
     expect(payload.issues).toEqual(
       expect.arrayContaining([
@@ -741,14 +741,14 @@ describe('admin content essay write contract', () => {
     );
   });
 
-  it('rejects reserved essay slugs before writing invalid content', async () => {
+  it('rejects reserved posts slugs before writing invalid content', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -771,19 +771,19 @@ describe('admin content essay write contract', () => {
     );
   });
 
-  it('rejects duplicate public essay slugs before writing invalid content', async () => {
+  it('rejects duplicate public posts slugs before writing invalid content', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
           ...current.values,
-          slug: 'existing-essay'
+          slug: 'existing-posts'
         }
       }),
       url: new URL('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1')
@@ -801,14 +801,14 @@ describe('admin content essay write contract', () => {
     );
   });
 
-  it('rejects malformed essay frontmatter payloads with field errors instead of 500', async () => {
+  it('rejects malformed posts frontmatter payloads with field errors instead of 500', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -831,14 +831,14 @@ describe('admin content essay write contract', () => {
     );
   });
 
-  it('rejects essay tags that normalize to non-routable archive tag keys', async () => {
+  it('rejects posts tags that normalize to non-routable archive tag keys', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry?dryRun=1', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {
@@ -863,17 +863,17 @@ describe('admin content essay write contract', () => {
   it('rejects stale revisions after the source file changes externally', async () => {
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
     const { POST } = await import('../src/pages/api/admin/content/entry');
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
 
     await writeFile(
-      path.join(getTempRoot(), 'src', 'content', 'essay', 'demo.md'),
+      path.join(getTempRoot(), 'src', 'content', 'posts', 'demo.md'),
       ['---', 'title: External Change', 'date: 2026-03-18', '---', '', 'changed body', ''].join('\n'),
       'utf8'
     );
 
     const response = await POST({
       request: createJsonRequest('http://127.0.0.1:4321/api/admin/content/entry', {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         frontmatter: {

@@ -23,24 +23,24 @@ describe('admin content delete api', () => {
     tempRoot = await mkdtemp(path.join(tmpdir(), 'astro-whono-content-delete-'));
     process.env.ASTRO_WHONO_INTERNAL_TEST_PROJECT_ROOT = tempRoot;
 
-    await mkdir(path.join(tempRoot, 'src', 'content', 'essay'), { recursive: true });
+    await mkdir(path.join(tempRoot, 'src', 'content', 'posts'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'bits'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'memo'), { recursive: true });
     await mkdir(path.join(tempRoot, 'src', 'content', 'about'), { recursive: true });
-    await mkdir(path.join(tempRoot, 'src', 'content', 'essay', 'series', 'intro'), { recursive: true });
+    await mkdir(path.join(tempRoot, 'src', 'content', 'posts', 'series', 'intro'), { recursive: true });
 
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'demo.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'demo.md'),
       ['---', 'title: Demo Essay', 'date: 2026-03-18', 'draft: false', '---', '', '# Demo', ''].join('\n'),
       'utf8'
     );
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'admin-console-guide copy.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'admin-console-guide copy.md'),
       ['---', 'title: Space Name Essay', 'date: 2026-03-21', 'draft: false', '---', '', '# Space Name', ''].join('\n'),
       'utf8'
     );
     await writeFile(
-      path.join(tempRoot, 'src', 'content', 'essay', 'series', 'intro', 'index.md'),
+      path.join(tempRoot, 'src', 'content', 'posts', 'series', 'intro', 'index.md'),
       ['---', 'title: Intro Essay', 'date: 2026-03-19', 'draft: false', '---', '', '# Intro', ''].join('\n'),
       'utf8'
     );
@@ -71,12 +71,12 @@ describe('admin content delete api', () => {
   it('moves an entry source file to the project trash folder', async () => {
     const { POST } = await import('../src/pages/api/admin/content/delete');
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const url = 'http://127.0.0.1:4321/api/admin/content/delete/';
 
     const response = await POST({
       request: createJsonRequest(url, {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
         expectedRelativePath: current.relativePath
@@ -89,26 +89,26 @@ describe('admin content delete api', () => {
     expect(payload.ok).toBe(true);
     expect(payload.result).toEqual(
       expect.objectContaining({
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         deleted: true,
-        relativePath: 'src/content/essay/demo.md'
+        relativePath: 'src/content/posts/demo.md'
       })
     );
-    expect(payload.result.trashedPath).toMatch(/^\.trash\/content\/\d{8}-\d{9}(?:-\d+)?\/src\/content\/essay\/demo\.md$/);
-    await expect(access(path.join(tempRoot, 'src', 'content', 'essay', 'demo.md'))).rejects.toThrow();
+    expect(payload.result.trashedPath).toMatch(/^\.trash\/content\/\d{8}-\d{9}(?:-\d+)?\/src\/content\/posts\/demo\.md$/);
+    await expect(access(path.join(tempRoot, 'src', 'content', 'posts', 'demo.md'))).rejects.toThrow();
     await expect(readFile(toAbsoluteTestPath(tempRoot, payload.result.trashedPath), 'utf8')).resolves.toContain('# Demo');
   });
 
   it('deletes a source file whose file name contains spaces', async () => {
     const { POST } = await import('../src/pages/api/admin/content/delete');
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
-    const current = await readAdminContentEntryEditorPayload('essay', 'admin-console-guide copy');
+    const current = await readAdminContentEntryEditorPayload('posts', 'admin-console-guide copy');
     const url = 'http://127.0.0.1:4321/api/admin/content/delete/';
 
     const response = await POST({
       request: createJsonRequest(url, {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'admin-console-guide copy',
         revision: current.revision,
         expectedRelativePath: current.relativePath
@@ -120,23 +120,23 @@ describe('admin content delete api', () => {
     const payload = JSON.parse(await response.text());
     expect(payload.result).toEqual(
       expect.objectContaining({
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'admin-console-guide copy',
-        relativePath: 'src/content/essay/admin-console-guide copy.md'
+        relativePath: 'src/content/posts/admin-console-guide copy.md'
       })
     );
-    await expect(access(path.join(tempRoot, 'src', 'content', 'essay', 'admin-console-guide copy.md'))).rejects.toThrow();
+    await expect(access(path.join(tempRoot, 'src', 'content', 'posts', 'admin-console-guide copy.md'))).rejects.toThrow();
     await expect(readFile(toAbsoluteTestPath(tempRoot, payload.result.trashedPath), 'utf8')).resolves.toContain('# Space Name');
   });
 
   it('keeps nested index entry paths restorable inside trash', async () => {
     const { moveAdminContentEntryToTrash } = await import('../src/lib/admin-console/content-delete');
 
-    const result = await moveAdminContentEntryToTrash('essay', 'series/intro');
+    const result = await moveAdminContentEntryToTrash('posts', 'series/intro');
 
-    expect(result.relativePath).toBe('src/content/essay/series/intro/index.md');
-    expect(result.trashedPath).toMatch(/\/src\/content\/essay\/series\/intro\/index\.md$/);
-    await expect(access(path.join(tempRoot, 'src', 'content', 'essay', 'series', 'intro', 'index.md'))).rejects.toThrow();
+    expect(result.relativePath).toBe('src/content/posts/series/intro/index.md');
+    expect(result.trashedPath).toMatch(/\/src\/content\/posts\/series\/intro\/index\.md$/);
+    await expect(access(path.join(tempRoot, 'src', 'content', 'posts', 'series', 'intro', 'index.md'))).rejects.toThrow();
     await expect(readFile(toAbsoluteTestPath(tempRoot, result.trashedPath), 'utf8')).resolves.toContain('# Intro');
   });
 
@@ -208,15 +208,15 @@ describe('admin content delete api', () => {
   it('rejects mismatched confirmed source paths', async () => {
     const { POST } = await import('../src/pages/api/admin/content/delete');
     const { readAdminContentEntryEditorPayload } = await import('../src/lib/admin-console/content-shared');
-    const current = await readAdminContentEntryEditorPayload('essay', 'demo');
+    const current = await readAdminContentEntryEditorPayload('posts', 'demo');
     const url = 'http://127.0.0.1:4321/api/admin/content/delete/';
 
     const response = await POST({
       request: createJsonRequest(url, {
-        collection: 'essay',
+        collection: 'posts',
         entryId: 'demo',
         revision: current.revision,
-        expectedRelativePath: 'src/content/essay/other.md'
+        expectedRelativePath: 'src/content/posts/other.md'
       }),
       url: new URL(url)
     } as never);
@@ -225,6 +225,6 @@ describe('admin content delete api', () => {
     const payload = JSON.parse(await response.text());
     expect(payload.ok).toBe(false);
     expect(payload.errors[0]).toContain('mismatch between the content file path');
-    await expect(readFile(path.join(tempRoot, 'src', 'content', 'essay', 'demo.md'), 'utf8')).resolves.toContain('# Demo');
+    await expect(readFile(path.join(tempRoot, 'src', 'content', 'posts', 'demo.md'), 'utf8')).resolves.toContain('# Demo');
   });
 });
