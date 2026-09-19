@@ -13,7 +13,7 @@
       "id": "bits",
       "label": "Bits",
       "ornament": "·",
-      "visible": true,
+      "visible": false,
       "order": 2
     },
     {

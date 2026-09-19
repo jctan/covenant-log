@@ -1,7 +1,7 @@
 {
   "essay": {
     "title": "Posts",
-    "subtitle": "Wriings about Cloud, Security, and AI"
+    "subtitle": "Writing about Cloud, Security, and AI"
   },
   "archive": {
     "title": "Archive",
@@ -11,7 +11,7 @@
     "title": "Bits",
     "subtitle": "Life is more than long-form",
     "defaultAuthor": {
-      "name": "Whono",
+      "name": "John Tan",
       "avatar": "author/avatar.webp"
     }
   },

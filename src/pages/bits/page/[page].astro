@@ -1,12 +1,14 @@
 ---
 import BitsPageView from '../../../components/BitsPageView.astro';
 import { buildPaginatedPaths } from '../../../lib/content';
-import { getBitsPageData, getBitsPagePath } from '../../../lib/bits';
+import { getBitsPageData, getBitsPagePath, isBitsPageEnabled } from '../../../lib/bits';
 import { PAGE_SIZE_BITS } from '../../../../site.config.mjs';
 
 export const prerender = true;
 
 export async function getStaticPaths() {
+  if (!isBitsPageEnabled()) return [];
+
   const { totalPages } = await getBitsPageData(1, PAGE_SIZE_BITS);
   return buildPaginatedPaths(totalPages);
 }

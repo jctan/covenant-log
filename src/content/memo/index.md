@@ -1,14 +1,11 @@
 ---
-title: "Life Notes"
-subtitle: "Time Not Wasted"
-date: 2026-01-10
+title: "Technical Notes"
+subtitle: "Documenting my journey through Cloud, Security, and AI"
+date: 09-18-2026
 draft: false
 ---
 
-Time flows through us the way wind moves through a corridor.
-<br />Some moments carry a particular scent or glow, lingering briefly before they fade.
-<br />Some feelings can't be captured by a lens; some memories resist being kept as images.
-<br />Maybe keeping a written backup of a fleeting feeling is the gentlest, yet most effective, way to resist forgetting.
+These are notes on my personal and professional experiences, focusing on the intersection of Tech, AI and my faith with God. I aim to share insights, lessons learned, and reflections on topics in Cloud computing, Security, and Artificial Intelligence. 
 
 ## Notes from 2025
 

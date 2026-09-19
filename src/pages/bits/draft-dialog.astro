@@ -1,7 +1,12 @@
 ---
 import BitsDraftDialog from '../../components/BitsDraftDialog.astro';
+import { isBitsPageEnabled } from '../../lib/bits';
 
 export const partial = true;
+
+if (!isBitsPageEnabled()) {
+  return new Response(null, { status: 404 });
+}
 ---
 
 <BitsDraftDialog />
