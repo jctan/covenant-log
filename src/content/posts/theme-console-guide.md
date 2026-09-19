@@ -55,7 +55,7 @@ Theme Console currently handles the following kinds of configuration:
 - Sidebar site name, quote text, nav order, and visibility
 - Sidebar action icons (reading mode / RSS / theme toggle / site overview entry)
 - Homepage hero, homepage intro copy, and homepage internal links
-- Titles and subtitles for `/essay/`, `/archive/`, `/bits/`, `/memo/`, `/about/`
+- Titles and subtitles for `/posts/`, `/archive/`, `/bits/`, `/memo/`, `/about/`
 - Article metadata display options
 - Code block line numbers
 - Typography fonts for the four roles: body / copy / monospace / brand
@@ -132,7 +132,7 @@ The homepage's supplementary intro still uses a fixed sentence structure — the
 
 `Inner Pages` handles unified copy and display strategy across inner pages:
 
-- `/essay/` page title and subtitle
+- `/posts/` page title and subtitle
 - `/archive/` page title and subtitle
 - `/bits/` page title and subtitle
 - `/memo/` page title and subtitle
