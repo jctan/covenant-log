@@ -1,5 +1,5 @@
 ---
-title: "Technical Memo"
+title: "Memo"
 subtitle: "Notes on Cloud, Security, and AI"
 date: 09-18-2026
 draft: false
