@@ -78,22 +78,22 @@ describe('admin editor outline helpers', () => {
     });
   });
 
-  it('builds essay list items with active state and title fallback', () => {
+  it('builds posts list items with active state and title fallback', () => {
     expect(
       buildEssayOutlineListItems(
         [
           {
             entryId: 'current',
             title: '',
-            editHref: '/admin/content/essay/_edit/current/',
+            editHref: '/admin/content/posts/_edit/current/',
             dateLabel: '2026-05-14',
             sourceError: null
           },
           {
             entryId: 'other',
             title: 'Other Essay',
-            editHref: '/admin/content/essay/_edit/other/',
-            sourceError: 'essay.date 缺失'
+            editHref: '/admin/content/posts/_edit/other/',
+            sourceError: 'posts.date missing'
           }
         ],
         'current'
@@ -102,7 +102,7 @@ describe('admin editor outline helpers', () => {
       {
         entryId: 'current',
         title: 'current',
-        editHref: '/admin/content/essay/_edit/current/',
+        editHref: '/admin/content/posts/_edit/current/',
         dateLabel: '2026-05-14',
         sourceError: null,
         active: true
@@ -110,8 +110,8 @@ describe('admin editor outline helpers', () => {
       {
         entryId: 'other',
         title: 'Other Essay',
-        editHref: '/admin/content/essay/_edit/other/',
-        sourceError: 'essay.date 缺失',
+        editHref: '/admin/content/posts/_edit/other/',
+        sourceError: 'posts.date missing',
         active: false
       }
     ]);

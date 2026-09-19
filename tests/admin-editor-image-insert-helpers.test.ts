@@ -310,12 +310,12 @@ describe('admin editor image insert helpers', () => {
 
     expect(collectMarkdownBodyLocalImageReferences({
       bodyText: '<figure class="figure"><img src="./encoded&amp;lt;name.webp" alt="Encoded" /></figure>',
-      sourcePath: '/project/src/content/essay/demo.md',
+      sourcePath: '/project/src/content/posts/demo.md',
       projectRoot: '/project'
     })).toEqual([
       expect.objectContaining({
         src: './encoded&lt;name.webp',
-        relativePath: 'src/content/essay/encoded&lt;name.webp'
+        relativePath: 'src/content/posts/encoded&lt;name.webp'
       })
     ]);
   });
