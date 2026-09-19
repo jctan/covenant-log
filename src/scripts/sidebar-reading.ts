@@ -25,7 +25,7 @@ const setReaderDisabled = (disabled: boolean) => {
   readerBtn.setAttribute('aria-pressed', 'false');
   readerBtn.setAttribute('aria-disabled', disabled ? 'true' : 'false');
   if (disabled) {
-    setControlLabel(readerBtn, 'Reading mode (essay/memo pages only)');
+    setControlLabel(readerBtn, 'Reading mode (posts/memo pages only)');
     readerBtn.tabIndex = -1;
   } else {
     setControlLabel(readerBtn, 'Reading mode');

@@ -111,7 +111,7 @@ const assertUniqueEssaySlugs = (entries: readonly EssayEntry[]) => {
     if (isReservedSlug(slug)) {
       throw new Error(
         [
-          'Essay route slug conflict detected.',
+          'Post route slug conflict detected.',
           `  Entry:       ${entry.id}`,
           `  Public slug: ${slug}`,
           `  Source:      ${slugSource}`,
@@ -125,7 +125,7 @@ const assertUniqueEssaySlugs = (entries: readonly EssayEntry[]) => {
     if (!ESSAY_PUBLIC_SLUG_RE.test(slug)) {
       throw new Error(
         [
-          'Invalid public essay slug detected.',
+          'Invalid public post slug detected.',
           `  Entry:       ${entry.id}`,
           `  Public slug: ${slug}`,
           `  Source:      ${slugSource}`,
@@ -154,7 +154,7 @@ const assertUniqueEssaySlugs = (entries: readonly EssayEntry[]) => {
     .join('; ');
 
   throw new Error(
-    `Duplicate essay slug detected. Public essay slugs must be unique after path flattening. ${detail}`
+    `Duplicate post slug detected. Public post slugs must be unique after path flattening. ${detail}`
   );
 };
 
