@@ -90,7 +90,7 @@ export const ADMIN_HOME_INTRO_LINK_LIMIT = 2;
 export const ADMIN_HOME_INTRO_LINK_KEY_SET: ReadonlySet<HomeIntroLinkKey> = new Set(ADMIN_HOME_INTRO_LINK_KEYS);
 export const ADMIN_HOME_INTRO_LINK_OPTIONS = [
   { id: 'archive', label: 'Archive', href: '/archive/' },
-  { id: 'essay', label: 'Posts', href: '/essay/' },
+  { id: 'essay', label: 'Posts', href: '/posts/' },
   { id: 'bits', label: 'Bits', href: '/bits/' },
   { id: 'memo', label: 'Memo', href: '/memo/' },
   { id: 'about', label: 'About', href: '/about/' },
@@ -941,7 +941,7 @@ export const validateAdminThemeSettings = (
   }
 
   const pageTitleMap: Array<[string | null, string, string]> = [
-    [settings.page.essay?.title, '/essay/ page title', 'page.essay.title'],
+    [settings.page.essay?.title, '/posts/ page title', 'page.essay.title'],
     [settings.page.archive?.title, '/archive/ page title', 'page.archive.title'],
     [settings.page.bits?.title, '/bits/ page title', 'page.bits.title'],
     [settings.page.memo?.title, '/memo/ page title', 'page.memo.title'],
@@ -963,7 +963,7 @@ export const validateAdminThemeSettings = (
   });
 
   const pageSubtitleMap: Array<[string | null, string, string]> = [
-    [settings.page.essay?.subtitle, '/essay/ page subtitle', 'page.essay.subtitle'],
+    [settings.page.essay?.subtitle, '/posts/ page subtitle', 'page.essay.subtitle'],
     [settings.page.archive?.subtitle, '/archive/ page subtitle', 'page.archive.subtitle'],
     [settings.page.bits?.subtitle, '/bits/ page subtitle', 'page.bits.subtitle'],
     [settings.page.memo?.subtitle, '/memo/ page subtitle', 'page.memo.subtitle'],

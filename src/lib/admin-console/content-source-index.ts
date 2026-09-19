@@ -382,7 +382,7 @@ const createAboutSourceIndexItem: FrontmatterAdapter = (record) => {
 };
 
 const FRONTMATTER_ADAPTERS: Record<AdminContentCollectionKey, FrontmatterAdapter> = {
-  essay: createEssaySourceIndexItem,
+  posts: createEssaySourceIndexItem,
   bits: createBitsSourceIndexItem,
   memo: createMemoSourceIndexItem,
   about: createAboutSourceIndexItem

@@ -101,7 +101,7 @@ const extractCreateInput = (body: unknown): CreateInput => {
     collection = rawCollection;
   }
 
-  if (collection === 'essay' && !entryId) {
+  if (collection === 'posts' && !entryId) {
     const message = 'Request body is missing entryId';
     errors.push(message);
     issues.push({ path: 'entryId', message });
@@ -184,7 +184,7 @@ export const POST: APIRoute = async ({ request, url }) => {
   return withAdminContentWriteLock(async () => {
     let plan: Awaited<ReturnType<typeof buildAdminContentCreatePlan>>;
     try {
-      plan = collection === 'essay'
+      plan = collection === 'posts'
         ? await buildAdminContentCreatePlan({ collection, entryId: entryId ?? '', frontmatter })
         : await buildAdminContentCreatePlan({ collection, frontmatter });
     } catch (error) {

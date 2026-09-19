@@ -182,8 +182,8 @@ const buildContentEditorCapabilities = (
 };
 
 const ESSAY_ADAPTER: ContentEditorAdapter<AdminEssayEditorValues> = {
-  collection: 'essay',
-  capabilities: buildContentEditorCapabilities('essay', {
+  collection: 'posts',
+  capabilities: buildContentEditorCapabilities('posts', {
     body: true,
     preview: true,
     bodyImageInsert: true,
@@ -254,14 +254,14 @@ const ABOUT_ADAPTER: ContentEditorAdapter<AdminAboutEditorValues> = {
 };
 
 type ContentEditorAdapterMap = {
-  essay: ContentEditorAdapter<AdminEssayEditorValues>;
+  posts: ContentEditorAdapter<AdminEssayEditorValues>;
   bits: ContentEditorAdapter<AdminBitsEditorValues>;
   memo: ContentEditorAdapter<AdminMemoEditorValues>;
   about: ContentEditorAdapter<AdminAboutEditorValues>;
 };
 
 const CONTENT_EDITOR_ADAPTERS = {
-  essay: ESSAY_ADAPTER,
+  posts: ESSAY_ADAPTER,
   bits: BITS_ADAPTER,
   memo: MEMO_ADAPTER,
   about: ABOUT_ADAPTER

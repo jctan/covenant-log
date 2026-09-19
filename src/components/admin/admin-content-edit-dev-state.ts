@@ -47,7 +47,7 @@ export type AdminContentEditDevState = {
 const isAdminContentWorkspaceEditorPayload = (
   payload: AdminContentEditorPayload
 ): payload is AdminContentWorkspaceEditorPayload =>
-  payload.collection === 'essay'
+  payload.collection === 'posts'
   || payload.collection === 'bits'
   || payload.collection === 'memo'
   || payload.collection === 'about';

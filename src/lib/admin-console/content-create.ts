@@ -37,7 +37,7 @@ type AdminContentCreateBaseInput = {
 };
 
 type AdminEssayContentCreateInput = AdminContentCreateBaseInput & {
-  collection: 'essay';
+  collection: 'posts';
   entryId: string;
 };
 
@@ -133,7 +133,7 @@ const buildFallbackEssayPublicSlug = (
   entryId: string,
   hashLength: number
 ): string =>
-  `essay-${getShortEssayDateSlugPart(frontmatter.date)}-${buildStableSlugHash(
+  `post-${getShortEssayDateSlugPart(frontmatter.date)}-${buildStableSlugHash(
     [frontmatter.title, frontmatter.date, entryId],
     hashLength
   )}`;
@@ -419,7 +419,7 @@ export const buildAdminContentCreatePlan = async (
   input: AdminContentCreateInput
 ): Promise<AdminContentCreatePlan> => {
   switch (input.collection) {
-    case 'essay':
+    case 'posts':
       return buildEssayContentCreatePlan(input);
     case 'bits':
       return buildBitsContentCreatePlan(input);

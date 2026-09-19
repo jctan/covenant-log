@@ -69,7 +69,7 @@ const getRequiredFile = (formData: FormData, key: string): File | null => {
 const withAdminImageUploadLock = createAdminWriteQueue();
 
 const uploaders = {
-  essay: uploadAdminEssayImage,
+  posts: uploadAdminEssayImage,
   bits: uploadAdminBitsImage,
   memo: uploadAdminMemoImage
 } as const satisfies Record<AdminContentImageUploadCollectionKey, typeof uploadAdminEssayImage>;

@@ -120,7 +120,7 @@ const writeUniqueImageFile = async (
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;
 
-const assertContentEntryCanReceiveImage = (collection: 'essay' | 'bits' | 'memo', entryId: string): string => {
+const assertContentEntryCanReceiveImage = (collection: 'posts' | 'bits' | 'memo', entryId: string): string => {
   try {
     return resolveAdminContentEntrySourcePath(collection, entryId);
   } catch (error) {
@@ -138,7 +138,7 @@ const uploadAdminCloudImage = async ({
   safeFileName,
   buffer
 }: {
-  collection: 'essay' | 'bits' | 'memo';
+  collection: 'posts' | 'bits' | 'memo';
   entryId: string;
   file: File;
   safeFileName: string;
@@ -182,7 +182,7 @@ export const uploadAdminMarkdownBodyImage = async ({
   entryId,
   file
 }: {
-  collection: 'essay' | 'memo';
+  collection: 'posts' | 'memo';
   entryId: string;
   file: File;
 }): Promise<AdminImageUploadResult> => {
@@ -221,7 +221,7 @@ export const uploadAdminEssayImage = async ({
   entryId: string;
   file: File;
 }): Promise<AdminImageUploadResult> =>
-  uploadAdminMarkdownBodyImage({ collection: 'essay', entryId, file });
+  uploadAdminMarkdownBodyImage({ collection: 'posts', entryId, file });
 
 export const uploadAdminMemoImage = async ({
   entryId,

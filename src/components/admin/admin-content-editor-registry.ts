@@ -45,7 +45,7 @@ export type AdminContentEditorStyleSlot =
   | 'article'
   | 'memo';
 
-export type AdminContentEditorOutlineKind = 'none' | 'essay' | 'list';
+export type AdminContentEditorOutlineKind = 'none' | 'posts' | 'list';
 
 export type AdminContentEditorInfoTrigger = {
   attribute: 'data-admin-article-info-trigger' | 'data-admin-bits-info-trigger';
@@ -53,7 +53,7 @@ export type AdminContentEditorInfoTrigger = {
   panelId: string;
 };
 
-export type AdminContentEditorIslandKey = 'essay' | 'bits' | 'memo' | 'about';
+export type AdminContentEditorIslandKey = 'posts' | 'bits' | 'memo' | 'about';
 
 export type AdminContentEditorOutlines = {
   essayOutlineItems: EditorOutlineEssaySourceItem[];
@@ -179,11 +179,11 @@ export const loadAdminContentEditorBaseStyleHrefs = async (
 
 const loadEssayOutlineItems = async (withBase: WithBase): Promise<EditorOutlineEssaySourceItem[]> => {
   const manifest = await loadAdminContentSourceManifest();
-  return (await loadAdminContentSourceIndex(manifest, 'essay'))
+  return (await loadAdminContentSourceIndex(manifest, 'posts'))
     .map((item) => ({
       entryId: item.id,
       title: item.title,
-      editHref: withBase(getAdminContentEntryEditHref('essay', item.id)),
+      editHref: withBase(getAdminContentEntryEditHref('posts', item.id)),
       dateLabel: item.dateLabel,
       sourceError: item.sourceError
     }));
@@ -210,7 +210,7 @@ export const loadAdminContentEditorOutlines = async (
   registration: AdminContentEditorOutlineRegistration,
   withBase: WithBase
 ): Promise<AdminContentEditorOutlines> => {
-  if (registration.outlineKind === 'essay') {
+  if (registration.outlineKind === 'posts') {
     return {
       essayOutlineItems: await loadEssayOutlineItems(withBase),
       bitsOutlineItems: []
@@ -296,11 +296,11 @@ const buildAboutEditorIslandProps = ({
 });
 
 const CONTENT_EDITOR_PAGE_REGISTRY = {
-  essay: {
-    collection: 'essay',
+  posts: {
+    collection: 'posts',
     workspaceClassName: 'admin-content-edit-page--essay',
     articleClassName: 'admin-content-editor--svelte',
-    island: 'essay',
+    island: 'posts',
     styleSlots: [
       'article',
       'adminContentEditor',
@@ -308,13 +308,13 @@ const CONTENT_EDITOR_PAGE_REGISTRY = {
       'adminContentEditorImageInsert',
       'adminContentEditorGalleryInsert'
     ],
-    outlineKind: 'essay',
+    outlineKind: 'posts',
     infoTrigger: {
       attribute: 'data-admin-article-info-trigger',
       label: 'Edit info',
       panelId: 'admin-editor-frontmatter-panel'
     },
-    usesImagePicker: getAdminContentCollectionCapability('essay').imagePicker,
+    usesImagePicker: getAdminContentCollectionCapability('posts').imagePicker,
     resolveReturnHref: ({ withBase }) => withBase('/admin/content/'),
     buildIslandProps: buildEssayEditorIslandProps
   },
@@ -401,8 +401,8 @@ export const buildAdminContentEditorIslandProps = ({
   outlines: AdminContentEditorOutlines;
   initialArticleInfoOpen: boolean;
 }): AdminContentEditorIslandProps => {
-  if (payload.collection === 'essay') {
-    return CONTENT_EDITOR_PAGE_REGISTRY.essay.buildIslandProps({
+  if (payload.collection === 'posts') {
+    return CONTENT_EDITOR_PAGE_REGISTRY.posts.buildIslandProps({
       payload,
       endpoints,
       returnHref,

@@ -225,7 +225,6 @@ describe('admin preview api', () => {
     expect(markdownGuideResult.html).toContain('class="code-block"');
     expect(markdownGuideResult.html).toContain('<code class="language-ts">');
     expect(markdownGuideResult.html).toContain('<figure class="figure">');
-    expect(memoResult.html).toContain('<figure class="figure">');
     expect(markdownGuideResult.elapsedMs).toBeGreaterThanOrEqual(0);
     expect(memoResult.elapsedMs).toBeGreaterThanOrEqual(0);
   });

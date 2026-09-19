@@ -154,7 +154,7 @@ const isAdminAboutEditorValues = (value: unknown): value is AdminAboutEditorValu
 
 const isAdminEssayEditorPayload = (value: unknown): value is AdminEssayEditorPayload =>
   isRecord(value)
-  && value.collection === 'essay'
+  && value.collection === 'posts'
   && typeof value.entryId === 'string'
   && typeof value.publicEntryId === 'string'
   && typeof value.defaultPublicSlug === 'string'
@@ -229,7 +229,7 @@ export const getPayloadEssayBody = (value: unknown): string | null => {
   return payload ? payload.bodyText : null;
 };
 
-export function getPayloadEditorValues(value: unknown, collection: 'essay'): AdminEssayEditorValues | null;
+export function getPayloadEditorValues(value: unknown, collection: 'posts'): AdminEssayEditorValues | null;
 export function getPayloadEditorValues(value: unknown, collection: 'bits'): AdminBitsEditorValues | null;
 export function getPayloadEditorValues(value: unknown, collection: 'memo'): AdminMemoEditorValues | null;
 export function getPayloadEditorValues(value: unknown, collection: 'about'): AdminAboutEditorValues | null;
@@ -243,7 +243,7 @@ export function getPayloadEditorValues(
 ): AdminEssayEditorValues | AdminBitsEditorValues | AdminMemoEditorValues | AdminAboutEditorValues | null {
   const payload = getPayloadEditorPayload(value);
   if (!payload || payload.collection !== collection || !payload.writable) return null;
-  if (collection === 'essay' && isAdminEssayEditorPayload(payload)) return payload.values;
+  if (collection === 'posts' && isAdminEssayEditorPayload(payload)) return payload.values;
   if (collection === 'bits' && isAdminBitsEditorPayload(payload)) return payload.values;
   if (collection === 'memo' && isAdminMemoEditorPayload(payload)) return payload.values;
   if (collection === 'about' && isAdminAboutEditorPayload(payload)) return payload.values;
@@ -256,7 +256,7 @@ export const getPayloadEditorBody = (
 ): string | null => {
   const payload = getPayloadEditorPayload(value);
   if (!payload || payload.collection !== collection) return null;
-  if (collection === 'essay' && isAdminEssayEditorPayload(payload)) return payload.bodyText;
+  if (collection === 'posts' && isAdminEssayEditorPayload(payload)) return payload.bodyText;
   if (collection === 'bits' && isAdminBitsEditorPayload(payload)) return payload.bodyText;
   if (collection === 'memo' && isAdminMemoEditorPayload(payload)) return payload.bodyText;
   if (collection === 'about' && isAdminAboutEditorPayload(payload)) return payload.bodyText;

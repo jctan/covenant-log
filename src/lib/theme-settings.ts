@@ -578,7 +578,7 @@ const PRESET_SOCIAL_ITEMS: readonly {
 ];
 
 const SIDEBAR_HREFS: Record<SidebarNavId, string> = {
-  essay: '/essay/',
+  essay: '/posts/',
   bits: '/bits/',
   memo: '/memo/',
   archive: '/archive/',

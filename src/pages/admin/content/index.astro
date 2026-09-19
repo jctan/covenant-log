@@ -117,13 +117,13 @@ const getContentPublicLinkLabel = (item: Pick<AdminContentIndexItem, 'collection
 const getContentInfoActionLabel = (item: Pick<AdminContentIndexItem, 'collection'>): string => {
   const capability = getAdminContentCollectionCapability(item.collection);
   if (!capability.writable) return 'View source info';
-  if (item.collection === 'essay' || item.collection === 'bits') return 'Edit info';
+  if (item.collection === 'posts' || item.collection === 'bits') return 'Edit info';
   if (capability.fixedPage) return `${capability.label} info`;
   return 'Edit info';
 };
 
-const hasListInfoAction = (collection: AdminContentCollectionKey): collection is 'essay' | 'bits' =>
-  collection === 'essay' || collection === 'bits';
+const hasListInfoAction = (collection: AdminContentCollectionKey): collection is 'posts' | 'bits' =>
+  collection === 'posts' || collection === 'bits';
 
 const getContentPaginationHref = (page: number): string => {
   // 分页只属于具体 collection scope；总览和全部内容搜索不生成分页链接。
@@ -198,7 +198,7 @@ const getContentEmptyMessage = (sectionLabel: string): string => {
 };
 
 const CONTENT_CREATE_ACTIONS = {
-  essay: {
+  posts: {
     attribute: 'data-admin-content-create-action',
     label: 'New post'
   },
@@ -512,7 +512,7 @@ const getContentCreateAction = (
                                 const editHref = withBase(editPath);
                                 const supportsListInfoAction = capability.writable && hasListInfoAction(item.collection);
                                 const articleInfoHref = capability.writable
-                                  ? item.collection === 'essay'
+                                  ? item.collection === 'posts'
                                     ? withBase(`${editPath}?panel=info`)
                                     : editHref
                                   : null;

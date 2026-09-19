@@ -69,8 +69,8 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 const hasOwn = (value: Record<string, unknown>, key: string): boolean =>
   Object.prototype.hasOwnProperty.call(value, key);
 
-const isFrontmatterWriteCollection = (collection: string): collection is 'essay' | 'bits' =>
-  collection === 'essay' || collection === 'bits';
+const isFrontmatterWriteCollection = (collection: string): collection is 'posts' | 'bits' =>
+  collection === 'posts' || collection === 'bits';
 
 const extractWriteInput = (body: unknown): WriteInput => {
   if (!isRecord(body)) {

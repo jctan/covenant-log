@@ -13,7 +13,7 @@ import {
 } from './image-upload-error';
 
 type AdminImageCloudUploadInput = {
-  collection: 'essay' | 'bits' | 'memo';
+  collection: 'posts' | 'bits' | 'memo';
   entryId: string;
   fileName: string;
   buffer: Buffer;
@@ -378,6 +378,6 @@ const isManagedAdminImageKey = (key: string, prefix: string): boolean => {
 
   const parts = key.slice(namespace.length).split('/');
   return parts.length >= 3
-    && (parts[0] === 'essay' || parts[0] === 'bits' || parts[0] === 'memo')
+    && (parts[0] === 'posts' || parts[0] === 'bits' || parts[0] === 'memo')
     && parts.every((part) => part.length > 0 && part !== '.' && part !== '..');
 };

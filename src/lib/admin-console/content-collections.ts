@@ -1,4 +1,4 @@
-export type AdminContentCollectionKey = 'essay' | 'bits' | 'memo' | 'about';
+export type AdminContentCollectionKey = 'posts' | 'bits' | 'memo' | 'about';
 
 export type AdminContentFixedPageCapability = {
   entryId: 'index';
@@ -29,13 +29,13 @@ export type AdminContentCollectionCapability = {
   deleteUnsupportedReason: string | null;
 };
 
-export const ADMIN_CONTENT_COLLECTION_KEYS = ['essay', 'bits', 'memo', 'about'] as const satisfies readonly AdminContentCollectionKey[];
+export const ADMIN_CONTENT_COLLECTION_KEYS = ['posts', 'bits', 'memo', 'about'] as const satisfies readonly AdminContentCollectionKey[];
 
 export const ADMIN_CONTENT_COLLECTION_CAPABILITIES = {
-  essay: {
-    collection: 'essay',
+  posts: {
+    collection: 'posts',
     label: 'Posts',
-    consoleSectionHref: '/essay/',
+    consoleSectionHref: '/posts/',
     fixedPage: null,
     visible: true,
     entryWritable: true,

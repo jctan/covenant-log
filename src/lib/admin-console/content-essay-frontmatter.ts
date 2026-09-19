@@ -157,9 +157,9 @@ const findEssayPublicSlugCollisionEntryId = (
 
 export const loadEssayPublicSlugUsage = async (): Promise<AdminEssayPublicSlugUsage> => {
   const usage = new Map<string, string[]>();
-  const essayFiles = await listAdminCollectionSourceFiles('essay');
+  const essayFiles = await listAdminCollectionSourceFiles('posts');
   for (const filePath of essayFiles) {
-    const candidateEntryId = resolveAdminContentEntryIdFromSourcePath('essay', filePath);
+    const candidateEntryId = resolveAdminContentEntryIdFromSourcePath('posts', filePath);
     const frontmatterRecord = await readAdminSourceFrontmatterRecord(filePath);
     const candidatePublicEntryId = resolveDefaultPublicEntryId(candidateEntryId);
     const candidateSlug = resolveEssayPublicSlug(candidatePublicEntryId, normalizeOptionalText(frontmatterRecord.slug));

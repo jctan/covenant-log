@@ -53,7 +53,7 @@ type ContentEditorSaveBaseInput = {
 
 export type ContentEditorSaveInput = ContentEditorSaveBaseInput & (
   | {
-      collection: 'essay';
+      collection: 'posts';
       frontmatter: AdminEssayEditorValues;
       body?: string;
     }
@@ -110,7 +110,7 @@ export type ContentEditorCreateInput = {
   fetchImpl?: FetchLike;
 } & (
   | {
-      collection: 'essay';
+      collection: 'posts';
       entryId: string;
       frontmatter: AdminEssayEditorValues;
     }
@@ -148,7 +148,7 @@ const buildContentWriteRequestBody = (input: ContentEditorSaveInput): Record<str
     revision: input.revision
   };
 
-  if (input.collection === 'essay' || input.collection === 'bits') {
+  if (input.collection === 'posts' || input.collection === 'bits') {
     requestBody.frontmatter = input.frontmatter;
   }
   if ('body' in input) {
@@ -252,7 +252,7 @@ export const createContentEntry = async (input: ContentEditorCreateInput): Promi
     collection,
     frontmatter
   };
-  if (collection === 'essay') {
+  if (collection === 'posts') {
     requestBody.entryId = input.entryId;
   }
 

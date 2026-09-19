@@ -62,7 +62,7 @@ export type AdminContentWorkspaceEditorValues =
   | AdminAboutEditorValues;
 
 export type AdminEssayEditorPayload = {
-  collection: 'essay';
+  collection: 'posts';
   entryId: string;
   publicEntryId: string;
   defaultPublicSlug: string;
@@ -182,7 +182,7 @@ export const buildAdminContentEntryEditorPayloadFromState = (
   state: AdminContentSourceState
 ): AdminContentEditorPayload => {
   const { collection } = state;
-  if (collection === 'essay') {
+  if (collection === 'posts') {
     return {
       collection,
       entryId: state.entryId,

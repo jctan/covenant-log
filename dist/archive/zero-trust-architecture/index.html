@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"> <head><script>
+      (() => {
+        // Mirrors the theme-preference contract in src/scripts/sidebar-theme.ts to avoid first-paint/runtime drift.
+        const themeKey = 'theme';
+        const modeKey = 'theme-mode';
+        let storedMode = null;
+        let legacyTheme = null;
+        try {
+          storedMode = localStorage.getItem(modeKey);
+          legacyTheme = localStorage.getItem(themeKey);
+        } catch (_) {}
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const mode = storedMode === 'system' || storedMode === 'dark' || storedMode === 'light'
+          ? storedMode
+          : (legacyTheme === 'dark' || legacyTheme === 'light' ? legacyTheme : 'system');
+        const theme = mode === 'system' ? (prefersDark ? 'dark' : 'light') : mode;
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.themeMode = mode;
+      })();
+    </script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><title>Zero Trust Architecture: The Cloud Security Model Everyone&#39;s Adopting | Covenant Logs</title><meta name="description" content="Why 'never trust, always verify' has become the default architecture for securing cloud workloads, and what actually implementing it looks like."><link rel="canonical" href="https://johnctan.com/archive/zero-trust-architecture/"><meta property="og:site_name" content="Covenant Logs"><meta property="og:title" content="Zero Trust Architecture: The Cloud Security Model Everyone's Adopting | Covenant Logs"><meta property="og:description" content="Why 'never trust, always verify' has become the default architecture for securing cloud workloads, and what actually implementing it looks like."><meta property="og:url" content="https://johnctan.com/archive/zero-trust-architecture/"><meta property="og:type" content="article"><meta property="og:image" content="https://johnctan.com/og.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Zero Trust Architecture: The Cloud Security Model Everyone's Adopting | Covenant Logs"><meta name="twitter:description" content="Why 'never trust, always verify' has become the default architecture for securing cloud workloads, and what actually implementing it looks like."><meta name="twitter:image" content="https://johnctan.com/og.svg"><link rel="stylesheet" href="/_astro/global.Cp72ITzf.css"><style>@font-face{font-family:"Noto Sans SC-5ed69dd58db6094f";src:url("/_astro/fonts/dcfdbd72f6ce7a35.woff2") format("woff2");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:"Noto Sans SC-5ed69dd58db6094f";src:url("/_astro/fonts/dc6e02d1f503a271.woff2") format("woff2");font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-weight:400;font-style:normal;}@font-face{font-family:"Noto Sans SC-5ed69dd58db6094f fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:104.7553%;ascent-override:110.7342%;descent-override:27.4926%;line-gap-override:0%;}@font-face{font-family:"Noto Sans SC-5ed69dd58db6094f fallback: Arial";src:local("Arial");font-display:swap;font-weight:400;font-style:normal;size-adjust:104.7553%;ascent-override:110.7342%;descent-override:27.4926%;line-gap-override:0%;}:root{--font-noto-sans-sc:"Noto Sans SC-5ed69dd58db6094f","Noto Sans SC-5ed69dd58db6094f fallback: Arial",sans-serif;}</style>  <meta property="article:published_time" content="2026-09-19T00:00:00.000Z"> <meta property="article:tag" content="Cloud Security"><meta property="article:tag" content="Zero Trust"><meta property="article:tag" content="Architecture"><link rel="stylesheet" href="/_astro/article.D6eyYK2t.css"></head> <body class="article-page immersive-page"> <a class="skip-link" href="#content">Skip to content</a> <div class="shell" data-sidebar-divider="default"> <aside id="site-sidebar" class="sidebar"> <a class="sidebar__title sidebar__title--site" href="/" aria-label="Covenant Logs home"> <span class="sidebar__title-text">Covenant Logs</span> </a>  <div class="sidebar__quote">  Doing God&#39;s work<br>  during the age of AI.<br>  Documenting on Cloud, Security, and AI.<br>  </div> <ul class="nav sidebar-public-nav"> <li> <a href="/posts/"> <span>Posts</span> <span class="dot" aria-hidden="true"></span> </a> </li><li> <a href="/memo/"> <span>Memo</span> <span class="dot" aria-hidden="true"></span> </a> </li><li> <a href="/archive/" aria-current="page"> <span>Archive</span> <span class="dot" aria-hidden="true"></span> </a> </li><li> <a href="/about/"> <span>About</span> <span class="dot" aria-hidden="true"></span> </a> </li> </ul>  <div class="sidebar-actions">   <button id="reader-toggle" class="icon-button reader-toggle sidebar-action--rail-hidden" type="button" aria-label="Reading mode" aria-pressed="false" data-tooltip="Reading mode"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="lucide lucide-book-open icon icon-book-open"> <path d="M12 5v16"></path><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"></path>  </svg> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="lucide lucide-book icon icon-book-closed"> <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"></path>  </svg> </button> <a class="icon-button rss-link sidebar-action--rail-hidden" href="/archive/rss.xml" aria-label="RSS feed" data-tooltip="RSS feed"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="lucide lucide-rss icon"> <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>  </svg> </a> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false" data-tooltip="Dark mode"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="lucide lucide-sun-moon icon icon-system"> <path d="M12 2v2"></path><path d="M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715"></path><path d="M16 12a4 4 0 0 0-4-4"></path><path d="m19 5-1.256 1.256"></path><path d="M20 12h2"></path>  </svg> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="lucide lucide-moon icon icon-moon"> <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path>  </svg> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="lucide lucide-sun icon icon-sun"> <circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>  </svg> </button>   </div> </aside> <div class="divider" aria-hidden="true"></div> <main id="content" class="content" tabindex="-1"> <div class="content__inner">   <div class="article-header reader-exit-anchor"> <h1 class="page-title">Zero Trust Architecture: The Cloud Security Model Everyone&#39;s Adopting</h1> <button id="reader-exit" class="icon-button reader-exit" type="button" aria-label="Exit reading mode" title="Exit reading mode" aria-hidden="true" tabindex="-1"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="lucide lucide-square-arrow-right-exit icon"> <path d="M10 12h11"></path><path d="m17 16 4-4-4-4"></path><path d="M21 6.344V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-1.344"></path>  </svg> </button> <div class="meta-line meta-line--items"> <span class="meta-line__item"> <time datetime="2026-09-19T00:00:00.000Z">Published:2026-09-19</time> </span> <span class="meta-line__item meta-line__item--tags"> <span class="tag">#Cloud Security</span><span class="tag">#Zero Trust</span><span class="tag">#Architecture</span> </span> <span class="meta-line__item meta-line__item--desktop-meta"> 741 words
+</span> <span class="meta-line__item meta-line__item--desktop-meta">
+~4 min read
+</span> </div> </div> <div class="prose">  <p>The perimeter is gone. Once workloads spread across multiple clouds, SaaS platforms, and a workforce that connects from anywhere, the old model — a hardened network edge with an implicitly trusted interior — stopped making sense. Zero Trust Architecture (ZTA) is the response, and at this point it’s less a trend than the default assumption behind most modern cloud security programs.</p>
+<h2 id="the-core-idea">The Core Idea</h2>
+<p>Zero Trust boils down to one sentence: <strong>never trust, always verify</strong> — regardless of whether a request originates inside or outside the network. There is no “trusted zone.” Every request, every session, every service-to-service call gets authenticated, authorized, and encrypted, every time, based on the identity and context available right now, not on where the packet came from.</p>
+<p>NIST SP 800-207 formalized this into a reference architecture, and it’s worth internalizing three of its tenets directly:</p>
+<ol>
+<li>All data sources and computing services are treated as resources.</li>
+<li>All communication is secured regardless of network location.</li>
+<li>Access to individual resources is granted per-session, on a least-privilege basis, and evaluated continuously — not just at login.</li>
+</ol>
+<h2 id="why-it-won-a-decade-of-architecture-debates">Why It Won a Decade of Architecture Debates</h2>
+<p>A few forces converged to make Zero Trust the dominant model rather than just one option among many:</p>
+<ul>
+<li><strong>Lateral movement is the actual attack pattern.</strong> Almost every high-profile breach in the last decade wasn’t a perimeter failure — it was an attacker who got one foothold and then moved freely because the internal network implicitly trusted itself.</li>
+<li><strong>Cloud-native workloads don’t have a stable perimeter.</strong> Containers get rescheduled across nodes, autoscaling changes IPs constantly, and services talk to each other across account and region boundaries. There’s no fixed edge to defend.</li>
+<li><strong>Identity became the only constant.</strong> Users, services, and workloads can be authenticated wherever they are — the network location can’t be, not reliably.</li>
+</ul>
+<h2 id="the-pillars-in-practice">The Pillars, in Practice</h2>
+<p>Zero Trust isn’t a product you buy; it’s an architecture you build out of several enforcement points working together:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Pillar</th><th>What it enforces</th><th>Common tooling</th></tr></thead><tbody><tr><td>Identity</td><td>Strong, phishing-resistant auth for humans and workloads</td><td>SSO + MFA, workload identity federation</td></tr><tr><td>Device</td><td>Only known, compliant devices get access</td><td>MDM posture checks, device certificates</td></tr><tr><td>Network</td><td>No implicit trust between segments</td><td>Micro-segmentation, service mesh mTLS</td></tr><tr><td>Application</td><td>Access decided per-request, not per-session</td><td>Policy engines (OPA, Cedar), API gateways</td></tr><tr><td>Data</td><td>Classification and encryption travel with the data</td><td>Envelope encryption, DLP, tagging</td></tr></tbody></table>
+<p>The pillar most teams underinvest in is network segmentation. It’s tempting to bolt Zero Trust onto identity alone — strong SSO and MFA — and call it done. But if a compromised pod can still reach every other service on the same VPC over plaintext HTTP, you’ve built strong front doors on a building with no interior walls.</p>
+<h2 id="what-this-looks-like-on-a-cloud-platform">What This Looks Like on a Cloud Platform</h2>
+<p>A reasonably mature Zero Trust rollout in a cloud environment tends to converge on the same handful of controls:</p>
+<ul>
+<li><strong>Short-lived credentials everywhere.</strong> No long-lived access keys sitting in a <code>.env</code> file. Workload identity federation (IRSA, Workload Identity, Managed Identity) issues tokens that expire in minutes, scoped to exactly what the workload needs.</li>
+<li><strong>mTLS between services by default.</strong> A service mesh (or the cloud provider’s native equivalent) terminates and verifies certificates on every hop, so “internal traffic” stops being a trust boundary.</li>
+<li><strong>Policy as code at the enforcement point.</strong> Authorization decisions live in a policy engine evaluated at request time, not hardcoded into application logic or, worse, assumed by network placement.</li>
+<li><strong>Continuous verification, not one-time login.</strong> Session risk gets re-evaluated on signals like device posture drift, impossible travel, or anomalous API call patterns — not just checked once at authentication.</li>
+</ul>
+<blockquote>
+<p>The goal isn’t to make access harder. It’s to make every access decision explicit, so there’s no path through the system that nobody consciously authorized.</p>
+</blockquote>
+<h2 id="the-pitfall-worth-naming">The Pitfall Worth Naming</h2>
+<p>The most common failure mode isn’t technical, it’s organizational: treating Zero Trust as a checkbox you get from a vendor. A single SASE or ZTNA product can absolutely be part of the answer, but if IAM roles still carry wildcard permissions, if service-to-service calls still run unauthenticated inside the VPC, and if “trusted” internal tooling still gets a pass on MFA, the architecture hasn’t actually changed — only the marketing has.</p>
+<p>Zero Trust is a direction to keep moving in, evaluated one access decision at a time, not a state you reach and then stop maintaining.</p>  </div> <dialog class="lightbox" id="lightbox" aria-label="Image preview" aria-hidden="true" data-lightbox data-enable-zoom="false" data-enable-pan="false" data-enable-swipe-down="false" data-mobile-nav="bottom" data-mobile-count="visible" tabindex="-1" hidden> <button class="lightbox-close" type="button" data-lightbox-close aria-label="Close">×</button> <div class="lightbox-navs"> <button class="lightbox-nav lightbox-prev" type="button" data-lightbox-prev aria-label="Previous">‹</button> <button class="lightbox-nav lightbox-next" type="button" data-lightbox-next aria-label="Next">›</button> </div> <figure class="lightbox-figure"> <img data-lightbox-image alt=""> <figcaption class="lightbox-meta"> <span class="lightbox-caption" data-lightbox-caption hidden></span> <span class="lightbox-meta-row"> <span class="lightbox-count" data-lightbox-count aria-live="polite"></span> <span class="lightbox-dots" data-lightbox-dots aria-hidden="true"></span> </span> </figcaption> </figure> </dialog><script type="module" src="/_astro/ArticleLayout.astro_astro_type_script_index_0_lang.B4y0RhOR.js"></script> <footer class="site-footer">© 2026 Covenant Logs</footer> </div> </main> </div> <template id="scroll-top-template"> <button type="button" class="icon-button float-action scroll-top" aria-label="Back to top" title="Back to top" aria-hidden="true" tabindex="-1"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="lucide lucide-chevron-up icon"> <path d="m18 15-6-6-6 6"></path>  </svg> </button> </template> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.B5UbmAo7.js"></script>  </body> </html>

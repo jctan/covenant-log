@@ -27,7 +27,7 @@ export type GetPublishedOptions<K extends CollectionKey> = {
 
 /**
  * Check whether a slug collides with sibling static routes under /archive/
- * or /essay/.  After the route narrowing (catch-all → single-segment), only
+ * or /posts/.  After the route narrowing (catch-all → single-segment), only
  * exact matches need to be checked.
  *
  * NOTE: The primary defence is `assertUniqueEssaySlugs` which throws at build
@@ -77,9 +77,9 @@ export async function getPublished<K extends CollectionKey>(
   return items.slice().sort(opts.orderBy);
 }
 
-export type EssayEntry = CollectionEntry<'essay'>;
+export type EssayEntry = CollectionEntry<'posts'>;
 export type MemoEntry = CollectionEntry<'memo'>;
-type EssayQueryOptions = Pick<GetPublishedOptions<'essay'>, 'includeDraft'>;
+type EssayQueryOptions = Pick<GetPublishedOptions<'posts'>, 'includeDraft'>;
 export type EssayRouteEntry = {
   slug: string;
   entry: EssayEntry;
@@ -115,7 +115,7 @@ const assertUniqueEssaySlugs = (entries: readonly EssayEntry[]) => {
           `  Entry:       ${entry.id}`,
           `  Public slug: ${slug}`,
           `  Source:      ${slugSource}`,
-          `  Reason:      "${slug}" is reserved for sibling static routes under /archive/ and /essay/.`,
+          `  Reason:      "${slug}" is reserved for sibling static routes under /archive/ and /posts/.`,
           '  How to fix:  change frontmatter.slug, or rename the file/path so the final public slug is no longer reserved.'
         ].join('\n')
       );
@@ -175,7 +175,7 @@ const shouldUseDefaultEssayCache = (includeDraft?: boolean) =>
   shouldMemoizeEssayQueries && includeDraft !== true;
 
 const loadSortedEssays = async ({ includeDraft }: EssayQueryOptions = {}) => {
-  const essays = await getPublished('essay', {
+  const essays = await getPublished('posts', {
     ...(includeDraft === undefined ? {} : { includeDraft }),
     orderBy: orderByEssayDate
   });

@@ -588,7 +588,7 @@ export const buildAdminContentWritePlanFromState = async (
     );
   }
 
-  if (collection === 'essay') {
+  if (collection === 'posts') {
     const parsed = parseAdminEssayEditorInput(frontmatterInput);
     if (!parsed.values) {
       return {

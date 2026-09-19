@@ -21,7 +21,7 @@ import { formatDateTime, formatISODate, formatISODateUtc } from '../../utils/for
 import { cleanMarkdownToText } from '../../utils/excerpt';
 import packageJson from '../../../package.json';
 
-export type AdminOverviewCollectionKey = 'essay' | 'bits' | 'memo';
+export type AdminOverviewCollectionKey = 'posts' | 'bits' | 'memo';
 
 export type AdminOverviewDataOptions = {
   includeMaintainer: boolean;
@@ -152,13 +152,13 @@ type RecentSource = {
 };
 
 const COLLECTION_LABELS: Record<AdminOverviewCollectionKey, string> = {
-  essay: 'Posts',
+  posts: 'Posts',
   bits: 'Bits',
   memo: 'Memo'
 };
 
 const COLLECTION_DETAILS: Record<AdminOverviewCollectionKey, string> = {
-  essay: 'Posts',
+  posts: 'Posts',
   bits: 'Updates',
   memo: 'Notes'
 };
@@ -238,8 +238,8 @@ export const buildAdminOverviewBitsHrefById = (bits: readonly BitsEntry[]): Map<
 const getRecentEssayPublication = (entry: EssayEntry): AdminOverviewRecentPublication => {
   const isDraft = entry.data.draft === true;
   return {
-    collection: 'essay',
-    collectionLabel: COLLECTION_LABELS.essay,
+    collection: 'posts',
+    collectionLabel: COLLECTION_LABELS.posts,
     title: entry.data.title,
     href: isDraft ? null : `/archive/${getEssaySlug(entry)}/`,
     isDraft,
@@ -321,7 +321,7 @@ const getLatestUpdate = (source: AdminOverviewPublicSource): AdminOverviewStats[
 const buildCollectionShares = (source: AdminOverviewPublicSource): AdminOverviewCollectionShare[] => {
   const total = source.essays.length + source.bits.length + source.memos.length;
   const counts: Record<AdminOverviewCollectionKey, number> = {
-    essay: source.essays.length,
+    posts: source.essays.length,
     bits: source.bits.length,
     memo: source.memos.length
   };
@@ -509,8 +509,8 @@ export const buildAdminOverviewMaintainerSummary = (
 
   const collectionDrafts: AdminOverviewCollectionDraftSummary[] = [
     {
-      key: 'essay',
-      label: COLLECTION_LABELS.essay,
+      key: 'posts',
+      label: COLLECTION_LABELS.posts,
       draftCount: getCollectionDraftCount(source.essays),
       totalCount: source.essays.length
     },

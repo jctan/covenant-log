@@ -93,7 +93,7 @@ export const uploadContentEditorImage = async ({
 export const uploadEssayEditorImage = (
   input: Omit<EditorImageUploadInput, 'collection'>
 ): Promise<EditorImageUploadResponse> =>
-  uploadContentEditorImage({ ...input, collection: 'essay' });
+  uploadContentEditorImage({ ...input, collection: 'posts' });
 
 export const uploadBitsEditorImage = (
   input: Omit<EditorImageUploadInput, 'collection'>
